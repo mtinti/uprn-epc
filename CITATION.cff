@@ -14,7 +14,7 @@ authors:
     given-names: Michele
     affiliation: "Health Informatics Centre (HIC), University of Dundee"
     orcid: "https://orcid.org/0000-0002-0051-017X"
-version: "0.1.0"
+version: "0.2.0"
 license: MIT
 repository-code: "https://github.com/mtinti/uprn-epc"
 keywords:
