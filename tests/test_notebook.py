@@ -31,7 +31,7 @@ def test_notebook_cells_parse_and_carry_the_manifest_numbers():
     assert m["uncompressed_sha256"] in step2 and str(m["uncompressed_bytes"]) in step2
     assert str(m["rows"]) in step2 and m["digest"]["total"] in step2
     text = "\n".join(c.source for c in nb.cells)
-    assert "TEST STREET" not in text and "ADDRESS1" not in text
+    assert "TEST STREET" not in text   # no address value is ever embedded in the notebook
 
 
 @needs_build
@@ -64,7 +64,7 @@ def test_step_3_parsing_reproduces_the_csv_header():
     spec = line.findall(block.group(1))
     columns = [name for name, _, _ in spec]
     not_null = {name for name, _, nn in spec if nn}
-    assert len(columns) == 127 and len(columns) - len(not_null) == 5
+    assert len(columns) == 130 and len(columns) - len(not_null) == 5
     assert {n for n in columns if n not in not_null} == {"rrn", "uprn_osg", "pc_norm", "datazone_2001", "datazone_2011"}
     csv_path = ROOT / "results" / "epc_domestic.csv.gz"
     if csv_path.is_file():

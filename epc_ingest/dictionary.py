@@ -53,7 +53,7 @@ def render() -> str:
               "- The published columns are never NULL: an empty cell is the empty string, as published. The derived columns are NULL only where the dictionary below says so.",
               "- Join by `uprn_osg` as an integer, never as text: a cohort UPRN padded to 12 digits matches once both sides are bigint. The published `OSG_REFERENCE_NUMBER` text is provenance only.",
               "- Most dwellings in Scotland have never had a certificate: about 1.9 million UPRNs appear here against about 2.7 million dwellings. A cohort row with no match is `uprn_not_in_epc`, not an error.",
-              "- The three address lines are in the Parquet and not in the CSV or the SQL table (`epc_ingest/export_contract.yaml`).",
+              "- Every column of the Parquet is in the CSV and the SQL table, the three address lines included (`epc_ingest/export_contract.yaml`, decision `address-lines-loaded`); nothing built leaves the safe haven.",
               "- Column names are case-sensitive in the Parquet; in SQL Server they are compared under the database collation, which is why no derived name equals a published name in another case.", "",
               "## Columns", "", "| # | Column | Group | SQL type | Null | Publisher's label | Description |", "| ---: | --- | --- | --- | --- | --- | --- |"]
     for i, f in enumerate(schema["fields"], 1):

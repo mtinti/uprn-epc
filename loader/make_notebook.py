@@ -57,7 +57,7 @@ step 4 or 5 leaves a table that is incomplete or unverified; the message says wh
 run restarts from step 3. For a first load that is fine. To refresh a table that people already use, set
 `TABLE` to a new name, run the notebook, and rename the two tables only after step 5 has passed.
 
-**Addresses.** The CSV holds no address lines; it does hold the postcode. Both stay inside the safe haven.
+**Addresses.** The CSV holds the three address lines and the postcode. Both stay inside the safe haven; an analyst-facing view without the address columns is suggested.
 """)
 
 md("""
@@ -202,8 +202,8 @@ md("""
 are exactly the CSV's header in the same order, then drops and recreates the table under your name, with the
 primary key `(epc_release, source_year, source_row)`.
 
-**What to expect.** `127 columns`, then the type counts: nvarchar 110 (of eleven widths), int 7,
-decimal(19,4) 3, bigint 2, date 2, smallint 1, datetime2(0) 1, bit 1. A table showing 127 columns created,
+**What to expect.** `130 columns`, then the type counts: nvarchar 113 (of eleven widths), int 7,
+decimal(19,4) 3, bigint 2, date 2, smallint 1, datetime2(0) 1, bit 1. A table showing 130 columns created,
 of which 5 are nullable, and the three key columns.
 
 **Why.** The definition ships with the build and is tested against the schema, so using it rather than

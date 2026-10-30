@@ -165,12 +165,10 @@ def test_generated_import_sql_restores_empty_and_null_by_schema():
     assert "CONVERT(bigint, NULLIF([uprn_osg], ''))" in sql and "CONVERT(bit, NULLIF([historic_flag], ''))" in sql
     assert "CONVERT(date, NULLIF([lodgement_date_parsed], ''), 23)" in sql
     assert "CONVERT(datetime2(0), NULLIF([created_at_parsed], ''), 120)" in sql
-    assert "[ADDRESS1]" not in sql and "[POSTCODE] nvarchar(32) NOT NULL" in sql
+    assert "[ADDRESS1] nvarchar(100) NOT NULL" in sql and "[POSTCODE] nvarchar(32) NOT NULL" in sql
     # Nullability field for field.
     typed = sql.split("CREATE TABLE epc_domestic (")[1].split("CONSTRAINT")[0]
     for f in SCHEMA["fields"]:
-        if f["name"] in ("ADDRESS1", "ADDRESS2", "ADDRESS3"):
-            continue
         line = [l for l in typed.splitlines() if l.strip().startswith(f"[{f['name']}] ")][0]
         assert (" NOT NULL" in line) == (not f["nullable"]), f["name"]
         assert sql_check.declared_type(f) in line
@@ -181,12 +179,12 @@ def test_generated_import_sql_restores_empty_and_null_by_schema():
 
 def test_generated_check_sql_keeps_max_in_the_digest_and_declares_widths():
     sql = sql_check.render()
-    assert sql.count("CONVERT(nvarchar(max), ") == 1   # 127 columns, one chunk, first operand promoted
+    assert sql.count("CONVERT(nvarchar(max), ") == 1   # 130 columns, one chunk, first operand promoted
     assert "CONVERT(varchar(10), [lodgement_date_parsed], 23)" in sql
     assert "CONVERT(varchar(19), [created_at_parsed], 120)" in sql
     assert "CONVERT(varchar(1), [historic_flag])" in sql
-    assert "(N'IMPROVEMENTS', 24, N'nvarchar', NULL, NULL, 8000, 0)" in sql
-    assert "(N'uprn_osg', 110, N'bigint', NULL, NULL, NULL, 1)" in sql
-    assert "(N'created_at_parsed', 118, N'datetime2', 19, 0, NULL, 0)" in sql
+    assert "(N'IMPROVEMENTS', 27, N'nvarchar', NULL, NULL, 8000, 0)" in sql
+    assert "(N'uprn_osg', 113, N'bigint', NULL, NULL, NULL, 1)" in sql
+    assert "(N'created_at_parsed', 121, N'datetime2', 19, 0, NULL, 0)" in sql
     assert "@ran <> 5" in sql
-    assert "ADDRESS1" not in sql
+    assert "(N'ADDRESS1', 7, N'nvarchar', NULL, NULL, 200, 0)" in sql

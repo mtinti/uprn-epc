@@ -1,13 +1,13 @@
 {
- "built_at": "2026-10-30T16:42:56.533867+00:00",
+ "built_at": "2026-10-30T20:19:09.972136+00:00",
  "table": "epc_domestic",
  "epc_release": "2026Q2",
  "schema_version": "epc_domestic_v1",
  "schema_sha256": "859f37af0692a726c2ed0f7681a01429392b975c7dd20f966f87515d3bc21884",
  "registry_sha256": "bbce1df297307bc118b1d623bf0aada579d8070482f38f307d5f2cf0c69c3cdf",
  "published_columns_sha256": "bd43019cb68cd5f5745473757390efe33cb589de68bd2859c821371f5b0ec8f9",
- "contract_sha256": "b8fe66ba43938ce37f49d57df8bcda8fec26e80090185fea2d2f2bf483c0063d",
- "decisions_sha256": "363a490fea74eed39ac093025e2f39f45c0de036f86083bacf5f05a86fea23d0",
+ "contract_sha256": "ace83f8f4b2e8acdee9a486d6a48fad8020cb5181f877d54d8c0d0237b215e4a",
+ "decisions_sha256": "baa3eb4481887e3111a2f105370fe6e3ebea9c2a667feededac5049d7a36dbbd",
  "parquet": {
   "table": "epc_domestic",
   "schema_version": "epc_domestic_v1",
@@ -20,99 +20,99 @@
   "rows": 3787069,
   "row_groups": 19,
   "columns": 130,
-  "sha256": "b1337d9832e017bd2399417786f68222a25b226e0dfee0ec8259a803eebba0ce"
+  "sha256": "cfcde4bb3440d86497c3dd6650ab7ceb66c45a2b39e3fb1c874caa9446230091"
  },
  "csv": {
   "file": "epc_domestic.csv.gz",
-  "sha256": "3047e71eaa186e1f853c93953087cd8a1966898197f19d62f5db43c0fded264c",
-  "bytes": 1118662374,
-  "uncompressed_bytes": 7829182910,
-  "uncompressed_sha256": "52d0fa773fb3b7a0c9651abdd2bf4c46b4d245b4afcb2d5e817c0c1b963988fc",
+  "sha256": "b8910ee905a4c96874988a1cf4a39e3f2c3a109e4049bae904842cba6c54d84f",
+  "bytes": 1215960553,
+  "uncompressed_bytes": 7963654600,
+  "uncompressed_sha256": "121e316508ca81bb4d9755532e63a74f40b3528e47aed89440c5003c13065c3e",
   "rows": 3787069,
-  "columns": 127,
+  "columns": 130,
   "compression": "gzip",
   "digest": {
    "version": 1,
    "rows": 3787069,
-   "total": "-35655847973013680818794",
+   "total": "-17782796129345549661789",
    "note": "compact probabilistic check for accidental load corruption, not a proof of identity"
   },
   "digest_per_year": {
    "2008": {
     "rows": 9055,
-    "digest_total": "-605292016027400250450"
+    "digest_total": "-352626625168326361661"
    },
    "2009": {
     "rows": 203831,
-    "digest_total": "1609481545741641798299"
+    "digest_total": "-295798643900878463874"
    },
    "2010": {
     "rows": 126784,
-    "digest_total": "1007469630019351218446"
+    "digest_total": "-384978216249314434157"
    },
    "2011": {
     "rows": 125877,
-    "digest_total": "1938960249245352794578"
+    "digest_total": "645290151801921072139"
    },
    "2012": {
     "rows": 130932,
-    "digest_total": "-1091898152246186545307"
+    "digest_total": "-971168042973651488665"
    },
    "2013": {
     "rows": 244184,
-    "digest_total": "-1064087481219449826644"
+    "digest_total": "-175173973713729912762"
    },
    "2014": {
     "rows": 353444,
-    "digest_total": "-8283271092137779254132"
+    "digest_total": "-167109458051962201561"
    },
    "2015": {
     "rows": 284531,
-    "digest_total": "-4964734794451134719882"
+    "digest_total": "2214401340830037732900"
    },
    "2016": {
     "rows": 251337,
-    "digest_total": "-1312109079675265703740"
+    "digest_total": "3007489853307129804617"
    },
    "2017": {
     "rows": 226738,
-    "digest_total": "-2728585713637737731486"
+    "digest_total": "2027529221563254578584"
    },
    "2018": {
     "rows": 223222,
-    "digest_total": "-2861935135331355683732"
+    "digest_total": "-1326177194614701696384"
    },
    "2019": {
     "rows": 240409,
-    "digest_total": "-4385402886374359446729"
+    "digest_total": "-8749934076901724986277"
    },
    "2020": {
     "rows": 184580,
-    "digest_total": "-2207672410567681057296"
+    "digest_total": "20365107094267882728"
    },
    "2021": {
     "rows": 205602,
-    "digest_total": "1859986810618167750061"
+    "digest_total": "-2679751813404871093403"
    },
    "2022": {
     "rows": 217143,
-    "digest_total": "-3917835564494976643056"
+    "digest_total": "-6424356845924595941138"
    },
    "2023": {
     "rows": 222206,
-    "digest_total": "-2285277918643436413669"
+    "digest_total": "-4205041019298200555678"
    },
    "2024": {
     "rows": 219190,
-    "digest_total": "-3208893473212881030650"
+    "digest_total": "258508304489081861504"
    },
    "2025": {
     "rows": 207994,
-    "digest_total": "-1524031268430388320049"
+    "digest_total": "-2683569768122240479475"
    },
    "2026": {
     "rows": 110010,
-    "digest_total": "-1630719222188161753356"
+    "digest_total": "2459305569892955020774"
    }
   }
  },
@@ -266,8 +266,8 @@
  },
  "grain": "One row per published certificate, superseded certificates included (HISTORIC = True). The 107 published columns are text exactly as published; the derived columns are typed copies by documented rules. Join by uprn_osg as an integer, never as text.",
  "summary": {
-  "checks": 297,
-  "blocking_passed": 297,
+  "checks": 295,
+  "blocking_passed": 295,
   "blocking_failed": 0
  },
  "checks": [
@@ -417,20 +417,6 @@
    "detail": "sha256 matches",
    "expected": "688416b875733f62d5ceede1ac2b73c9db021e816ea8a9c6c58da0f105b601b6",
    "actual": "688416b875733f62d5ceede1ac2b73c9db021e816ea8a9c6c58da0f105b601b6"
-  },
-  {
-   "name": "source.epc_2026Q2/domestic_epc_extended_historic_Q2_2026.7z",
-   "passed": true,
-   "detail": "sha256 matches",
-   "expected": "708cc7510a0215ba7f9bf73ccc9604b1e818b04f355e06c6adb192611103c351",
-   "actual": "708cc7510a0215ba7f9bf73ccc9604b1e818b04f355e06c6adb192611103c351"
-  },
-  {
-   "name": "source.epc_2026Q2/publication_note.pdf",
-   "passed": true,
-   "detail": "sha256 matches",
-   "expected": "c2f336967e5d9a6dd24fc8c842c81b23f9ae911f092778c1cef4426e332e982e",
-   "actual": "c2f336967e5d9a6dd24fc8c842c81b23f9ae911f092778c1cef4426e332e982e"
   },
   {
    "name": "schema.matches_generator",
@@ -13646,9 +13632,9 @@
   {
    "name": "readback.parquet.metadata.decisions_sha256",
    "passed": true,
-   "detail": "363a490fea74eed39ac093025e2f39f45c0de036f86083bacf5f05a86fea23d0",
-   "expected": "363a490fea74eed39ac093025e2f39f45c0de036f86083bacf5f05a86fea23d0",
-   "actual": "363a490fea74eed39ac093025e2f39f45c0de036f86083bacf5f05a86fea23d0"
+   "detail": "baa3eb4481887e3111a2f105370fe6e3ebea9c2a667feededac5049d7a36dbbd",
+   "expected": "baa3eb4481887e3111a2f105370fe6e3ebea9c2a667feededac5049d7a36dbbd",
+   "actual": "baa3eb4481887e3111a2f105370fe6e3ebea9c2a667feededac5049d7a36dbbd"
   },
   {
    "name": "readback.parquet.metadata.registry_sha256",
@@ -13682,8 +13668,8 @@
    "name": "readback.parquet.2008.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-605292016027400250450",
-   "actual": "-605292016027400250450"
+   "expected": "-352626625168326361661",
+   "actual": "-352626625168326361661"
   },
   {
    "name": "readback.parquet.2008.one_year_per_row_group",
@@ -13700,8 +13686,8 @@
    "name": "readback.parquet.2009.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "1609481545741641798299",
-   "actual": "1609481545741641798299"
+   "expected": "-295798643900878463874",
+   "actual": "-295798643900878463874"
   },
   {
    "name": "readback.parquet.2009.one_year_per_row_group",
@@ -13718,8 +13704,8 @@
    "name": "readback.parquet.2010.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "1007469630019351218446",
-   "actual": "1007469630019351218446"
+   "expected": "-384978216249314434157",
+   "actual": "-384978216249314434157"
   },
   {
    "name": "readback.parquet.2010.one_year_per_row_group",
@@ -13736,8 +13722,8 @@
    "name": "readback.parquet.2011.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "1938960249245352794578",
-   "actual": "1938960249245352794578"
+   "expected": "645290151801921072139",
+   "actual": "645290151801921072139"
   },
   {
    "name": "readback.parquet.2011.one_year_per_row_group",
@@ -13754,8 +13740,8 @@
    "name": "readback.parquet.2012.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-1091898152246186545307",
-   "actual": "-1091898152246186545307"
+   "expected": "-971168042973651488665",
+   "actual": "-971168042973651488665"
   },
   {
    "name": "readback.parquet.2012.one_year_per_row_group",
@@ -13772,8 +13758,8 @@
    "name": "readback.parquet.2013.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-1064087481219449826644",
-   "actual": "-1064087481219449826644"
+   "expected": "-175173973713729912762",
+   "actual": "-175173973713729912762"
   },
   {
    "name": "readback.parquet.2013.one_year_per_row_group",
@@ -13790,8 +13776,8 @@
    "name": "readback.parquet.2014.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-8283271092137779254132",
-   "actual": "-8283271092137779254132"
+   "expected": "-167109458051962201561",
+   "actual": "-167109458051962201561"
   },
   {
    "name": "readback.parquet.2014.one_year_per_row_group",
@@ -13808,8 +13794,8 @@
    "name": "readback.parquet.2015.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-4964734794451134719882",
-   "actual": "-4964734794451134719882"
+   "expected": "2214401340830037732900",
+   "actual": "2214401340830037732900"
   },
   {
    "name": "readback.parquet.2015.one_year_per_row_group",
@@ -13826,8 +13812,8 @@
    "name": "readback.parquet.2016.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-1312109079675265703740",
-   "actual": "-1312109079675265703740"
+   "expected": "3007489853307129804617",
+   "actual": "3007489853307129804617"
   },
   {
    "name": "readback.parquet.2016.one_year_per_row_group",
@@ -13844,8 +13830,8 @@
    "name": "readback.parquet.2017.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-2728585713637737731486",
-   "actual": "-2728585713637737731486"
+   "expected": "2027529221563254578584",
+   "actual": "2027529221563254578584"
   },
   {
    "name": "readback.parquet.2017.one_year_per_row_group",
@@ -13862,8 +13848,8 @@
    "name": "readback.parquet.2018.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-2861935135331355683732",
-   "actual": "-2861935135331355683732"
+   "expected": "-1326177194614701696384",
+   "actual": "-1326177194614701696384"
   },
   {
    "name": "readback.parquet.2018.one_year_per_row_group",
@@ -13880,8 +13866,8 @@
    "name": "readback.parquet.2019.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-4385402886374359446729",
-   "actual": "-4385402886374359446729"
+   "expected": "-8749934076901724986277",
+   "actual": "-8749934076901724986277"
   },
   {
    "name": "readback.parquet.2019.one_year_per_row_group",
@@ -13898,8 +13884,8 @@
    "name": "readback.parquet.2020.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-2207672410567681057296",
-   "actual": "-2207672410567681057296"
+   "expected": "20365107094267882728",
+   "actual": "20365107094267882728"
   },
   {
    "name": "readback.parquet.2020.one_year_per_row_group",
@@ -13916,8 +13902,8 @@
    "name": "readback.parquet.2021.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "1859986810618167750061",
-   "actual": "1859986810618167750061"
+   "expected": "-2679751813404871093403",
+   "actual": "-2679751813404871093403"
   },
   {
    "name": "readback.parquet.2021.one_year_per_row_group",
@@ -13934,8 +13920,8 @@
    "name": "readback.parquet.2022.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-3917835564494976643056",
-   "actual": "-3917835564494976643056"
+   "expected": "-6424356845924595941138",
+   "actual": "-6424356845924595941138"
   },
   {
    "name": "readback.parquet.2022.one_year_per_row_group",
@@ -13952,8 +13938,8 @@
    "name": "readback.parquet.2023.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-2285277918643436413669",
-   "actual": "-2285277918643436413669"
+   "expected": "-4205041019298200555678",
+   "actual": "-4205041019298200555678"
   },
   {
    "name": "readback.parquet.2023.one_year_per_row_group",
@@ -13970,8 +13956,8 @@
    "name": "readback.parquet.2024.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-3208893473212881030650",
-   "actual": "-3208893473212881030650"
+   "expected": "258508304489081861504",
+   "actual": "258508304489081861504"
   },
   {
    "name": "readback.parquet.2024.one_year_per_row_group",
@@ -13988,8 +13974,8 @@
    "name": "readback.parquet.2025.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-1524031268430388320049",
-   "actual": "-1524031268430388320049"
+   "expected": "-2683569768122240479475",
+   "actual": "-2683569768122240479475"
   },
   {
    "name": "readback.parquet.2025.one_year_per_row_group",
@@ -14006,8 +13992,8 @@
    "name": "readback.parquet.2026.digest",
    "passed": true,
    "detail": "the row group rendered again gives the digest recorded while writing",
-   "expected": "-1630719222188161753356",
-   "actual": "-1630719222188161753356"
+   "expected": "2459305569892955020774",
+   "actual": "2459305569892955020774"
   },
   {
    "name": "readback.parquet.2026.one_year_per_row_group",
@@ -14030,7 +14016,7 @@
   {
    "name": "readback.csv.header",
    "passed": true,
-   "detail": "['epc_release', 'source_year', 'source_row', 'HISTORIC', 'BUILDING_REFERENCE_NUMBER', 'OSG_REFERENCE_NUMBER', 'POSTCODE', 'INSPECTION_DATE', 'TYPE_OF_ASSESSMENT', 'LODGEMENT_DATE', 'ENERGY_CONSUMPTION_CURRENT', 'TOTAL_FLOOR_AREA', '3_YR_ENERGY_COST_CURRENT', '3_YR_ENERGY_SAVINGS_POTENTIAL', 'CURRENT_ENERGY_EFFICIENCY', 'CURRENT_ENERGY_RATING', 'POTENTIAL_ENERGY_EFFICIENCY', 'POTENTIAL_ENERGY_RATING', 'ENVIRONMENT_IMPACT_CURRENT', 'CURRENT_ENVIRONMENTAL_RATING', 'ENVIRONMENT_IMPACT_POTENTIAL', 'POTENTIAL_ENVIRONMENTAL_RATING', 'CO2_EMISS_CURR_PER_FLOOR_AREA', 'IMPROVEMENTS', 'WALL_DESCRIPTION', 'WALL_ENERGY_EFF', 'WALL_ENV_EFF', 'ROOF_DESCRIPTION', 'ROOF_ENERGY_EFF', 'ROOF_ENV_EFF', 'FLOOR_DESCRIPTION', 'FLOOR_ENERGY_EFF', 'FLOOR_ENV_EFF', 'WINDOWS_DESCRIPTION', 'WINDOWS_ENERGY_EFF', 'WINDOWS_ENV_EFF', 'MAINHEAT_DESCRIPTION', 'MAINHEAT_ENERGY_EFF', 'MAINHEAT_ENV_EFF', 'MAINHEATCONT_DESCRIPTION', 'MAINHEATC_ENERGY_EFF', 'MAINHEATC_ENV_EFF', 'SECONDHEAT_DESCRIPTION', 'SHEATING_ENERGY_EFF', 'SHEATING_ENV_EFF', 'HOTWATER_DESCRIPTION', 'HOT_WATER_ENERGY_EFF', 'HOT_WATER_ENV_EFF', 'LIGHTING_DESCRIPTION', 'LIGHTING_ENERGY_EFF', 'LIGHTING_ENV_EFF', 'AIR_TIGHTNESS_DESCRIPTION', 'AIR_TIGHTNESS_ENERGY_EFF', 'AIR_TIGHTNESS_ENV_EFF', 'CO2_EMISSIONS_CURRENT', 'CO2_EMISSIONS_POTENTIAL', 'HEATING_COST_CURRENT', 'HEATING_COST_POTENTIAL', 'HOT_WATER_COST_CURRENT', 'HOT_WATER_COST_POTENTIAL', 'LIGHTING_COST_CURRENT', 'LIGHTING_COST_POTENTIAL', 'ALTERNATIVE_IMPROVEMENTS', 'LZC_ENERGY_SOURCES', 'SPACE_HEATING_DEMAND', 'WATER_HEATING_DEMAND', 'IMPACT_LOFT_INSULATION', 'IMPACT_CAVITY_WALL_INSULATION', 'IMPACT_SOLID_WALL_INSULATION', 'ADDENDUM_TEXT', 'CONSTRUCTION_AGE_BAND', 'FLOOR_HEIGHT', 'DATA_ZONE', 'ENERGY_CONSUMPTION_POTENTIAL', 'EXTENSION_COUNT', 'FIXED_LIGHTING_OUTLETS_COUNT', 'LOW_ENERGY_FIXED_LIGHT_COUNT', 'LOW_ENERGY_LIGHTING', 'FLOOR_LEVEL', 'FLAT_TOP_STOREY', 'GLAZED_AREA', 'NUMBER_HABITABLE_ROOMS', 'HEAT_LOSS_CORRIDOOR', 'NUMBER_HEATED_ROOMS', 'LOCAL_AUTHORITY_LABEL', 'MAINS_GAS_FLAG', 'MAIN_HEATING_CATEGORY', 'MAIN_FUEL', 'MAIN_HEATING_CONTROLS', 'MECHANICAL_VENTILATION', 'ENERGY_TARIFF', 'MULTI_GLAZE_PROPORTION', 'GLAZED_TYPE', 'NUMBER_OPEN_FIREPLACES', 'PHOTO_SUPPLY', 'SOLAR_WATER_HEATING_FLAG', 'TENURE', 'TRANSACTION_TYPE', 'UNHEATED_CORRIDOR_LENGTH', 'CONSTITUENCY', 'CONSTITUENCY_LABEL', 'WIND_TURBINE_COUNT', 'BUILT_FORM', 'PROPERTY_TYPE', 'DATA_ZONE_2011', 'CREATED_AT', 'REPORT_REFERENCE_NUMBER', 'rrn', 'uprn_sepcr', 'uprn_osg', 'pc_norm', 'datazone_2001', 'datazone_2001_status', 'datazone_2011', 'datazone_2011_status', 'inspection_date_parsed', 'lodgement_date_parsed', 'created_at_parsed', 'historic_flag', 'current_energy_efficiency_int', 'potential_energy_efficiency_int', 'environment_impact_current_int', 'environment_impact_potential_int', 'total_floor_area_int', 'energy_consumption_current_num', 'co2_emissions_current_num', 'co2_emiss_curr_per_floor_area_num']",
+   "detail": "['epc_release', 'source_year', 'source_row', 'HISTORIC', 'BUILDING_REFERENCE_NUMBER', 'OSG_REFERENCE_NUMBER', 'ADDRESS1', 'ADDRESS2', 'ADDRESS3', 'POSTCODE', 'INSPECTION_DATE', 'TYPE_OF_ASSESSMENT', 'LODGEMENT_DATE', 'ENERGY_CONSUMPTION_CURRENT', 'TOTAL_FLOOR_AREA', '3_YR_ENERGY_COST_CURRENT', '3_YR_ENERGY_SAVINGS_POTENTIAL', 'CURRENT_ENERGY_EFFICIENCY', 'CURRENT_ENERGY_RATING', 'POTENTIAL_ENERGY_EFFICIENCY', 'POTENTIAL_ENERGY_RATING', 'ENVIRONMENT_IMPACT_CURRENT', 'CURRENT_ENVIRONMENTAL_RATING', 'ENVIRONMENT_IMPACT_POTENTIAL', 'POTENTIAL_ENVIRONMENTAL_RATING', 'CO2_EMISS_CURR_PER_FLOOR_AREA', 'IMPROVEMENTS', 'WALL_DESCRIPTION', 'WALL_ENERGY_EFF', 'WALL_ENV_EFF', 'ROOF_DESCRIPTION', 'ROOF_ENERGY_EFF', 'ROOF_ENV_EFF', 'FLOOR_DESCRIPTION', 'FLOOR_ENERGY_EFF', 'FLOOR_ENV_EFF', 'WINDOWS_DESCRIPTION', 'WINDOWS_ENERGY_EFF', 'WINDOWS_ENV_EFF', 'MAINHEAT_DESCRIPTION', 'MAINHEAT_ENERGY_EFF', 'MAINHEAT_ENV_EFF', 'MAINHEATCONT_DESCRIPTION', 'MAINHEATC_ENERGY_EFF', 'MAINHEATC_ENV_EFF', 'SECONDHEAT_DESCRIPTION', 'SHEATING_ENERGY_EFF', 'SHEATING_ENV_EFF', 'HOTWATER_DESCRIPTION', 'HOT_WATER_ENERGY_EFF', 'HOT_WATER_ENV_EFF', 'LIGHTING_DESCRIPTION', 'LIGHTING_ENERGY_EFF', 'LIGHTING_ENV_EFF', 'AIR_TIGHTNESS_DESCRIPTION', 'AIR_TIGHTNESS_ENERGY_EFF', 'AIR_TIGHTNESS_ENV_EFF', 'CO2_EMISSIONS_CURRENT', 'CO2_EMISSIONS_POTENTIAL', 'HEATING_COST_CURRENT', 'HEATING_COST_POTENTIAL', 'HOT_WATER_COST_CURRENT', 'HOT_WATER_COST_POTENTIAL', 'LIGHTING_COST_CURRENT', 'LIGHTING_COST_POTENTIAL', 'ALTERNATIVE_IMPROVEMENTS', 'LZC_ENERGY_SOURCES', 'SPACE_HEATING_DEMAND', 'WATER_HEATING_DEMAND', 'IMPACT_LOFT_INSULATION', 'IMPACT_CAVITY_WALL_INSULATION', 'IMPACT_SOLID_WALL_INSULATION', 'ADDENDUM_TEXT', 'CONSTRUCTION_AGE_BAND', 'FLOOR_HEIGHT', 'DATA_ZONE', 'ENERGY_CONSUMPTION_POTENTIAL', 'EXTENSION_COUNT', 'FIXED_LIGHTING_OUTLETS_COUNT', 'LOW_ENERGY_FIXED_LIGHT_COUNT', 'LOW_ENERGY_LIGHTING', 'FLOOR_LEVEL', 'FLAT_TOP_STOREY', 'GLAZED_AREA', 'NUMBER_HABITABLE_ROOMS', 'HEAT_LOSS_CORRIDOOR', 'NUMBER_HEATED_ROOMS', 'LOCAL_AUTHORITY_LABEL', 'MAINS_GAS_FLAG', 'MAIN_HEATING_CATEGORY', 'MAIN_FUEL', 'MAIN_HEATING_CONTROLS', 'MECHANICAL_VENTILATION', 'ENERGY_TARIFF', 'MULTI_GLAZE_PROPORTION', 'GLAZED_TYPE', 'NUMBER_OPEN_FIREPLACES', 'PHOTO_SUPPLY', 'SOLAR_WATER_HEATING_FLAG', 'TENURE', 'TRANSACTION_TYPE', 'UNHEATED_CORRIDOR_LENGTH', 'CONSTITUENCY', 'CONSTITUENCY_LABEL', 'WIND_TURBINE_COUNT', 'BUILT_FORM', 'PROPERTY_TYPE', 'DATA_ZONE_2011', 'CREATED_AT', 'REPORT_REFERENCE_NUMBER', 'rrn', 'uprn_sepcr', 'uprn_osg', 'pc_norm', 'datazone_2001', 'datazone_2001_status', 'datazone_2011', 'datazone_2011_status', 'inspection_date_parsed', 'lodgement_date_parsed', 'created_at_parsed', 'historic_flag', 'current_energy_efficiency_int', 'potential_energy_efficiency_int', 'environment_impact_current_int', 'environment_impact_potential_int', 'total_floor_area_int', 'energy_consumption_current_num', 'co2_emissions_current_num', 'co2_emiss_curr_per_floor_area_num']",
    "expected": [
     "epc_release",
     "source_year",
@@ -14038,6 +14024,9 @@
     "HISTORIC",
     "BUILDING_REFERENCE_NUMBER",
     "OSG_REFERENCE_NUMBER",
+    "ADDRESS1",
+    "ADDRESS2",
+    "ADDRESS3",
     "POSTCODE",
     "INSPECTION_DATE",
     "TYPE_OF_ASSESSMENT",
@@ -14167,6 +14156,9 @@
     "HISTORIC",
     "BUILDING_REFERENCE_NUMBER",
     "OSG_REFERENCE_NUMBER",
+    "ADDRESS1",
+    "ADDRESS2",
+    "ADDRESS3",
     "POSTCODE",
     "INSPECTION_DATE",
     "TYPE_OF_ASSESSMENT",
@@ -14301,8 +14293,8 @@
    "name": "readback.csv.digest_total",
    "passed": true,
    "detail": "the digest recomputed from the bytes on disk equals the one computed while writing",
-   "expected": "-35655847973013680818794",
-   "actual": "-35655847973013680818794"
+   "expected": "-17782796129345549661789",
+   "actual": "-17782796129345549661789"
   },
   {
    "name": "table.rows",

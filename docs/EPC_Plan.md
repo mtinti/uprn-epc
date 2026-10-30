@@ -244,9 +244,15 @@ the source. The built Parquet, CSV and SQL table stay private, inside the safe h
 restricted Zenodo draft. This is the `cite` model that postcode-simd uses for its products.
 Anyone can rebuild the table from the public catalogue download and get the same hashes.
 
-Inside the build, the export contract decides which columns go into the CSV for SQL Server. Proposed default:
-every column except `ADDRESS1`, `ADDRESS2` and `ADDRESS3`; `POSTCODE` and `pc_norm` stay,
-because they are the join key. The Parquet keeps everything. Reasons:
+Inside the build, the export contract decides which columns go into the CSV for SQL Server.
+**Revised 30 October 2026 (decision `address-lines-loaded`): every column goes out, the three
+address lines included.** The CSV travels only to the HIC OneDrive and into the HIC SQL Server,
+so withholding the lines protected a file that never leaves the safe haven, while costing the
+only key for the 178,537 certificates without a Gazetteer UPRN and the only check on a UPRN
+linkage against the cohort's own address. The register is published openly with the addresses.
+A view without the three columns is the suggested analyst-facing object. The original proposal,
+kept for the record: every column except `ADDRESS1`, `ADDRESS2` and `ADDRESS3`; `POSTCODE` and
+`pc_norm` stay, because they are the join key. The Parquet keeps everything. Reasons given then:
 
 - Royal Mail's notice allows address data for research into energy efficiency and under the
   non-commercial research exception. Health research that links EPC to patient records is not
