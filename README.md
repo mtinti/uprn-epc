@@ -1,5 +1,7 @@
 # uprn-epc
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23817747.svg)](https://doi.org/10.5281/zenodo.23817747)
+
 Scottish domestic Energy Performance Certificates (EPCs) for SQL Server, one row per
 certificate, joinable to a cohort by UPRN and date. The recipe is public; the built table is
 not.
@@ -131,6 +133,9 @@ Because the download URL does not last and the address fields are not under the 
 Government Licence, the archive is held as an unpublished restricted Zenodo draft rather than
 an open record (deposition 23784712, reserved DOI 10.5281/zenodo.23784712, which resolves only
 once the record is published), and a copy sits on the HIC OneDrive. The built table is private.
+
+The code is archived on Zenodo at each GitHub release. The concept DOI 10.5281/zenodo.23817747
+always resolves to the latest version; version 0.1.0 is 10.5281/zenodo.23817748.
 
 ## Documents
 
