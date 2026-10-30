@@ -2,16 +2,22 @@
 client machine through pyodbc, as the postcode-simd and datazone-ahah upload notebooks do. It
 carries this build's hash, row count and digest from results/manifest.json.
 
-    python loader/make_notebook.py
+    python loader/make_notebook.py [results_dir [output.ipynb]]
+
+Without arguments it reads results/manifest.json and writes loader/upload_epc.ipynb. The two
+arguments let a test build a notebook for a fixture release and run it against SQL Server.
 """
 
 import json
+import sys
 from pathlib import Path
 
 import nbformat as nbf
 
 ROOT = Path(__file__).resolve().parent.parent
-m = json.loads((ROOT / "results" / "manifest.json").read_text())
+RESULTS = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "results"
+OUT = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "loader" / "upload_epc.ipynb"
+m = json.loads((RESULTS / "manifest.json").read_text())
 c = m["csv"]
 o = m["observations"]["table"]
 built = m["built_at"][:10]
@@ -37,11 +43,19 @@ few certificates, and the left join by UPRN with its statuses.
 2. Set `FOLDER`, `SERVER`, `DATABASE` and `TABLE` in step 1.
 3. You need `CREATE TABLE` rights in the database. Step 1 tells you whether you have them.
 
-**Time.** Step 4 sends {c['rows']:,} rows of {c['columns']} columns through pyodbc. Expect an hour or more;
-it prints progress every 100,000 rows and commits every chunk, so an interrupted run can be read for how far
-it got and then restarted from step 3. The digest check in step 5 took 25 seconds in the container probe.
+**Time.** Step 4 sends {c['rows']:,} rows of {c['columns']} columns through pyodbc. Against a SQL Server
+container on the same machine it took 7 minutes for the rows (about 9,500 rows a second) and 37 seconds for
+the two indexes; over a network to the HIC server expect longer, up to an hour. It prints progress every
+100,000 rows and commits every chunk, so an interrupted run can be read for how far it got and then
+restarted from step 3. Step 1 unpacked the archive in 14 seconds and step 2 hashed the file in 65; the
+digest check in step 5 took 25 seconds. The loaded table with its indexes takes 21 GB in the database.
 
 **Run the cells in order, top to bottom.** Every step says what it does, what to expect and why.
+
+**Not all-or-nothing.** Step 3 drops and recreates the table and step 4 commits each chunk, so a failure in
+step 4 or 5 leaves a table that is incomplete or unverified; the message says which step failed and the
+run restarts from step 3. For a first load that is fine. To refresh a table that people already use, set
+`TABLE` to a new name, run the notebook, and rename the two tables only after step 5 has passed.
 
 **Addresses.** The CSV holds no address lines; it does hold the postcode. Both stay inside the safe haven.
 """)
@@ -60,7 +74,10 @@ lists the files it needs; connects and shows who you are connected as.
 digest), then `ready`. A missing file or a missing right raises here and nothing later runs.
 
 **Why.** Every later step reads these files and this connection. Step 3 drops and recreates the table, so
-the checks that would make it fail half way are made here, before anything is dropped.
+the checks that would make it fail half way are made here, before anything is dropped. Connection pooling is
+turned off: with it on, a later step can be handed an earlier step's connection with a transaction still
+open, and its own statements then run inside that transaction and never commit (found with a fixture run
+against SQL Server on 30 October 2026, where step 5 waited on step 4's uncommitted indexes).
 """)
 code("""
 # Step 1 — settings, connection, permissions, files present
@@ -69,6 +86,11 @@ from pathlib import Path
 
 import pandas as pd
 import pyodbc
+
+# No connection pooling: a pooled connection comes back with whatever transaction its last user
+# left open, and with the SQL Server ODBC driver every statement under autocommit=False opens one.
+# Must be set before the first connection of the kernel.
+pyodbc.pooling = False
 
 # EDIT: the folder holding the three files
 FOLDER   = Path(r"")
@@ -97,7 +119,7 @@ for name in ["epc_domestic.csv", "import_csv.sql", "check_loaded_digest.sql"]:
     if not path.is_file():
         missing.append(name)
 
-with pyodbc.connect(CONN, timeout=10) as cn:
+with pyodbc.connect(CONN, timeout=10, autocommit=True) as cn:
     who = pd.read_sql(
         "SELECT @@SERVERNAME AS srv, DB_NAME() AS db, SUSER_NAME() AS login, "
         "HAS_PERMS_BY_NAME(DB_NAME(), 'DATABASE', 'CREATE TABLE') AS can_create_table, "
@@ -219,17 +241,23 @@ print(f"{len(COLUMNS)} columns:", kinds, f"; {len(COLUMNS) - len(NOT_NULL)} null
 print(ddl.splitlines()[0]); print("   ..."); print("\\n".join(ddl.splitlines()[-2:]))
 
 # One transaction: SQL Server DDL is transactional, so a failed CREATE rolls the DROP back and the
-# previous table survives. autocommit stays off until both have succeeded.
-with pyodbc.connect(CONN, timeout=30, autocommit=False) as cn:
+# previous table survives. The transaction is closed before the two queries below, so this connection
+# holds no lock when the cell ends. A table someone else is reading makes the DROP wait; the lock
+# timeout turns a long wait into an error here rather than a silent hang.
+with pyodbc.connect(CONN, timeout=30, autocommit=True) as cn:
     cur = cn.cursor()
+    cur.execute("SET LOCK_TIMEOUT 120000;")
+    cn.autocommit = False
     try:
         cur.execute(f"DROP TABLE IF EXISTS {TABLE};")
         cur.execute(ddl)
     except Exception:
         cn.rollback()
+        cn.autocommit = True
         print(f"create failed; {TABLE} is as it was before this cell")
         raise
     cn.commit()
+    cn.autocommit = True
     display(pd.read_sql(
         f\"\"\"SELECT COUNT(*) AS columns_created,
                    SUM(CASE WHEN is_nullable = 1 THEN 1 ELSE 0 END) AS nullable
@@ -300,9 +328,11 @@ with pyodbc.connect(CONN, timeout=120) as cn:
         if loaded >= next_report or loaded == EXPECTED["rows"]:
             print(f"  {{loaded:>10,}} rows   {{loaded / (time.time() - started):>6,.0f}} rows/s   {{time.time() - started:>6.0f}}s elapsed")
             next_report += 100_000
+cn.close()   # the with block committed; close so this connection holds nothing while the indexes build
 
 print(f"\\nloaded {{loaded:,}} rows in {{time.time() - started:.0f}}s; creating the two join indexes ...")
 with pyodbc.connect(CONN, timeout=3600, autocommit=True) as cn:
+    cn.cursor().execute("SET LOCK_TIMEOUT 120000;")
     for statement in INDEXES:
         cn.cursor().execute(statement)
     display(pd.read_sql(f\"\"\"
@@ -344,6 +374,7 @@ section = check[start:end].replace("epc_domestic", TABLE)
 
 preamble = f\"\"\"
 SET NOCOUNT ON;
+SET LOCK_TIMEOUT 300000;
 DROP TABLE IF EXISTS #expected;
 CREATE TABLE #expected (name sysname PRIMARY KEY, row_count bigint NOT NULL,
                         digest_total decimal(38,0) NOT NULL, digest_version int NOT NULL);
@@ -378,7 +409,7 @@ md(f"""
 
 **What it does.** Counts rows per annual file with the share superseded, then shows the typed columns of
 three certificates: the first row of 2024, and the two certificates of one dwelling that has been assessed
-twice.
+twice (the lowest such UPRN; with none, only the 2024 row shows).
 
 **What to expect.** Nineteen years, 2008 to 2026, {c['rows']:,} rows in all; the superseded share falls from
 over 80% in 2008 to about 6% in 2026, because recent certificates have not yet been replaced. Then three rows
@@ -389,7 +420,7 @@ dated join in step 7 chooses between them by lodgement date.
 """)
 code("""
 # Step 6 — rows per year, and three certificates
-with pyodbc.connect(CONN, timeout=600) as cn:
+with pyodbc.connect(CONN, timeout=600, autocommit=True) as cn:
     display(pd.read_sql(f\"\"\"
         SELECT source_year, COUNT_BIG(*) AS rows,
                SUM(CASE WHEN historic_flag = 1 THEN 1 ELSE 0 END) AS superseded,
@@ -403,7 +434,8 @@ with pyodbc.connect(CONN, timeout=600) as cn:
                CURRENT_ENERGY_RATING, current_energy_efficiency_int, total_floor_area_int, PROPERTY_TYPE, BUILT_FORM, CONSTRUCTION_AGE_BAND
         FROM {TABLE}
         WHERE (source_year = 2024 AND source_row = 1)
-           OR uprn_osg = (SELECT MIN(uprn_osg) FROM {TABLE} WHERE uprn_osg IS NOT NULL GROUP BY uprn_osg HAVING COUNT(*) = 2)
+           OR uprn_osg = (SELECT TOP (1) uprn_osg FROM {TABLE} WHERE uprn_osg IS NOT NULL
+                         GROUP BY uprn_osg HAVING COUNT(*) = 2 ORDER BY uprn_osg)
         ORDER BY uprn_osg, lodgement_date_parsed\"\"\", cn))
 """)
 
@@ -423,7 +455,7 @@ number, never as text, so padding does not matter. The full query with its guard
 """)
 code("""
 # Step 7 — the left join by UPRN, with its statuses
-with pyodbc.connect(CONN, timeout=600) as cn:
+with pyodbc.connect(CONN, timeout=600, autocommit=True) as cn:
     cur = cn.cursor()
     cur.execute(f\"\"\"
         DROP TABLE IF EXISTS #cohort;
@@ -470,6 +502,5 @@ print("seven rows in, seven out, every status as expected")
 
 nb = nbf.v4.new_notebook(cells=cells, metadata={"kernelspec": {"name": "python3", "display_name": "Python 3", "language": "python"},
                                                 "language_info": {"name": "python"}})
-out = ROOT / "loader" / "upload_epc.ipynb"
-nbf.write(nb, out)
-print(f"wrote {out} ({len(cells)} cells)")
+nbf.write(nb, OUT)
+print(f"wrote {OUT} ({len(cells)} cells)")

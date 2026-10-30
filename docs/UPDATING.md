@@ -20,7 +20,10 @@ new build with a new `epc_release`, never an update of the old table.
    counts that observe (double-latest UPRNs, empty UPRNs, ratings above 100, zone statuses)
    will have moved; a check that fails is either a real change in the data or a pin to
    correct, and either is a decision to record in `epc_ingest/decisions.yaml`.
-6. `python -m epc_ingest.sql_check` and `python -m epc_ingest.dictionary`; `python -m pytest`.
+6. `python -m epc_ingest.sql_check`, `python -m epc_ingest.dictionary` and
+   `python loader/make_notebook.py` (the notebook carries the build's hash and digest);
+   `python -m pytest`. With docker: `sh loader/sqlserver_probe.sh` for the import scripts on the
+   full build and `sh loader/notebook_probe.sh` for the notebook's cells on a fixture.
 7. Copy the archive to `onedrive:EPC/` and, if the restricted Zenodo record is in use, add
    the new archive as a new version of it.
 8. Load with `loader/load_epc_to_sqlserver.py` and the new `results/manifest.json`, into a
