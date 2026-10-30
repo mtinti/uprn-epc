@@ -11,7 +11,7 @@ the digest of step 5 and passing again once restored; a batch SQL Server rejects
 the chunks committed before it; a decimal not in 4-decimal form, which stops before any insert;
 then the full notebook once more. After each full run every cell of a chosen set of columns is
 read back through pyodbc and compared with the CSV text."""
-import csv, gzip, json, os, secrets, shutil, time, traceback
+import csv, gzip, json, os, secrets, shutil, sys, time, traceback
 from pathlib import Path
 
 import nbformat, pyodbc
@@ -23,6 +23,7 @@ SERVER = os.environ.get("SERVER", "epc_mssql")
 DELIVERY, RUNS, OUT = Path("/data/delivery"), Path("/tmp/runs"), Path("/out")
 USER, USER_PW = "epc_nbtest_user", secrets.token_urlsafe(24) + "aA1!"
 DB, TABLE = "epc_nbtest", "dbo.epc_domestic"
+SCENARIOS = 11   # main() must record exactly this many, every one ok, or exit nonzero
 RESULTS = []
 
 
@@ -218,7 +219,12 @@ def main():
         check=lambda: {"ok": q(f"SELECT COUNT(*) FROM {TABLE}")[0][0] == 0})
     run("10_full_run_after_failures", RUNS / "a", expect_text=full_ok, check=loaded_matches_csv)
     teardown()
-    print("SUMMARY", sum(r["ok"] for r in RESULTS), "of", len(RESULTS), "tests as expected", flush=True)
+    failed = [r["test"] for r in RESULTS if not r["ok"]]
+    print("SUMMARY", len(RESULTS) - len(failed), "of", len(RESULTS), "tests as expected", flush=True)
+    # A caller or CI must see a failure as a nonzero status, never only as a word in the output.
+    if failed or len(RESULTS) != SCENARIOS:
+        print(f"FAILED: {failed or 'none'}; {len(RESULTS)} of {SCENARIOS} scenarios recorded", flush=True)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

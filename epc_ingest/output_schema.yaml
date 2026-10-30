@@ -944,14 +944,15 @@ fields:
   type: date
   nullable: false
   source: INSPECTION_DATE
-  description: INSPECTION_DATE (yyyy-mm-dd) as a date. A value that does not parse stops the build.
+  description: 'INSPECTION_DATE (yyyy-mm-dd) as a date: the day the assessor saw the dwelling. The dated joins choose the
+    certificate by it. A value that does not parse stops the build.'
   group: derived
 - name: lodgement_date_parsed
   type: date
   nullable: false
   source: LODGEMENT_DATE
-  description: LODGEMENT_DATE (yyyy-mm-dd) as a date. The date a certificate was lodged; the join by date uses it. Outliers
-    (2002, 2006, 2108) are kept as published.
+  description: LODGEMENT_DATE (yyyy-mm-dd) as a date. The administrative date of the certificate, the same day as the inspection
+    or soon after (median 1 day); the ten-year validity runs from it. Outliers (2002, 2006, 2108) are kept as published.
   group: derived
 - name: created_at_parsed
   type: datetime

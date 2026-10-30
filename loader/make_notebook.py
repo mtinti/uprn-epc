@@ -430,7 +430,7 @@ with pyodbc.connect(CONN, timeout=600, autocommit=True) as cn:
 
     print("the first certificate of 2024, and both certificates of one dwelling assessed twice")
     display(pd.read_sql(f\"\"\"
-        SELECT source_year, source_row, uprn_osg, pc_norm, lodgement_date_parsed, historic_flag,
+        SELECT source_year, source_row, uprn_osg, pc_norm, inspection_date_parsed, lodgement_date_parsed, historic_flag,
                CURRENT_ENERGY_RATING, current_energy_efficiency_int, total_floor_area_int, PROPERTY_TYPE, BUILT_FORM, CONSTRUCTION_AGE_BAND
         FROM {TABLE}
         WHERE (source_year = 2024 AND source_row = 1)
@@ -443,10 +443,11 @@ md("""
 ### Step 7. The left join by UPRN
 
 **What it does.** Builds a small temporary cohort with every kind of UPRN a real extract can carry and joins
-it with `join_by_uprn.sql`'s logic: the latest certificate lodged on or before the cohort date, one row per
-cohort row, a status on each. The cohort rows take a real UPRN from the table so the cases are live.
+it with `join_by_uprn.sql`'s logic: the certificate with the latest inspection on or before the cohort
+date, one row per cohort row, a status on each. The cohort rows take a real UPRN from the table so the cases
+are live.
 
-**What to expect.** Seven rows in, seven out: `matched` for the UPRN on its lodgement date and for the same
+**What to expect.** Seven rows in, seven out: `matched` for the UPRN on its inspection date and for the same
 UPRN padded to twelve digits; `no_certificate_by_date` for a date before any certificate; `uprn_not_in_epc`
 for UPRN 1; `no_uprn` for empty, NULL and a non-integer.
 
@@ -462,7 +463,7 @@ with pyodbc.connect(CONN, timeout=600, autocommit=True) as cn:
         CREATE TABLE #cohort (cohort_row_id int NOT NULL PRIMARY KEY, pseudo_id int, uprn nvarchar(20), cohort_date date);
         DECLARE @u bigint = (SELECT TOP (1) uprn_osg FROM {TABLE} WHERE uprn_osg IS NOT NULL AND historic_flag = 0
                              GROUP BY uprn_osg HAVING COUNT(*) = 1 ORDER BY uprn_osg);
-        DECLARE @d date = (SELECT MAX(lodgement_date_parsed) FROM {TABLE} WHERE uprn_osg = @u);
+        DECLARE @d date = (SELECT MAX(inspection_date_parsed) FROM {TABLE} WHERE uprn_osg = @u);
         INSERT INTO #cohort VALUES
             (1, 1, CONVERT(nvarchar(20), @u), @d),
             (2, 1, RIGHT(REPLICATE(N'0', 12) + CONVERT(nvarchar(20), @u), 12), @d),
@@ -474,9 +475,9 @@ with pyodbc.connect(CONN, timeout=600, autocommit=True) as cn:
                    TRY_CONVERT(bigint, NULLIF(LTRIM(RTRIM(c.uprn)), N'')) AS uprn_int
             FROM #cohort AS c),
         eligible AS (
-            SELECT c.cohort_row_id, e.epc_release, e.source_year, e.source_row, e.lodgement_date_parsed,
-                   RANK() OVER (PARTITION BY c.cohort_row_id ORDER BY e.lodgement_date_parsed DESC) AS rk
-            FROM cohort AS c JOIN {TABLE} AS e ON e.uprn_osg = c.uprn_int AND e.lodgement_date_parsed <= c.cohort_date),
+            SELECT c.cohort_row_id, e.epc_release, e.source_year, e.source_row, e.inspection_date_parsed,
+                   RANK() OVER (PARTITION BY c.cohort_row_id ORDER BY e.inspection_date_parsed DESC) AS rk
+            FROM cohort AS c JOIN {TABLE} AS e ON e.uprn_osg = c.uprn_int AND e.inspection_date_parsed <= c.cohort_date),
         latest AS (
             SELECT cohort_row_id, COUNT(*) AS n, MIN(epc_release) AS epc_release, MIN(source_year) AS source_year, MIN(source_row) AS source_row
             FROM eligible WHERE rk = 1 GROUP BY cohort_row_id),
@@ -487,7 +488,8 @@ with pyodbc.connect(CONN, timeout=600, autocommit=True) as cn:
                     WHEN l.cohort_row_id IS NULL THEN 'no_certificate_by_date'
                     WHEN l.n > 1 THEN 'ambiguous_as_of'
                     ELSE 'matched' END AS epc_status,
-               e.lodgement_date_parsed AS epc_lodgement_date, DATEDIFF(day, e.lodgement_date_parsed, c.cohort_date) AS epc_age_days,
+               e.inspection_date_parsed AS epc_inspection_date, e.lodgement_date_parsed AS epc_lodgement_date,
+               DATEDIFF(day, e.inspection_date_parsed, c.cohort_date) AS epc_age_days,
                e.CURRENT_ENERGY_RATING, e.current_energy_efficiency_int, e.total_floor_area_int, e.PROPERTY_TYPE
         FROM cohort AS c
         LEFT JOIN known AS k ON k.uprn_osg = c.uprn_int

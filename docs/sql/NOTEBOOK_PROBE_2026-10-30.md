@@ -92,3 +92,9 @@ The table with its primary key and two indexes takes 20.6 GB in the database. Th
 process of the throughput measurement peaked at 785 MB; the kernel of the full run was not
 measured separately, and `fast_executemany` holds one chunk of 20,000 rows at a time.
 
+
+## Rerun after the switch to the inspection date
+
+Step 7 of the notebook follows `join_by_uprn.sql` and now dates the cohort rows by the
+dwelling's inspection date. The eleven scenarios were rerun with the regenerated notebook: every
+one as expected.

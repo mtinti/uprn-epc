@@ -110,7 +110,7 @@ echo "== probe: the join statuses, asserted"
 $SQL -d epc -W -h -1 -s '|' -Q "SET NOCOUNT ON;
 CREATE TABLE #cohort (cohort_row_id int, pseudo_id int, uprn nvarchar(20), cohort_date date);
 DECLARE @u bigint = (SELECT TOP (1) uprn_osg FROM epc_domestic WHERE uprn_osg IS NOT NULL AND historic_flag = 0 GROUP BY uprn_osg HAVING COUNT(*) = 1 ORDER BY uprn_osg);
-DECLARE @d date = (SELECT MAX(lodgement_date_parsed) FROM epc_domestic WHERE uprn_osg = @u);
+DECLARE @d date = (SELECT MAX(inspection_date_parsed) FROM epc_domestic WHERE uprn_osg = @u);
 INSERT INTO #cohort VALUES (1, 1, CONVERT(nvarchar(20), @u), @d), (2, 1, RIGHT(REPLICATE(N'0', 12) + CONVERT(nvarchar(20), @u), 12), @d),
   (3, 1, CONVERT(nvarchar(20), @u), '2000-01-01'), (4, 2, N'1', '2030-01-01'), (5, 2, N'', '2030-01-01'), (6, 3, NULL, '2030-01-01'), (7, 3, N'x', '2030-01-01');
 $(sed -n '/^IF EXISTS (SELECT 1 FROM #cohort/,$p' docs/sql/join_by_uprn.sql)

@@ -288,13 +288,18 @@ partition, grouping and join is by that row: a person appears many times in a lo
 cohort, and pooling a person's rows would hand a later certificate to an earlier observation
 (implementation review, 30 October 2026). The query stops if the row identifier is NULL or repeats:
 
-1. **By UPRN, the latest certificate lodged on or before a date.** For a cohort row with a
-   UPRN and a date, the certificate of that `uprn_osg` with the latest `lodgement_date_parsed`
-   on or before the date. The query returns the certificate's age in days at the cohort date
-   and does not decide whether it has expired; a certificate is valid for ten years, and the
-   project applies that rule or another. A tie is two or more certificates of one UPRN lodged
-   on the latest eligible day; older same-day pairs do not count once a later certificate is
-   eligible. The query does not break a tie by `created_at_parsed` or any other column, and
+1. **By UPRN, the certificate with the latest inspection on or before a date.** For a cohort
+   row with a UPRN and a date, the certificate of that `uprn_osg` with the latest
+   `inspection_date_parsed` on or before the date. The inspection is when the assessor saw the
+   dwelling, so it is the date that describes the home; the lodgement date is administrative
+   and follows it, the same day in 43% of certificates, within a week in 83%, over a month in
+   7% (decided 30 October 2026; the query used the lodgement date before). The query returns
+   both dates, the certificate's age in days at the cohort date counted from the inspection,
+   and a flag for the 2,036 certificates lodged before their inspection date. It does not decide
+   whether the certificate has expired; a certificate is valid for ten years from lodgement, and
+   the project applies that rule or another. A tie is two or more certificates of one UPRN
+   inspected on the latest eligible day; older same-day pairs do not count once a later
+   certificate is eligible. The query does not break a tie by `created_at_parsed` or any other column, and
    the row gets `ambiguous_as_of` and no values. Without a date, the `HISTORIC = False`
    certificate. The 22 dwellings with two of those get `ambiguous_latest` and no values; the
    2,826 UPRNs whose certificates are all `HISTORIC = True` get `no_current_certificate`.
@@ -303,7 +308,7 @@ cohort, and pooling a person's rows would hand a later certificate to an earlier
    `no_certificate_by_date`, `ambiguous_as_of`, `ambiguous_latest`, `no_current_certificate`.
    The join compares `uprn_osg` with the cohort UPRN cast to bigint, never as text.
 2. **By postcode, the fallback.** For a cohort row without a UPRN, one row per dwelling in
-   that `pc_norm`: for each dwelling, the latest certificate lodged on or before the date,
+   that `pc_norm`: for each dwelling, the certificate of the latest inspection on or before the date,
    with the same tie rule as the UPRN route. The dwelling is `uprn_sepcr`, the register's own
    number, which is present in every row and one to one with the Gazetteer UPRN where that
    exists, so dwellings without a Gazetteer UPRN are still one dwelling each. A postcode has
