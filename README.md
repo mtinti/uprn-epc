@@ -138,7 +138,7 @@ once the record is published), and a copy sits on the HIC OneDrive. The built ta
 The code is archived on Zenodo at each GitHub release. The concept DOI 10.5281/zenodo.23817747
 always resolves to the latest version. Versions, newest first:
 
-- 0.2.0: the address lines are loaded (130 columns).
+- 0.2.0: 10.5281/zenodo.23820541, the address lines are loaded (130 columns).
 - 0.1.0: 10.5281/zenodo.23817748, the first release (127 columns, address lines withheld).
 
 ## Documents
