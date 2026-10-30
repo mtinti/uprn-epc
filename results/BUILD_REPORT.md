@@ -1,4 +1,4 @@
-# Build report: epc_domestic, release 2026Q2, 2026-10-30T08:23:21Z
+# Build report: epc_domestic, release 2026Q2, 2026-10-30T08:56:31Z
 
 Schema `epc_domestic_v1`. 3,787,069 rows by 130 columns in the Parquet, 127 in the CSV (the three address lines withheld).
 CSV `epc_domestic.csv.gz` SHA256 `3047e71eaa186e1f853c93953087cd8a1966898197f19d62f5db43c0fded264c`, digest total `-35655847973013680818794`.
