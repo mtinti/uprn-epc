@@ -376,15 +376,20 @@ and built form to what is known about the person's home, which the output checks
 
 1. Done 5 October 2026: archive downloaded, hashed, extracted; publication note read.
 2. Done 29 October 2026: all 19 files profiled (`docs/profile_2026-10-29.json`).
-3. Move the download into `data/sources/epc_2026Q2/` with a `SOURCES.md`; write the registry
-   with the 20 member hashes; pin the two data zone lists. Copy the archive to `onedrive:EPC/`.
-4. Write the reader, the derived columns, the checks and their tests on a synthetic file.
-5. Run on the real files; write the schema, the Parquet, the CSV, the manifest, the build report.
-6. Generate the SQL scripts, run the container probe with timings, then the real load.
-7. Write the three example queries and the README with the data dictionary.
+3. Done 30 October 2026: download moved to `data/sources/epc_2026Q2/` with a `SOURCES.md`;
+   registry `epc_ingest/sources.yaml` with the 19 member hashes and row counts; the two data
+   zone lists pinned from the sibling projects; archive, note and checksums copied to
+   `onedrive:EPC/`.
+4. Done 30 October 2026: reader, derived columns, per-year and whole-table checks, Parquet and
+   CSV writers with the digest, SQL generator, loader and probe; 33 tests on a synthetic
+   release (`tests/`), each hostile file failing with its own named check.
+5. Done 30 October 2026: the real build (`results/manifest.json`, `results/BUILD_REPORT.md`),
+   the generated SQL scripts, the data dictionary.
+6. The container probe with timings (`loader/sqlserver_probe.sh`), then the real load.
+7. Done 30 October 2026: the three example queries and the onward sketch in `docs/sql/`,
+   tested in DuckDB; the README.
 8. Ask information governance whether the table inside the safe haven may carry the address
-   lines; record the answer and, if needed, a
-   second export contract.
+   lines; record the answer and, if needed, a second export contract.
 
 ## Open questions
 
