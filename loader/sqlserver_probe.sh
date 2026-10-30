@@ -21,8 +21,15 @@ $SQL -Q "IF DB_ID('epc') IS NULL CREATE DATABASE epc"
 ROWS=$(python3 -c "import json;print(json.load(open('$R/manifest.json'))['csv']['rows'])")
 TOTAL=$(python3 -c "import json;print(json.load(open('$R/manifest.json'))['csv']['digest']['total'])")
 W=$(mktemp -d)
-gunzip -c "$R/epc_domestic.csv.gz" > "$W/epc_domestic.csv"
-sed "s#/path/to/epc_domestic.csv#/tmp/epc/epc_domestic.csv#" docs/sql/import_csv.sql > "$W/import.sql"
+# SQL Server on Linux does not support CODEPAGE, so the container cannot read the UTF-8 file
+# as the generated script does on Windows. The probe converts the CSV to UTF-16LE with a byte
+# order mark and imports it as widechar; everything else in the script is unchanged. The
+# Windows load uses the generated script as it is.
+gunzip -c "$R/epc_domestic.csv.gz" | { printf '\377\376'; iconv -f UTF-8 -t UTF-16LE; } > "$W/epc_domestic.csv"
+sed -e "s#/path/to/epc_domestic.csv#/tmp/epc/epc_domestic.csv#" \
+    -e "s#CODEPAGE = '65001'#DATAFILETYPE = 'widechar'#" \
+    -e "s#ROWTERMINATOR = '0x0a'#ROWTERMINATOR = '\\\\n'#" docs/sql/import_csv.sql > "$W/import.sql"
+grep -q "DATAFILETYPE = 'widechar'" "$W/import.sql" || { echo "the import script was not adapted for Linux"; exit 1; }
 sed "s#(N'epc_domestic', 0, 0, 1)#(N'epc_domestic', $ROWS, $TOTAL, 1)#" docs/sql/check_loaded_digest.sql > "$W/check.sql"
 docker exec $C mkdir -p /tmp/epc
 docker cp "$W/epc_domestic.csv" $C:/tmp/epc/epc_domestic.csv
@@ -38,7 +45,8 @@ $SQL -d epc -i /tmp/epc/check.sql -W -s '|'
 echo "check took $(( $(date +%s) - START ))s"
 
 echo "== probe: SQL rendering of chosen cells against the CSV text"
-python3 - "$W/epc_domestic.csv" > "$W/probe_expected.txt" <<'PY'
+gunzip -c "$R/epc_domestic.csv.gz" > "$W/epc_domestic_utf8.csv"
+python3 - "$W/epc_domestic_utf8.csv" > "$W/probe_expected.txt" <<'PY'
 import csv, sys
 csv.field_size_limit(1 << 24)
 cols = ("uprn_osg", "lodgement_date_parsed", "created_at_parsed", "historic_flag", "energy_consumption_current_num",
@@ -81,7 +89,7 @@ UNION ALL SELECT 'rrn_text_empty', COUNT(*) FROM epc_domestic WHERE REPORT_REFER
 UNION ALL SELECT 'brn_with_newline', COUNT(*) FROM epc_domestic WHERE BUILDING_REFERENCE_NUMBER LIKE N'%' + NCHAR(10) + N'%'
 UNION ALL SELECT 'uprn_sepcr_null', COUNT(*) FROM epc_domestic WHERE uprn_sepcr IS NULL
 UNION ALL SELECT 'historic_true', COUNT(*) FROM epc_domestic WHERE historic_flag = 1 AND HISTORIC = N'True'
-UNION ALL SELECT 'historic_mismatch', COUNT(*) FROM epc_domestic WHERE (historic_flag = 1) <> (HISTORIC = N'True') OR (historic_flag = 0) <> (HISTORIC = N'False')
+UNION ALL SELECT 'historic_mismatch', COUNT(*) FROM epc_domestic WHERE CASE WHEN historic_flag = 1 THEN N'True' ELSE N'False' END <> HISTORIC
 UNION ALL SELECT 'total_floor_area_mismatch', COUNT(*) FROM epc_domestic WHERE CONVERT(int, TOTAL_FLOOR_AREA) <> total_floor_area_int;" | sed 's/ *|/|/g; s/ *$//' | grep -v '^$' | tee "$W/empty_null.txt"
 python3 - "$W/empty_null.txt" "$R/manifest.json" <<'PY'
 import json, sys

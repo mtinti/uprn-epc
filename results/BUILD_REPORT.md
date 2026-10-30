@@ -1,8 +1,8 @@
-# Build report: epc_domestic, release 2026Q2, 2026-10-30T07:36:05Z
+# Build report: epc_domestic, release 2026Q2, 2026-10-30T08:23:21Z
 
 Schema `epc_domestic_v1`. 3,787,069 rows by 130 columns in the Parquet, 127 in the CSV (the three address lines withheld).
 CSV `epc_domestic.csv.gz` SHA256 `3047e71eaa186e1f853c93953087cd8a1966898197f19d62f5db43c0fded264c`, digest total `-35655847973013680818794`.
-Parquet SHA256 `8aaeaf4943806975bf58a9f6330d91071bdc89ac102d1c21950952fe5812778d`.
+Parquet SHA256 `23495db815c6e95c32ae5d2aa46e63488cf3fcaecf2daa2bbea10fdcdbd710a3`.
 
 ## Rows per year
 
@@ -424,7 +424,7 @@ Parquet SHA256 `8aaeaf4943806975bf58a9f6330d91071bdc89ac102d1c21950952fe5812778d
 | `readback.parquet.metadata.schema_version` | pass | epc_domestic_v1 |
 | `readback.parquet.metadata.key` | pass | ["epc_release", "source_year", "source_row"] |
 | `readback.parquet.metadata.epc_release` | pass | 2026Q2 |
-| `readback.parquet.metadata.decisions_sha256` | pass | e6941c656b04558d884c6e54ca5a82e680e1ee2bdacf389ba88c11c1dac931a1 |
+| `readback.parquet.metadata.decisions_sha256` | pass | b021470fe102b01d19bde8b2ea537cb1969ee63e65581c51d9a9436e91a68c3b |
 | `readback.parquet.metadata.registry_sha256` | pass | bbce1df297307bc118b1d623bf0aada579d8070482f38f307d5f2cf0c69c3cdf |
 | `readback.parquet.metadata.sources` | pass | [{"year": 2008, "file": "epc_2026Q2/extracted/2008.csv", "sha256": "ce393d3ab26847d9a642d8e7491203db88e526ea473bb74daeead19ca4865c2c"}, {"year": 2009, "file": " |
 | `readback.parquet.rows` | pass | 3787069 |

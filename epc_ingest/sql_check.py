@@ -219,7 +219,10 @@ CREATE TABLE staging_{name} (
 -- ROWTERMINATOR is LF, as the contract specifies. CODEPAGE = '65001' makes BULK INSERT read
 -- the file as UTF-8: without it the bytes are read in the server's OEM code page whatever
 -- the staging collation says, and a non-breaking space (C2 A0) arrives as two other
--- characters (found in the container probe of 30 October 2026).
+-- characters (found in the container probe of 30 October 2026). SQL Server on Linux does not
+-- support CODEPAGE: there, convert the file to UTF-16LE with a byte order mark and replace
+-- CODEPAGE = '65001' with DATAFILETYPE = 'widechar' and ROWTERMINATOR = '\\n', as
+-- loader/sqlserver_probe.sh does.
 BULK INSERT staging_{name}
 FROM '/path/to/{spec["file"][:-3]}'
 WITH (FORMAT = 'CSV', FIELDQUOTE = '"', FIELDTERMINATOR = ',', ROWTERMINATOR = '0x0a',

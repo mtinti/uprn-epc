@@ -385,7 +385,10 @@ and built form to what is known about the person's home, which the output checks
    release (`tests/`), each hostile file failing with its own named check.
 5. Done 30 October 2026: the real build (`results/manifest.json`, `results/BUILD_REPORT.md`),
    the generated SQL scripts, the data dictionary.
-6. The container probe with timings (`loader/sqlserver_probe.sh`), then the real load.
+6. Done 30 October 2026: the container probe (`docs/sql/SQLSERVER_PROBE_2026-10-30.md`):
+   import 413 s, digest 26 s, every check passed after two fixes (read the file as UTF-8;
+   datetime2 precision). The real load into the HIC server is for Michele to run with
+   `loader/load_epc_to_sqlserver.py`.
 7. Done 30 October 2026: the three example queries and the onward sketch in `docs/sql/`,
    tested in DuckDB; the README.
 8. Ask information governance whether the table inside the safe haven may carry the address

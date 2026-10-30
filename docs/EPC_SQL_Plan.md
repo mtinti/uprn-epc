@@ -153,7 +153,9 @@ manifest. Three things to settle in the container probe before the real load:
   space (C2 A0, common in `IMPROVEMENTS`) arrives as two other characters, so every text cell
   with a non-ASCII character differs and the digest fails. The generated import now sets
   `CODEPAGE = '65001'`. datazone-ahah's import has the same gap and passed only because its
-  text is ASCII;
+  text is ASCII. SQL Server on Linux rejects `CODEPAGE`, so the container probe converts the
+  CSV to UTF-16LE and imports it as `widechar`, which the second probe showed keeps a
+  non-breaking space and an embedded newline intact;
 - the clustered key `(epc_release, source_year, source_row)` and two nonclustered indexes,
   `(uprn_osg, lodgement_date_parsed)` and `(pc_norm, lodgement_date_parsed)`, for the two join routes.
 

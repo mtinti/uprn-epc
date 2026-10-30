@@ -77,7 +77,9 @@ and `loader/load_epc_to_sqlserver.py` to the server; fill in the EDIT block; run
 verifies the file hash, imports with `BULK INSERT` through a staging table, restores the
 empty strings on published columns and NULL on derived ones, builds the two join indexes, and
 runs the check script, whose expected row count and digest come from the manifest, never from
-the loaded table. `loader/sqlserver_probe.sh` runs the same scripts against a throwaway SQL
+the loaded table. The import names `CODEPAGE = '65001'` so the file is read as UTF-8; on SQL
+Server for Linux, which rejects that option, convert the CSV to UTF-16 and import it as
+`widechar`, as the probe does. `loader/sqlserver_probe.sh` runs the same scripts against a throwaway SQL
 Server 2022 container, times the import and the digest, and asserts SQL Server's rendering of
 chosen cells, the empty-against-NULL counts and the join statuses.
 
