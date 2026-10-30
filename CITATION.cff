@@ -3,7 +3,7 @@
 # as the README says.
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below, and cite the data: Scottish Government, Domestic Energy Performance Certificates, extended historic dataset (data.gov.scot), Open Government Licence v3.0."
-title: "epc-scotland: Scottish domestic EPCs for SQL Server"
+title: "uprn-epc: Scottish domestic EPCs for SQL Server"
 abstract: >-
   A CLI pipeline that puts every certificate of the Scottish Government's extended historic
   extract of domestic Energy Performance Certificates into one SQL Server table, values exactly
@@ -16,7 +16,7 @@ authors:
     orcid: "https://orcid.org/0000-0002-0051-017X"
 version: "0.1.0"
 license: MIT
-repository-code: "https://github.com/mtinti/epc-scotland"
+repository-code: "https://github.com/mtinti/uprn-epc"
 keywords:
   - Energy Performance Certificate
   - EPC
