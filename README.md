@@ -129,7 +129,8 @@ sibling projects (`data/sources/datazones/SOURCES.md`).
 
 Because the download URL does not last and the address fields are not under the Open
 Government Licence, the archive is held as an unpublished restricted Zenodo draft rather than
-an open record, and a copy sits on the HIC OneDrive. The built table is private.
+an open record (deposition 23784712, reserved DOI 10.5281/zenodo.23784712, which resolves only
+once the record is published), and a copy sits on the HIC OneDrive. The built table is private.
 
 ## Documents
 

@@ -20,7 +20,8 @@ SQL table and the whole built table stays private (`docs/EPC_Plan.md`, section 5
 | `extracted/2008.csv` to `extracted/2026.csv` | in `epc_ingest/sources.yaml` | 7.6 GB in all | One file per year of `CREATED_AT`, extracted with bsdtar |
 | `SHA256SUMS`, `download_metadata.json`, `archive_contents.txt`, `README.md` | | | The download session's own record |
 
-Off-site copy: restricted Zenodo deposition 23784712 (draft, unpublished; files on request),
+Off-site copy: restricted Zenodo deposition 23784712 (draft, unpublished; reserved DOI
+10.5281/zenodo.23784712; files on request), linked to https://github.com/mtinti/uprn-epc,
 holding the archive, the note, `SHA256SUMS` and `download_metadata.json`, each MD5-verified
 against this folder on 29 October 2026.
 
