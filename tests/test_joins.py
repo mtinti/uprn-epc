@@ -2,8 +2,8 @@
 
 The queries are T-SQL for SQL Server. DuckDB runs them after five textual substitutions that
 change spelling and nothing else: TRY_CONVERT(bigint, x) to TRY_CAST(x AS BIGINT), DATEDIFF(day,
-a, b) to datediff('day', a, b), N'...' to '...', #cohort to cohort, and the IF EXISTS ... THROW
-guard removed (its presence is asserted separately). The container probe
+a, b) to datediff('day', a, b), N'...' to '...', #cohort to cohort, and the two IF EXISTS ... THROW
+guards removed (their presence is asserted; the container probe exercises them in T-SQL). The container probe
 (loader/sqlserver_probe.sh) runs the T-SQL itself against SQL Server with the same cases."""
 
 import datetime as dt
@@ -14,11 +14,12 @@ import duckdb
 import pytest
 
 SQL = Path(__file__).resolve().parent.parent / "docs" / "sql"
-GUARD = re.compile(r"IF EXISTS \(SELECT 1 FROM #cohort GROUP BY cohort_row_id HAVING COUNT\(\*\) > 1\)\n\s*THROW 51000, '[^']*', 1;\n")
+GUARD = re.compile(r"IF EXISTS \(SELECT 1 FROM #cohort WHERE cohort_row_id IS NULL\)\n\s*THROW 51000, '[^']*', 1;\n"
+                   r"IF EXISTS \(SELECT 1 FROM #cohort GROUP BY cohort_row_id HAVING COUNT\(\*\) > 1\)\n\s*THROW 51000, '[^']*', 1;\n")
 
 
 def duck(sql: str) -> str:
-    assert GUARD.search(sql), "the query must stop on a repeated cohort_row_id"
+    assert GUARD.search(sql), "the query must stop on a NULL or repeated cohort_row_id"
     sql = GUARD.sub("", sql)
     sql = re.sub(r"TRY_CONVERT\(bigint, (.*?)\) AS uprn_int", r"TRY_CAST(\1 AS BIGINT) AS uprn_int", sql)
     sql = sql.replace("DATEDIFF(day, ", "datediff('day', ")
@@ -153,3 +154,10 @@ def test_join_by_postcode_one_row_per_dwelling(con):
     assert [r[3] for r in rows if r[0] == 3] == ["no_certificate_by_date"]
     assert [r[3] for r in rows if r[0] == 4] == ["postcode_not_in_epc"]
     assert [r[3] for r in rows if r[0] == 5] == ["no_postcode"]
+
+
+def test_every_join_declares_the_cohort_key_not_null():
+    for name in ("join_by_uprn.sql", "join_latest_by_uprn.sql", "join_by_postcode.sql"):
+        sql = (SQL / name).read_text()
+        assert "cohort_row_id int NOT NULL PRIMARY KEY" in sql, name
+        assert GUARD.search(sql), name

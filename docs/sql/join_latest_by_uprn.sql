@@ -1,8 +1,8 @@
 -- Join a cohort to its dwelling's current certificate by UPRN, without a date: the one
 -- certificate with HISTORIC = False. A left join; one output row per cohort row.
 --
--- Cohort: #cohort (cohort_row_id int, pseudo_id int, uprn nvarchar(20)). cohort_row_id
--- identifies the cohort row and must be unique; a person (pseudo_id) can appear many times.
+-- Cohort: #cohort (cohort_row_id int NOT NULL PRIMARY KEY, pseudo_id int, uprn nvarchar(20)). cohort_row_id
+-- identifies the cohort row and must be unique and not NULL; a person (pseudo_id) can appear many times.
 --
 -- Status per cohort row:
 --   no_uprn                  the cohort UPRN is empty or not an integer
@@ -11,6 +11,8 @@
 --   ambiguous_latest         two or more HISTORIC = False certificates (22 UPRNs in 2026Q2)
 --   matched                  one current certificate; its columns are returned
 
+IF EXISTS (SELECT 1 FROM #cohort WHERE cohort_row_id IS NULL)
+    THROW 51000, 'cohort_row_id must not be NULL: a NULL key cannot be joined back to its result.', 1;
 IF EXISTS (SELECT 1 FROM #cohort GROUP BY cohort_row_id HAVING COUNT(*) > 1)
     THROW 51000, 'cohort_row_id must be unique: one row per cohort observation.', 1;
 

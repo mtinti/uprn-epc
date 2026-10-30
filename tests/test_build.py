@@ -268,3 +268,55 @@ def test_a_failed_rebuild_keeps_the_last_accepted_build(tmp_path):
     with pytest.raises(BuildStopped):
         pipeline.build(results=results, registry_path=registry3, source_root=third / "sources", log=lambda *a: None)
     assert {p.name: p.read_bytes() for p in results.iterdir()} == before
+
+
+def test_a_failed_promotion_rolls_back_to_the_accepted_build(tmp_path, monkeypatch):
+    import os
+    results = tmp_path / "results"
+    first = tmp_path / "first"
+    first.mkdir()
+    registry = make_release(first)
+    pipeline.build(results=results, registry_path=registry, source_root=first / "sources", log=lambda *a: None)
+    before = {p.name: p.read_bytes() for p in results.iterdir()}
+    second = tmp_path / "second"
+    second.mkdir()
+    rows = default_rows(2008)
+    rows[0]["CURRENT_ENERGY_RATING"] = "A"
+    registry2 = make_release(second, years={2008: rows, 2026: default_rows(2026)})
+    real_replace = os.replace
+    failures = []
+
+    def locked_csv(times):
+        """The final CSV path refuses the first `times` moves onto it, as a file lock would."""
+        def replace(src, dst):
+            if str(dst).endswith("results/epc_domestic.csv.gz") and len(failures) < times:
+                failures.append(dst)
+                raise PermissionError("locked")
+            return real_replace(src, dst)
+        return replace
+
+    # A lock that clears: the second move fails after the Parquet is in place, the rollback
+    # succeeds, and results holds the accepted build exactly as before, with nothing left over.
+    monkeypatch.setattr(pipeline.os, "replace", locked_csv(1))
+    with pytest.raises(PermissionError):
+        pipeline.build(results=results, registry_path=registry2, source_root=second / "sources", log=lambda *a: None)
+    assert {p.name: p.read_bytes() for p in results.iterdir()} == before
+    # A lock that persists: the rollback cannot restore the CSV either, so the accepted build is
+    # kept whole in the previous folder and the error names it.
+    failures.clear()
+    monkeypatch.setattr(pipeline.os, "replace", locked_csv(10))
+    with pytest.raises(RuntimeError) as stop:
+        pipeline.build(results=results, registry_path=registry2, source_root=second / "sources", log=lambda *a: None)
+    previous = [p for p in results.iterdir() if p.name.startswith(".previous_")]
+    assert len(previous) == 1 and str(previous[0]) in str(stop.value)
+    kept = {p.name: p.read_bytes() for p in previous[0].iterdir()}
+    assert kept["epc_domestic.csv.gz"] == before["epc_domestic.csv.gz"] and kept["manifest.json"] == before["manifest.json"]
+    for name, data in kept.items():
+        real_replace(previous[0] / name, results / name)
+    previous[0].rmdir()
+    # Without the fault the same build promotes, and the accepted generation changes as a whole.
+    monkeypatch.setattr(pipeline.os, "replace", real_replace)
+    manifest = pipeline.build(results=results, registry_path=registry2, source_root=second / "sources", log=lambda *a: None)
+    now = {p.name: p.read_bytes() for p in results.iterdir()}
+    assert set(now) == set(before) and now["epc_domestic.parquet"] != before["epc_domestic.parquet"]
+    assert json.loads(now["manifest.json"])["parquet"]["sha256"] == manifest["parquet"]["sha256"]

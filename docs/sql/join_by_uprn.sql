@@ -2,8 +2,8 @@
 -- before the cohort date. A left join, so no cohort row disappears; one output row per cohort
 -- row; the choice of certificate is explicit, never a default.
 --
--- Cohort: #cohort (cohort_row_id int, pseudo_id int, uprn nvarchar(20), cohort_date date).
--- cohort_row_id identifies the cohort row and must be unique: a person (pseudo_id) can appear
+-- Cohort: #cohort (cohort_row_id int NOT NULL PRIMARY KEY, pseudo_id int, uprn nvarchar(20), cohort_date date).
+-- cohort_row_id identifies the cohort row and must be unique and not NULL: a person (pseudo_id) can appear
 -- many times, at different dates or addresses, and each row gets its own certificate. The
 -- query stops if cohort_row_id repeats. The UPRN may be padded with zeros or carry spaces: it
 -- is compared as a bigint, never as text.
@@ -17,6 +17,8 @@
 -- The query does not decide whether the certificate has expired (ten years from lodgement);
 -- epc_age_days lets the project apply that rule or another.
 
+IF EXISTS (SELECT 1 FROM #cohort WHERE cohort_row_id IS NULL)
+    THROW 51000, 'cohort_row_id must not be NULL: a NULL key cannot be joined back to its result.', 1;
 IF EXISTS (SELECT 1 FROM #cohort GROUP BY cohort_row_id HAVING COUNT(*) > 1)
     THROW 51000, 'cohort_row_id must be unique: one row per cohort observation.', 1;
 

@@ -3,8 +3,8 @@
 -- this returns many rows per cohort row, and the project decides how to summarise them. What
 -- it gives is a property of the postcode's dwellings, not of the person's dwelling.
 --
--- Cohort: #cohort (cohort_row_id int, pseudo_id int, postcode nvarchar(10), cohort_date date).
--- cohort_row_id identifies the cohort row and must be unique; a person (pseudo_id) can appear
+-- Cohort: #cohort (cohort_row_id int NOT NULL PRIMARY KEY, pseudo_id int, postcode nvarchar(10), cohort_date date).
+-- cohort_row_id identifies the cohort row and must be unique and not NULL; a person (pseudo_id) can appear
 -- many times, at different dates or postcodes, and each row gets its own dwellings. The
 -- postcode is compared as pc_norm: upper case, spaces removed.
 --
@@ -20,6 +20,8 @@
 --   no_certificate_by_date   dwellings exist, none has a certificate lodged on or before the date
 --   matched                  one row per dwelling with an eligible certificate
 
+IF EXISTS (SELECT 1 FROM #cohort WHERE cohort_row_id IS NULL)
+    THROW 51000, 'cohort_row_id must not be NULL: a NULL key cannot be joined back to its result.', 1;
 IF EXISTS (SELECT 1 FROM #cohort GROUP BY cohort_row_id HAVING COUNT(*) > 1)
     THROW 51000, 'cohort_row_id must be unique: one row per cohort observation.', 1;
 

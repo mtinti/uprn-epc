@@ -117,4 +117,14 @@ $(sed -n '/^IF EXISTS (SELECT 1 FROM #cohort/,$p' docs/sql/join_by_uprn.sql)
 " | sed 's/ *|/|/g; s/ *$//' | grep -v '^$' | cut -d'|' -f1,4 > "$W/join_actual.txt"
 printf '1|matched\n2|matched\n3|no_certificate_by_date\n4|uprn_not_in_epc\n5|no_uprn\n6|no_uprn\n7|no_uprn\n' > "$W/join_expected.txt"
 if diff "$W/join_expected.txt" "$W/join_actual.txt"; then echo "join: 7 cohort rows returned once each with the expected status"; else echo "join: DIFFERENCES"; exit 1; fi
+echo "== probe: the cohort key guards, asserted (a NULL key and a repeated key each stop the query)"
+for CASE in "(1, 1, N'1', '2030-01-01'), (NULL, 1, N'1', '2030-01-01')" "(1, 1, N'1', '2030-01-01'), (1, 2, N'1', '2030-01-01')"; do
+  OUT=$($SQL -d epc -W -h -1 -s '|' -Q "SET NOCOUNT ON;
+CREATE TABLE #cohort (cohort_row_id int, pseudo_id int, uprn nvarchar(20), cohort_date date);
+INSERT INTO #cohort VALUES $CASE;
+$(sed -n '/^IF EXISTS (SELECT 1 FROM #cohort/,$p' docs/sql/join_by_uprn.sql)
+" 2>&1 || true)
+  echo "$OUT" | grep -q "cohort_row_id must" || { echo "guard: the query did not stop for $CASE"; echo "$OUT" | head -5; exit 1; }
+done
+echo "guards: both cases stopped with the expected message"
 echo "== done; probe files in $W"

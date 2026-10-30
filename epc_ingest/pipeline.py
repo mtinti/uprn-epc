@@ -45,18 +45,48 @@ def build(results: Path = RESULTS, registry_path: Path = REGISTRY, source_root: 
     manifest untouched and never leaves half-written files beside a manifest they do not match."""
     results = Path(results)
     results.mkdir(parents=True, exist_ok=True)
-    staging = results / f".staging_{dt.datetime.now(dt.timezone.utc).strftime('%Y%m%dT%H%M%S')}_{os.getpid()}"
+    stamp = f"{dt.datetime.now(dt.timezone.utc).strftime('%Y%m%dT%H%M%S')}_{os.getpid()}"
+    staging = results / f".staging_{stamp}"
     staging.mkdir()
     try:
         manifest = _build(staging, registry_path, source_root, verify_archive, log)
-        for name in OUTPUTS:
-            name = name.format(table=TABLE, csv=manifest["csv"]["file"])
-            os.replace(staging / name, results / name)
+        names = [name.format(table=TABLE, csv=manifest["csv"]["file"]) for name in OUTPUTS]
+        promote(staging, results, names, results / f".previous_{stamp}")
         staging.rmdir()
         return manifest
     except BaseException:
         shutil.rmtree(staging, ignore_errors=True)
         raise
+
+
+def promote(staging: Path, results: Path, names: list, previous: Path) -> None:
+    """Move the accepted outputs into place as one generation. The files of the last accepted
+    build are first moved aside into `previous`, then the new files moved in; if any move
+    fails, every move is undone so `results` holds the last accepted build again. Only if the
+    rollback itself fails is `previous` kept, and the error names it, so nothing accepted is
+    ever lost. Each step is a rename on one filesystem, so an interruption leaves at worst
+    `previous` beside a partial `results`, never a deleted file."""
+    moved_aside, promoted = [], []
+    try:
+        previous.mkdir()
+        for name in names:
+            if (results / name).exists():
+                os.replace(results / name, previous / name)
+                moved_aside.append(name)
+        for name in names:
+            os.replace(staging / name, results / name)
+            promoted.append(name)
+    except BaseException as failure:
+        try:
+            for name in promoted:
+                os.replace(results / name, staging / name)
+            for name in moved_aside:
+                os.replace(previous / name, results / name)
+            previous.rmdir()
+        except BaseException as rollback_failure:
+            raise RuntimeError(f"promotion failed and could not be rolled back; the last accepted build is in {previous}") from rollback_failure
+        raise failure
+    shutil.rmtree(previous)
 
 
 def _build(results: Path, registry_path: Path, source_root: Path, verify_archive: bool, log) -> dict:
