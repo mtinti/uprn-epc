@@ -3,7 +3,7 @@ name = "epc_ingest"
 version = "0.1.0"
 description = "Scottish domestic Energy Performance Certificates for SQL Server: every certificate of the extended historic extract, values as published, joinable by UPRN"
 requires-python = ">=3.12"
-dependencies = ["pandas>=3.0", "pyarrow>=24", "PyYAML>=6", "duckdb>=1.5"]
+dependencies = ["pandas>=3.0", "pyarrow>=24", "PyYAML>=6", "duckdb>=1.5", "nbformat>=5"]
 license = {text = "MIT"}
 authors = [{name = "Michele Tinti"}]
 

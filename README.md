@@ -79,7 +79,10 @@ empty strings on published columns and NULL on derived ones, builds the two join
 runs the check script, whose expected row count and digest come from the manifest, never from
 the loaded table. The import names `CODEPAGE = '65001'` so the file is read as UTF-8; on SQL
 Server for Linux, which rejects that option, convert the CSV to UTF-16 and import it as
-`widechar`, as the probe does. `loader/sqlserver_probe.sh` runs the same scripts against a throwaway SQL
+`widechar`, as the probe does. When the server cannot read the client's files at all, which rules out
+`BULK INSERT`, use `loader/upload_epc.ipynb` instead: it sends the rows through pyodbc in chunks, keeping
+the empty-against-NULL rule of the import script, builds the two indexes, runs the same digest check and
+shows the table in use. Regenerate it after a rebuild with `python loader/make_notebook.py`. `loader/sqlserver_probe.sh` runs the same scripts against a throwaway SQL
 Server 2022 container, times the import and the digest, and asserts SQL Server's rendering of
 chosen cells, the empty-against-NULL counts and the join statuses.
 
