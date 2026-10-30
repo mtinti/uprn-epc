@@ -77,7 +77,7 @@ def test_runner_fails_when_the_container_fails(tmp_path):
     # `docker run -d` starts the server and must succeed; `docker run --rm` is the harness.
     docker.write_text('#!/bin/sh\ncase "$1 $2" in\n  "run --rm") echo "Traceback: the harness crashed"; exit 7;;\n  *) exit 0;;\nesac\n')
     docker.chmod(docker.stat().st_mode | stat.S_IEXEC)
-    env = dict(os.environ, PATH=f"{fake}:{os.environ['PATH']}")
+    env = dict(os.environ, PATH=f"{fake}:{Path(sys.executable).parent}:{os.environ['PATH']}")
     done = subprocess.run(["sh", str(ROOT / "loader" / "notebook_probe.sh"), str(tmp_path / "scratch")],
                           cwd=ROOT, env=env, capture_output=True, text=True, timeout=600)
     assert done.returncode == 7, done.stdout + done.stderr
@@ -94,7 +94,7 @@ def test_runner_fails_when_results_say_a_scenario_failed(tmp_path):
     docker = fake / "docker"
     docker.write_text(f'#!/bin/sh\ncase "$1 $2" in\n  "run --rm") printf %s \'{results}\' > "{scratch}/out/results.json"; exit 0;;\n  *) exit 0;;\nesac\n')
     docker.chmod(docker.stat().st_mode | stat.S_IEXEC)
-    env = dict(os.environ, PATH=f"{fake}:{os.environ['PATH']}")
+    env = dict(os.environ, PATH=f"{fake}:{Path(sys.executable).parent}:{os.environ['PATH']}")
     done = subprocess.run(["sh", str(ROOT / "loader" / "notebook_probe.sh"), str(scratch)],
                           cwd=ROOT, env=env, capture_output=True, text=True, timeout=600)
     assert done.returncode != 0 and "failed: ['04']" in done.stderr
