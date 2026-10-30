@@ -176,6 +176,7 @@ def test_generated_import_sql_restores_empty_and_null_by_schema():
         assert sql_check.declared_type(f) in line
     assert "[IMPROVEMENTS] varchar(max)" in sql and "[HISTORIC] varchar(8000)" in sql
     assert "IX_epc_domestic_uprn_osg" in sql and "IX_epc_domestic_pc_norm" in sql
+    assert "CODEPAGE = '65001'" in sql
 
 
 def test_generated_check_sql_keeps_max_in_the_digest_and_declares_widths():
@@ -186,6 +187,6 @@ def test_generated_check_sql_keeps_max_in_the_digest_and_declares_widths():
     assert "CONVERT(varchar(1), [historic_flag])" in sql
     assert "(N'IMPROVEMENTS', 24, N'nvarchar', NULL, NULL, 8000, 0)" in sql
     assert "(N'uprn_osg', 110, N'bigint', NULL, NULL, NULL, 1)" in sql
-    assert "(N'created_at_parsed', 118, N'datetime2', 0, 0, NULL, 0)" in sql
+    assert "(N'created_at_parsed', 118, N'datetime2', 19, 0, NULL, 0)" in sql
     assert "@ran <> 5" in sql
     assert "ADDRESS1" not in sql

@@ -159,7 +159,7 @@ BEGIN
     (N'datazone_2011_status', 115, N'nvarchar', NULL, NULL, 32, 0),
     (N'inspection_date_parsed', 116, N'date', NULL, NULL, NULL, 0),
     (N'lodgement_date_parsed', 117, N'date', NULL, NULL, NULL, 0),
-    (N'created_at_parsed', 118, N'datetime2', 0, 0, NULL, 0),
+    (N'created_at_parsed', 118, N'datetime2', 19, 0, NULL, 0),
     (N'historic_flag', 119, N'bit', NULL, NULL, NULL, 0),
     (N'current_energy_efficiency_int', 120, N'int', NULL, NULL, NULL, 0),
     (N'potential_energy_efficiency_int', 121, N'int', NULL, NULL, NULL, 0),

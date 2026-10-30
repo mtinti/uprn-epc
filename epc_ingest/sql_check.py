@@ -93,7 +93,8 @@ def _table_sql(table: str, name: str, schema: dict, contract: dict) -> str:
     def declared_row(i, c):
         f = fields[c]
         kind = f["type"]
-        precision = f"{DECIMAL_PRECISION}, {DECIMAL_SCALE}" if kind == "decimal" else "0, 0" if kind == "datetime" else "NULL, NULL"
+        # sys.columns reports datetime2(0) with precision 19 and scale 0.
+        precision = f"{DECIMAL_PRECISION}, {DECIMAL_SCALE}" if kind == "decimal" else "19, 0" if kind == "datetime" else "NULL, NULL"
         max_length = 2 * f["width"] if kind == "string" else "NULL"
         return f"    (N'{c}', {i}, N'{SQL_TYPE[kind]}', {precision}, {max_length}, {1 if f['nullable'] else 0})"
     declared = ",\n".join(declared_row(i, c) for i, c in enumerate(columns, 1))
@@ -215,12 +216,14 @@ CREATE TABLE staging_{name} (
 );
 
 -- EDIT the path. FORMAT = 'CSV' honours RFC 4180 quoting, embedded newlines included.
--- ROWTERMINATOR is LF, as the contract specifies. The UTF-8 encoding is declared on the
--- staging columns' collation.
+-- ROWTERMINATOR is LF, as the contract specifies. CODEPAGE = '65001' makes BULK INSERT read
+-- the file as UTF-8: without it the bytes are read in the server's OEM code page whatever
+-- the staging collation says, and a non-breaking space (C2 A0) arrives as two other
+-- characters (found in the container probe of 30 October 2026).
 BULK INSERT staging_{name}
 FROM '/path/to/{spec["file"][:-3]}'
 WITH (FORMAT = 'CSV', FIELDQUOTE = '"', FIELDTERMINATOR = ',', ROWTERMINATOR = '0x0a',
-      FIRSTROW = 2, TABLOCK);
+      CODEPAGE = '65001', FIRSTROW = 2, TABLOCK);
 
 DROP TABLE IF EXISTS {name};
 CREATE TABLE {name} (

@@ -147,6 +147,13 @@ manifest. Three things to settle in the container probe before the real load:
 - that a cell with an embedded newline (seven of them) and a cell with a quote (six, in
   `ADDRESS1`) survive `BULK INSERT` with the format file, or that the loader switches to a
   row-by-row path for those files;
+- that non-ASCII text survives. Found in the first probe, 30 October 2026: a UTF-8 collation on
+  the staging columns does not make `BULK INSERT` read the file as UTF-8. Without
+  `CODEPAGE = '65001'` the bytes are read in the server's OEM code page and a non-breaking
+  space (C2 A0, common in `IMPROVEMENTS`) arrives as two other characters, so every text cell
+  with a non-ASCII character differs and the digest fails. The generated import now sets
+  `CODEPAGE = '65001'`. datazone-ahah's import has the same gap and passed only because its
+  text is ASCII;
 - the clustered key `(epc_release, source_year, source_row)` and two nonclustered indexes,
   `(uprn_osg, lodgement_date_parsed)` and `(pc_norm, lodgement_date_parsed)`, for the two join routes.
 

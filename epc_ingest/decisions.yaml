@@ -39,3 +39,7 @@ decisions:
     id: join-latest-lodged-with-ties
     decision: The example join returns the latest certificate lodged on or before the cohort date, with its age in days, and does not decide expiry. Two or more certificates of one UPRN lodged on the latest eligible day are ambiguous_as_of with no values. Without a date, the HISTORIC = False certificate; two of them are ambiguous_latest; none is no_current_certificate.
     why: The choice of certificate must be explicit in the query, never a default or an arbitrary TOP (1).
+  - date: 2026-10-30
+    id: bulk-insert-codepage-utf8
+    decision: The generated BULK INSERT names CODEPAGE = '65001'. The staging columns keep the UTF-8 collation, which governs how the bytes are stored, not how the file is read.
+    why: The first container probe loaded 3,787,069 rows and failed the digest on every year; the only cells that differed were those with a non-breaking space, read in the OEM code page as two other characters.
