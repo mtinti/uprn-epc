@@ -73,3 +73,13 @@ The dated joins choose the certificate by `inspection_date_parsed` rather than
 Rerun on the existing container with the regenerated import script: import completed (its time was not captured, the run kept only the tail of the output), digest
 26 s, every check passed, 44 cells rendered equal, every empty-against-NULL count equal to the
 manifest, the seven cohort rows with the expected statuses, both key guards stopped the query.
+
+## Sixth run: the table with the address lines
+
+After decision `address-lines-loaded` the CSV carries all 130 columns (1,215,960,553 bytes
+gzipped, digest total `-17782796129345549661789`). The regenerated import and check scripts
+were run on the full file: 3,787,069 rows, every check passing, the digest equal to the
+manifest's, the check in 26 s; 44 chosen cells rendered equal to the CSV text; every empty and
+NULL count equal to the manifest (`uprn_osg` NULL 178,537, `rrn` NULL 340,010, six
+`BUILDING_REFERENCE_NUMBER` cells with a newline); the seven join statuses and both key guards
+as expected.

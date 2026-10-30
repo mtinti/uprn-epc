@@ -42,11 +42,11 @@ def test_synthetic_release_builds_and_reads_back(tmp_path):
     row1 = saved[(saved["source_year"] == 2026) & (saved["source_row"] == 1)].iloc[0]
     assert row1["ADDRESS1"] == "1 TEST STREET " and row1["datazone_2011"] == "S01006982"
     assert row1["energy_consumption_current_num"] == Decimal("250.00") and row1["total_floor_area_int"] == 85
-    # The CSV withholds the address lines and keeps the postcode.
+    # The CSV carries every column, the address lines included (decision address-lines-loaded).
     with gzip.open(tmp_path / "results" / "epc_domestic.csv.gz", "rt", encoding="utf-8", newline="") as fh:
         header = fh.readline().rstrip("\n").split(",")
-    assert "ADDRESS1" not in header and "POSTCODE" in header and "pc_norm" in header
-    assert len(header) == 127 and header[:3] == ["epc_release", "source_year", "source_row"]
+    assert "ADDRESS1" in header and "POSTCODE" in header and "pc_norm" in header
+    assert len(header) == 130 and header[:3] == ["epc_release", "source_year", "source_row"]
     report = (tmp_path / "results" / "BUILD_REPORT.md").read_text()
     assert "TEST STREET" not in report and "FK10" not in report and "(withheld)" in report
 

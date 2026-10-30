@@ -1,7 +1,10 @@
 # What leaves the build: the CSV rendering of the table. Version 1, 30 October 2026. The dialect
 # and the digest definition are postcode-simd's and datazone-ahah's, unchanged, so the same import
-# and check recipe applies. The three address lines stay out of the CSV (docs/EPC_Plan.md,
-# section 5); the Parquet keeps every column.
+# and check recipe applies. Every column goes out, the three address lines included: the CSV
+# travels only to the HIC OneDrive and into the HIC SQL Server, where the address lines are the
+# key for the certificates without a Gazetteer UPRN (decision address-lines-loaded, 30 October
+# 2026). Nothing built leaves the safe haven. The version names the dialect and digest format,
+# which are unchanged.
 version: 1
 
 dialect:
@@ -23,7 +26,7 @@ values:
 tables:
   epc_domestic:
     file: epc_domestic.csv.gz
-    exclude: [ADDRESS1, ADDRESS2, ADDRESS3]
+    exclude: []
 
 digest:
   version: 1

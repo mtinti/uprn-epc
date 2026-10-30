@@ -98,3 +98,13 @@ measured separately, and `fast_executemany` holds one chunk of 20,000 rows at a 
 Step 7 of the notebook follows `join_by_uprn.sql` and now dates the cohort rows by the
 dwelling's inspection date. The eleven scenarios were rerun with the regenerated notebook: every
 one as expected.
+
+## Rerun with the address lines in the table
+
+Decision `address-lines-loaded`: the CSV and the table now carry `ADDRESS1`, `ADDRESS2` and
+`ADDRESS3`, so the table has 130 columns. The first rerun stopped at step 3 of every scenario with
+`the file's header does not match the shipped table definition`, because `docs/sql/import_csv.sql`
+had not yet been regenerated: the notebook's header check caught the stale table definition, which
+is what it is for. After `python -m epc_ingest.sql_check`, the eleven scenarios ran as expected.
+The read-back now includes the three address columns (the fixture's quoted `FLAT 1/2 "THE OLD
+MILL"` and accented post town among them): 420 cells of 28 columns equal to the CSV.

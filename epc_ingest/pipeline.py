@@ -214,7 +214,7 @@ def build_report(manifest: dict, samples: list, schema: dict) -> str:
     obs = manifest["observations"]["table"]
     lines = [f"# Build report: {manifest['table']}, release {manifest['epc_release']}, {manifest['built_at'][:19]}Z", "",
              f"Schema `{manifest['schema_version']}`. {manifest['parquet']['rows']:,} rows by {manifest['parquet']['columns']} columns in the Parquet, "
-             f"{manifest['csv']['columns']} in the CSV (the three address lines withheld).",
+             f"{manifest['csv']['columns']} in the CSV.",
              f"CSV `{manifest['csv']['file']}` SHA256 `{manifest['csv']['sha256']}`, digest total `{manifest['csv']['digest']['total']}`.",
              f"Parquet SHA256 `{manifest['parquet']['sha256']}`.", "",
              "## Rows per year", "", "| Year | Rows | HISTORIC True | HISTORIC False | Empty UPRN | Empty RRN | Digest total |", "| --- | ---: | ---: | ---: | ---: | ---: | --- |"]

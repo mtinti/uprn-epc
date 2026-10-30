@@ -18,7 +18,7 @@ scripts, and a loader.
 ## What is in the table
 
 `epc_domestic`, release 2026Q2: 3,787,069 certificates from 19 annual files (2008 to 2026),
-130 columns in the Parquet and 127 in the CSV and the SQL table, keyed by `epc_release`,
+130 columns in the Parquet, the CSV and the SQL table, keyed by `epc_release`,
 `source_year`, `source_row`. Three groups of columns, in this order:
 
 1. **Key and provenance**: the release, the annual file, the row in it.
@@ -48,11 +48,12 @@ Four things to know before joining:
 - **`HISTORIC = True` means superseded, not expired.** A certificate is valid for ten years.
   The dated join returns the certificate with the latest inspection on or before the cohort date,
   its inspection and lodgement dates and its age in days; the project decides about expiry.
-- **The address lines are not in the CSV or the SQL table.** `ADDRESS1` to `ADDRESS3` and
-  `POSTCODE` carry a Royal Mail notice rather than the Open Government Licence. The three
-  address lines stay in the Parquet only; the postcode and `pc_norm` go out because they are the
-  fallback join key. Whether the table inside the safe haven may carry the address lines is a
-  question for information governance, recorded in `docs/EPC_Plan.md`.
+- **The address lines are loaded.** `ADDRESS1` to `ADDRESS3` and `POSTCODE` carry a Royal
+  Mail notice rather than the Open Government Licence, and nothing built leaves the safe haven:
+  the CSV goes to the HIC OneDrive and into the HIC SQL Server only. The address lines are the
+  key for the 178,537 certificates without a Gazetteer UPRN and the check on a UPRN linkage. An
+  analyst-facing view without the three columns is suggested; who may see them is a question
+  for information governance, recorded in `docs/EPC_Plan.md` and `epc_ingest/decisions.yaml`.
 
 ## Build
 

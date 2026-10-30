@@ -1,32 +1,32 @@
-# Build report: epc_domestic, release 2026Q2, 2026-10-30T16:42:56Z
+# Build report: epc_domestic, release 2026Q2, 2026-10-30T20:19:09Z
 
-Schema `epc_domestic_v1`. 3,787,069 rows by 130 columns in the Parquet, 127 in the CSV (the three address lines withheld).
-CSV `epc_domestic.csv.gz` SHA256 `3047e71eaa186e1f853c93953087cd8a1966898197f19d62f5db43c0fded264c`, digest total `-35655847973013680818794`.
-Parquet SHA256 `b1337d9832e017bd2399417786f68222a25b226e0dfee0ec8259a803eebba0ce`.
+Schema `epc_domestic_v1`. 3,787,069 rows by 130 columns in the Parquet, 130 in the CSV.
+CSV `epc_domestic.csv.gz` SHA256 `b8910ee905a4c96874988a1cf4a39e3f2c3a109e4049bae904842cba6c54d84f`, digest total `-17782796129345549661789`.
+Parquet SHA256 `cfcde4bb3440d86497c3dd6650ab7ceb66c45a2b39e3fb1c874caa9446230091`.
 
 ## Rows per year
 
 | Year | Rows | HISTORIC True | HISTORIC False | Empty UPRN | Empty RRN | Digest total |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| 2008 | 9,055 | 7,475 | 1,580 | 10 | 375 | `-605292016027400250450` |
-| 2009 | 203,831 | 159,631 | 44,200 | 5,360 | 7,208 | `1609481545741641798299` |
-| 2010 | 126,784 | 94,783 | 32,001 | 2,759 | 4,724 | `1007469630019351218446` |
-| 2011 | 125,877 | 92,122 | 33,755 | 2,263 | 4,637 | `1938960249245352794578` |
-| 2012 | 130,932 | 89,715 | 41,217 | 2,578 | 6,207 | `-1091898152246186545307` |
-| 2013 | 244,184 | 172,480 | 71,704 | 4,339 | 35,554 | `-1064087481219449826644` |
-| 2014 | 353,444 | 232,205 | 121,239 | 7,515 | 93,604 | `-8283271092137779254132` |
-| 2015 | 284,531 | 170,381 | 114,150 | 11,674 | 52,484 | `-4964734794451134719882` |
-| 2016 | 251,337 | 134,740 | 116,597 | 12,584 | 32,729 | `-1312109079675265703740` |
-| 2017 | 226,738 | 110,297 | 116,441 | 11,027 | 21,677 | `-2728585713637737731486` |
-| 2018 | 223,222 | 101,301 | 121,921 | 13,129 | 13,876 | `-2861935135331355683732` |
-| 2019 | 240,409 | 96,012 | 144,397 | 15,652 | 13,058 | `-4385402886374359446729` |
-| 2020 | 184,580 | 67,644 | 116,936 | 12,267 | 9,099 | `-2207672410567681057296` |
-| 2021 | 205,602 | 64,247 | 141,355 | 16,700 | 7,546 | `1859986810618167750061` |
-| 2022 | 217,143 | 56,789 | 160,354 | 16,343 | 7,503 | `-3917835564494976643056` |
-| 2023 | 222,206 | 48,613 | 173,593 | 14,862 | 8,083 | `-2285277918643436413669` |
-| 2024 | 219,190 | 39,954 | 179,236 | 12,972 | 8,859 | `-3208893473212881030650` |
-| 2025 | 207,994 | 23,429 | 184,565 | 11,168 | 8,420 | `-1524031268430388320049` |
-| 2026 | 110,010 | 6,731 | 103,279 | 5,335 | 4,367 | `-1630719222188161753356` |
+| 2008 | 9,055 | 7,475 | 1,580 | 10 | 375 | `-352626625168326361661` |
+| 2009 | 203,831 | 159,631 | 44,200 | 5,360 | 7,208 | `-295798643900878463874` |
+| 2010 | 126,784 | 94,783 | 32,001 | 2,759 | 4,724 | `-384978216249314434157` |
+| 2011 | 125,877 | 92,122 | 33,755 | 2,263 | 4,637 | `645290151801921072139` |
+| 2012 | 130,932 | 89,715 | 41,217 | 2,578 | 6,207 | `-971168042973651488665` |
+| 2013 | 244,184 | 172,480 | 71,704 | 4,339 | 35,554 | `-175173973713729912762` |
+| 2014 | 353,444 | 232,205 | 121,239 | 7,515 | 93,604 | `-167109458051962201561` |
+| 2015 | 284,531 | 170,381 | 114,150 | 11,674 | 52,484 | `2214401340830037732900` |
+| 2016 | 251,337 | 134,740 | 116,597 | 12,584 | 32,729 | `3007489853307129804617` |
+| 2017 | 226,738 | 110,297 | 116,441 | 11,027 | 21,677 | `2027529221563254578584` |
+| 2018 | 223,222 | 101,301 | 121,921 | 13,129 | 13,876 | `-1326177194614701696384` |
+| 2019 | 240,409 | 96,012 | 144,397 | 15,652 | 13,058 | `-8749934076901724986277` |
+| 2020 | 184,580 | 67,644 | 116,936 | 12,267 | 9,099 | `20365107094267882728` |
+| 2021 | 205,602 | 64,247 | 141,355 | 16,700 | 7,546 | `-2679751813404871093403` |
+| 2022 | 217,143 | 56,789 | 160,354 | 16,343 | 7,503 | `-6424356845924595941138` |
+| 2023 | 222,206 | 48,613 | 173,593 | 14,862 | 8,083 | `-4205041019298200555678` |
+| 2024 | 219,190 | 39,954 | 179,236 | 12,972 | 8,859 | `258508304489081861504` |
+| 2025 | 207,994 | 23,429 | 184,565 | 11,168 | 8,420 | `-2683569768122240479475` |
+| 2026 | 110,010 | 6,731 | 103,279 | 5,335 | 4,367 | `2459305569892955020774` |
 
 ## What the release holds
 
@@ -176,7 +176,7 @@ Parquet SHA256 `b1337d9832e017bd2399417786f68222a25b226e0dfee0ec8259a803eebba0ce
 
 ## Checks
 
-297 passed, 0 failed.
+295 passed, 0 failed.
 
 | Check | Result | Detail |
 | --- | --- | --- |
@@ -201,8 +201,6 @@ Parquet SHA256 `b1337d9832e017bd2399417786f68222a25b226e0dfee0ec8259a803eebba0ce
 | `source.epc_2026Q2/extracted/2026.csv` | pass | sha256 matches |
 | `source.datazones/SG_SIMD_2012.dbf` | pass | sha256 matches |
 | `source.datazones/DataZone2011_lookup.csv` | pass | sha256 matches |
-| `source.epc_2026Q2/domestic_epc_extended_historic_Q2_2026.7z` | pass | sha256 matches |
-| `source.epc_2026Q2/publication_note.pdf` | pass | sha256 matches |
 | `schema.matches_generator` | pass | output_schema.yaml is what python -m epc_ingest.columns writes |
 | `datazones_2001.count` | pass | 6505 |
 | `datazones_2001.distinct` | pass | 6505 |
@@ -424,7 +422,7 @@ Parquet SHA256 `b1337d9832e017bd2399417786f68222a25b226e0dfee0ec8259a803eebba0ce
 | `readback.parquet.metadata.schema_version` | pass | epc_domestic_v1 |
 | `readback.parquet.metadata.key` | pass | ["epc_release", "source_year", "source_row"] |
 | `readback.parquet.metadata.epc_release` | pass | 2026Q2 |
-| `readback.parquet.metadata.decisions_sha256` | pass | 363a490fea74eed39ac093025e2f39f45c0de036f86083bacf5f05a86fea23d0 |
+| `readback.parquet.metadata.decisions_sha256` | pass | baa3eb4481887e3111a2f105370fe6e3ebea9c2a667feededac5049d7a36dbbd |
 | `readback.parquet.metadata.registry_sha256` | pass | bbce1df297307bc118b1d623bf0aada579d8070482f38f307d5f2cf0c69c3cdf |
 | `readback.parquet.metadata.sources` | pass | [{"year": 2008, "file": "epc_2026Q2/extracted/2008.csv", "sha256": "ce393d3ab26847d9a642d8e7491203db88e526ea473bb74daeead19ca4865c2c"}, {"year": 2009, "file": " |
 | `readback.parquet.rows` | pass | 3787069 |
@@ -468,7 +466,7 @@ Parquet SHA256 `b1337d9832e017bd2399417786f68222a25b226e0dfee0ec8259a803eebba0ce
 | `readback.parquet.2026.digest` | pass | the row group rendered again gives the digest recorded while writing |
 | `readback.parquet.2026.one_year_per_row_group` | pass | [2026] |
 | `readback.parquet.sampled_rows_equal_source` | pass | 57 rows (first, middle, last of each file), 6,099 published cells compared with the source text |
-| `readback.csv.header` | pass | ['epc_release', 'source_year', 'source_row', 'HISTORIC', 'BUILDING_REFERENCE_NUMBER', 'OSG_REFERENCE_NUMBER', 'POSTCODE', 'INSPECTION_DATE', 'TYPE_OF_ASSESSMENT |
+| `readback.csv.header` | pass | ['epc_release', 'source_year', 'source_row', 'HISTORIC', 'BUILDING_REFERENCE_NUMBER', 'OSG_REFERENCE_NUMBER', 'ADDRESS1', 'ADDRESS2', 'ADDRESS3', 'POSTCODE', 'I |
 | `readback.csv.rows` | pass | 3787069 |
 | `readback.csv.digest_total` | pass | the digest recomputed from the bytes on disk equals the one computed while writing |
 | `table.rows` | pass | key unique |

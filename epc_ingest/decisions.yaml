@@ -36,6 +36,10 @@ decisions:
     decision: The repository publishes the recipe and cites the source. The built Parquet, CSV and SQL table stay private; the three address lines are withheld from the CSV; the source archive is held as an unpublished restricted Zenodo draft (23784712) as the off-site copy.
     why: The address and postcode fields are under a Royal Mail notice, not the Open Government Licence, and the download URL is overwritten every quarter.
   - date: 2026-10-30
+    id: address-lines-loaded
+    decision: Revises recipe-public-data-private on one point. The CSV and the SQL table carry ADDRESS1, ADDRESS2 and ADDRESS3 as published, like every other column. The CSV goes only to the HIC OneDrive and into the HIC SQL Server; nothing built leaves the safe haven. The build report and the data dictionary still print no address or postcode value. A view without the three columns is the suggested analyst-facing object; the question of who may see them stays with information governance.
+    why: The address lines are the only key for the 178,537 certificates without a Gazetteer UPRN and the only way to check a UPRN linkage against the cohort's own address; the register is published openly with them, so the table holds nothing the public cannot see, and withholding them protected a file that never leaves HIC.
+  - date: 2026-10-30
     id: join-latest-lodged-with-ties
     decision: The example join returns the latest certificate lodged on or before the cohort date, with its age in days, and does not decide expiry. Two or more certificates of one UPRN lodged on the latest eligible day are ambiguous_as_of with no values. Without a date, the HISTORIC = False certificate; two of them are ambiguous_latest; none is no_current_certificate.
     why: The choice of certificate must be explicit in the query, never a default or an arbitrary TOP (1).

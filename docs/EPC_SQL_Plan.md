@@ -14,7 +14,7 @@ Every type and length below is measured over all 3,787,069 rows of the 19 files
 | Step | AHAH | EPC |
 | --- | --- | --- |
 | Declare the columns | `ahah_ingest/output_schema.yaml`: name, type, nullable, key, description | `epc_ingest/output_schema.yaml`, same format, one table |
-| Decide what the CSV carries | `export_contract.yaml`: every column goes out | `export_contract.yaml`: every column except the three address lines (`EPC_Plan.md`, section 5) |
+| Decide what the CSV carries | `export_contract.yaml`: every column goes out | `export_contract.yaml`: every column, the three address lines included since the revision of 30 October 2026 (`EPC_Plan.md`, section 5) |
 | Write the CSV | `core/text_output.py`, with `decimal` and `int32` added | the same, with `int64` added for the UPRN and `datetime` for `CREATED_AT`, each with one rendering in Python and in SQL and a round-trip test |
 | Record the build | `results/manifest.json`: SHA256, rows, columns, digest total | the same, plus rows per source year |
 | Generate the SQL | `sql_check.py` writes `import_csv.sql` and `check_loaded_digest.sql` | the same generator |
@@ -130,7 +130,7 @@ meaning recorded in the data dictionary as "observed, not documented by the publ
 | File | What |
 | --- | --- |
 | `results/epc_domestic.parquet` | the table, one row group per source year, schema and decision-log hash in the metadata |
-| `results/epc_domestic.csv.gz` | the export, without the three address lines, written with mtime 0 |
+| `results/epc_domestic.csv.gz` | the export, every column, written with mtime 0 |
 | `results/manifest.json` | SHA256 of both, rows in total and per year, columns, digest version and total |
 | `results/BUILD_REPORT.md` | every check with its result, the observed counts, three certificates cell for cell against the source |
 | `docs/sql/import_csv.sql`, `docs/sql/check_loaded_digest.sql` | generated |

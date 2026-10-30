@@ -135,7 +135,7 @@ def loaded_matches_csv():
     """Read back through pyodbc and compare, cell by cell, with the CSV text: the published text
     columns as they are, empty for empty; the derived ones rendered in SQL; NULL where the CSV is empty."""
     rows = csv_rows()
-    cols = ["POSTCODE", "IMPROVEMENTS", "LOCAL_AUTHORITY_LABEL", "MAINHEAT_DESCRIPTION", "PHOTO_SUPPLY", "BUILDING_REFERENCE_NUMBER", "TENURE",
+    cols = ["ADDRESS1", "ADDRESS2", "ADDRESS3", "POSTCODE", "IMPROVEMENTS", "LOCAL_AUTHORITY_LABEL", "MAINHEAT_DESCRIPTION", "PHOTO_SUPPLY", "BUILDING_REFERENCE_NUMBER", "TENURE",
             "REPORT_REFERENCE_NUMBER", "OSG_REFERENCE_NUMBER", "ADDENDUM_TEXT", "rrn", "pc_norm", "datazone_2001", "datazone_2011"]
     rendered = {"uprn_osg": "CONVERT(nvarchar(30), uprn_osg)", "uprn_sepcr": "CONVERT(nvarchar(30), uprn_sepcr)",
                 "lodgement_date_parsed": "CONVERT(nvarchar(30), lodgement_date_parsed, 23)", "inspection_date_parsed": "CONVERT(nvarchar(30), inspection_date_parsed, 23)",
