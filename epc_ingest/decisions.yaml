@@ -1,0 +1,41 @@
+# Decision log of the EPC build. Each entry is dated and says what was decided and why.
+# Its SHA256 travels in the Parquet metadata and the manifest. The reasoning in full is in
+# docs/EPC_Plan.md (section 8 and the decision passages) and docs/EPC_SQL_Plan.md.
+version: 1
+decisions:
+  - date: 2026-10-29
+    id: one-table-per-certificate
+    decision: One table, epc_domestic, one row per published certificate, superseded certificates included, keyed by (epc_release, source_year, source_row).
+    why: The published grain is the certificate. REPORT_REFERENCE_NUMBER is empty in 9% of rows and (BUILDING_REFERENCE_NUMBER, CREATED_AT) repeats, so no published key exists; the file position is the only stable identity. A later quarterly release is a new build with a new epc_release, never an update.
+  - date: 2026-10-29
+    id: values-as-published
+    decision: All 107 published columns are kept as text exactly as published, in published order, under the publisher's names, trailing spaces and embedded newlines included. Typed copies are derived beside them and the text is never removed.
+    why: The text is the record; the digest over the text proves fidelity. A typed copy is a convenience by a documented rule.
+  - date: 2026-10-29
+    id: file-year-is-created-at
+    decision: The annual file a row belongs to is the year of CREATED_AT, not of LODGEMENT_DATE; the build fails if a row's CREATED_AT year is not the file year.
+    why: Measured over every file: CREATED_AT is always in the file year, LODGEMENT_DATE is not (outliers 2002, 2006, 2108).
+  - date: 2026-10-30
+    id: uprn-as-integer
+    decision: uprn_osg is a bigint and is the only column any join compares. The published text stays as provenance. Short UPRNs are real, not truncated.
+    why: Every one of the 17,933 8-digit UPRNs exists in OS Open UPRN and lies in Clackmannanshire; length follows the issuing council (docs/uprn_check_2026-10-30.md). A padded cohort UPRN matches once both sides are integers.
+  - date: 2026-10-30
+    id: derived-names-and-nullability
+    decision: Derived columns carry a kind suffix (_parsed, _flag, _int, _num) or are a new word, never a published name in another case. Published columns are NOT NULL and hold the empty string where the file is empty. Derived columns take the nullability the schema declares; the nullable ones are NULL only in their documented missing case, and a required value that does not parse stops the build.
+    why: SQL Server compares identifiers under the database collation, case-insensitive by default. Empty and NULL mean different things and must survive the CSV, the import and the digest (reviews of 30 October 2026).
+  - date: 2026-10-30
+    id: bounded-widths-max-in-digest
+    decision: Every text column is nvarchar(n) from the measured longest value with headroom; there is no nvarchar(max). The row digest still converts the first operand of each concatenation chunk to nvarchar(max).
+    why: The longest value is 3,330 characters, so widths bound every cell, but CONCAT_WS returns nvarchar(4000) unless an operand is max and a row of bounded cells can exceed that.
+  - date: 2026-10-30
+    id: datazone-lists
+    decision: The 2001 and 2011 data zone codes are parsed from the text with a status, and checked against the lists the sibling projects already pin, same file, same hash, so that a well formed code not in the list stops the build.
+    why: DATA_ZONE carries junk (00Q, NA) and names; the register assigned zones from the address and they can differ from postcode-simd's for the same postcode.
+  - date: 2026-10-30
+    id: recipe-public-data-private
+    decision: The repository publishes the recipe and cites the source. The built Parquet, CSV and SQL table stay private; the three address lines are withheld from the CSV; the source archive is held as an unpublished restricted Zenodo draft (23784712) as the off-site copy.
+    why: The address and postcode fields are under a Royal Mail notice, not the Open Government Licence, and the download URL is overwritten every quarter.
+  - date: 2026-10-30
+    id: join-latest-lodged-with-ties
+    decision: The example join returns the latest certificate lodged on or before the cohort date, with its age in days, and does not decide expiry. Two or more certificates of one UPRN lodged on the latest eligible day are ambiguous_as_of with no values. Without a date, the HISTORIC = False certificate; two of them are ambiguous_latest; none is no_current_certificate.
+    why: The choice of certificate must be explicit in the query, never a default or an arbitrary TOP (1).

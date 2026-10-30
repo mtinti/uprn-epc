@@ -1,0 +1,26 @@
+# How to cite this software, read by GitHub ("Cite this repository"). Keep the version in step
+# with pyproject.toml. The data are not in this repository: cite the Scottish Government dataset
+# as the README says.
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below, and cite the data: Scottish Government, Domestic Energy Performance Certificates, extended historic dataset (data.gov.scot), Open Government Licence v3.0."
+title: "epc-scotland: Scottish domestic EPCs for SQL Server"
+abstract: >-
+  A CLI pipeline that puts every certificate of the Scottish Government's extended historic
+  extract of domestic Energy Performance Certificates into one SQL Server table, values exactly
+  as published, from hash-pinned sources, with typed copies for joining by UPRN and date and a
+  row digest that a load is checked against. The recipe is public; the built table is not.
+authors:
+  - family-names: Tinti
+    given-names: Michele
+    affiliation: "Health Informatics Centre (HIC), University of Dundee"
+    orcid: "https://orcid.org/0000-0002-0051-017X"
+version: "0.1.0"
+license: MIT
+repository-code: "https://github.com/mtinti/epc-scotland"
+keywords:
+  - Energy Performance Certificate
+  - EPC
+  - UPRN
+  - SQL Server
+  - data linkage
+  - Scotland

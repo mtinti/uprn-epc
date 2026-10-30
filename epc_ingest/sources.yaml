@@ -1,0 +1,84 @@
+# Pinned sources for the EPC build. Version 1, 30 October 2026.
+#
+# A pin is never updated by the pipeline: changed bytes stop it. One release of the extract is
+# one archive with 19 annual CSV members and the publisher's note. The paths are relative to
+# data/sources. A later quarterly release is a new release block, never an edit of this one.
+version: 1
+
+publisher: Scottish Government, EPCenquiries@gov.scot
+licence: >-
+  Open Government Licence v3.0 for every field except ADDRESS1, ADDRESS2, ADDRESS3 (post town)
+  and POSTCODE, which carry a Royal Mail copyright notice: use for energy-efficiency purposes
+  permitted by the notice, and the notice must accompany any sharing (publication note, page 2).
+attribution:
+  - "Contains public sector information licensed under the Open Government Licence v3.0. Source: Scottish Government, Domestic Energy Performance Certificates, extended historic dataset to Q2 2026 (register extract of 1 September 2026)."
+  - "Address and postcode fields: Royal Mail copyright notice as printed in the publication note."
+
+# What may be archived off site. restricted: the archive is held in a restricted Zenodo record
+# (files on request, metadata and hashes public), because the download URL is overwritten every
+# quarter and the address columns are not under the Open Government Licence. The record is a
+# draft, unpublished, decided 30 October 2026 (docs/EPC_Plan.md, section 2).
+redistribution: restricted
+zenodo_draft: 23784712
+
+publisher_pages:
+  catalogue: https://data.gov.scot/dataset/domestic_energy_performance_certificates___extended_historic_dataset_to_q1_2026
+  resource: https://data.gov.scot/dataset/domestic_energy_performance_certificates___extended_historic_dataset_to_q1_2026/resource/b7bc304c-debb-4365-9a86-1c8cb82cc60d/download
+
+release:
+  epc_release: 2026Q2
+  extracted_from_register: 2026-09-01
+  downloaded: 2026-10-05
+  archive:
+    file: epc_2026Q2/domestic_epc_extended_historic_Q2_2026.7z
+    sha256: 708cc7510a0215ba7f9bf73ccc9604b1e818b04f355e06c6adb192611103c351
+    bytes: 535084142
+  note:
+    file: epc_2026Q2/publication_note.pdf
+    sha256: c2f336967e5d9a6dd24fc8c842c81b23f9ae911f092778c1cef4426e332e982e
+    bytes: 323098
+    archive_member: "EPC Data - Q2 2026 Extract - EPD Extended Historic Data Publication Note - Domestic Buildings.pdf"
+  # The members the build reads, with the row count each held in this release. The build fails
+  # on a different hash or a different count.
+  members:
+  - {year: 2008, file: epc_2026Q2/extracted/2008.csv, sha256: ce393d3ab26847d9a642d8e7491203db88e526ea473bb74daeead19ca4865c2c, bytes: 17093404, rows: 9055}
+  - {year: 2009, file: epc_2026Q2/extracted/2009.csv, sha256: a9b46e904318382bf057d95800a20ebacb83b5db70bd46bfef3f885873cc1eab, bytes: 356725698, rows: 203831}
+  - {year: 2010, file: epc_2026Q2/extracted/2010.csv, sha256: ffa98dc687dc64cf9cdef312e37ab13bc6a6bc87fc5a005edb0051e962d58df5, bytes: 227969152, rows: 126784}
+  - {year: 2011, file: epc_2026Q2/extracted/2011.csv, sha256: 8d7b3af7eeb3e9a685989e480639c583a7703470af625d05eb8fce66c60027d6, bytes: 264698219, rows: 125877}
+  - {year: 2012, file: epc_2026Q2/extracted/2012.csv, sha256: cdf3855e4ae21538944bc21b73f8f2b95bc2e02a4c70363f940578b9b98bea03, bytes: 288793682, rows: 130932}
+  - {year: 2013, file: epc_2026Q2/extracted/2013.csv, sha256: e84b48cfeef7000cd59b0d30ec11a9ca53ee8246b8c1f4f3696a5d6e55a73b8c, bytes: 534278197, rows: 244184}
+  - {year: 2014, file: epc_2026Q2/extracted/2014.csv, sha256: 21ddfc74e4c18b472af44ca0cbf143e7796d1d4dcdec023c45b1cb51e2f4eb93, bytes: 768274323, rows: 353444}
+  - {year: 2015, file: epc_2026Q2/extracted/2015.csv, sha256: cdc7f17d5cee398c29af8669541f9a37f2b6a636b18eee25a27b81ee5765eb13, bytes: 636320260, rows: 284531}
+  - {year: 2016, file: epc_2026Q2/extracted/2016.csv, sha256: 15d1b9796ce8f81fa5cb4d768eda4864e0c0f9707eecf5cc99fe24933ac50d8f, bytes: 551648116, rows: 251337}
+  - {year: 2017, file: epc_2026Q2/extracted/2017.csv, sha256: ab0c59f47f9bd45c0c58c5562010c4f0021cd0f614e3b37005cc80c5452f866f, bytes: 473461323, rows: 226738}
+  - {year: 2018, file: epc_2026Q2/extracted/2018.csv, sha256: 2c4b9fc716bfffc56dea429a42b008007117ccb06304ed9fb82dab350138e358, bytes: 455246590, rows: 223222}
+  - {year: 2019, file: epc_2026Q2/extracted/2019.csv, sha256: 8f7f90a69db6e68fe24377e32a6b4a7e2e3ca0e4266fde7ee9af4210f220ac23, bytes: 482296187, rows: 240409}
+  - {year: 2020, file: epc_2026Q2/extracted/2020.csv, sha256: 748679bf32babb374a79fd6d9ad75df38d2b2a25e701dcd84adfe34139405d87, bytes: 368771697, rows: 184580}
+  - {year: 2021, file: epc_2026Q2/extracted/2021.csv, sha256: 820f76a6a82d758fe35582a05ce79215e62f3f8d302d8bc9c8ede2f1897e15ac, bytes: 398641296, rows: 205602}
+  - {year: 2022, file: epc_2026Q2/extracted/2022.csv, sha256: 85038a29ab02d971ee5248bc160d2dc9eb3b24b54006bb47fc8bf3a658f019d4, bytes: 415127172, rows: 217143}
+  - {year: 2023, file: epc_2026Q2/extracted/2023.csv, sha256: b16a31b4ef5393ce96ac9844527eddb178e69c142d32fa5a71c411b3c1c28e6f, bytes: 421455546, rows: 222206}
+  - {year: 2024, file: epc_2026Q2/extracted/2024.csv, sha256: 3c55efbf5e526c35bfc1912b5a598bc52a0eb89191697467b7a60065bcc72fa3, bytes: 413552470, rows: 219190}
+  - {year: 2025, file: epc_2026Q2/extracted/2025.csv, sha256: f081fe79aebc7a911e3e767f6809b3a7ba4c97db0575eaa9d26cec6e9356d433, bytes: 349655380, rows: 207994}
+  - {year: 2026, file: epc_2026Q2/extracted/2026.csv, sha256: 08c7b9fa5062f6f743b3c96d7cef663b4ad34406fbe67da73ae542ce7b726bfb, bytes: 163664137, rows: 110010}
+
+# Reference lists of data zones, each the same file, URL and hash a sibling project pins.
+datazone_lists:
+  2001:
+    file: datazones/SG_SIMD_2012.dbf
+    sha256: 4dc58c30c7d023e4e39739e9d2e56fa9f4153a41ef4eeacbe9ba95d60e319095
+    format: dbf
+    code_column: DataZone
+    zones: 6505
+    pinned_in: postcode-simd simd_ingest/sources.yaml, sg_simd_2012
+    url: https://maps.gov.scot/ATOM/shapefiles/SG_SIMD_2012.zip
+    mirror: https://zenodo.org/records/23119743/files/sg_simd_2012__SG_SIMD_2012.zip?download=1
+  2011:
+    file: datazones/DataZone2011_lookup.csv
+    sha256: 688416b875733f62d5ceede1ac2b73c9db021e816ea8a9c6c58da0f105b601b6
+    format: csv
+    code_column: DZ2011_Code
+    encoding: cp1252
+    zones: 6976
+    pinned_in: datazone-ahah ahah_ingest/sources.yaml, datazone_lists
+    url: https://data.gov.scot/dataset/2011_data_zone_lookup/resource/20ad5f65-c5c2-407e-8355-7c25bf579e87/download
+    page: https://data.gov.scot/dataset/2011_data_zone_lookup

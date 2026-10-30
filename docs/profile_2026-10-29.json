@@ -1,0 +1,2174 @@
+{
+ "2008.csv": {
+  "file": "2008.csv",
+  "rows": 9055,
+  "widths": {
+   "107": 9055
+  },
+  "historic": {
+   "True": 7475,
+   "False": 1580
+  },
+  "toa": {
+   "SAP, existing dwelling": 9054,
+   "SAP, new dwelling": 1
+  },
+  "dz_shape": {
+   "A99999999 (Aaaaaaa)": 474,
+   "A99999999 (Aaaaaaaaa)": 413,
+   "A99999999 (Aaaaaaaaaa)": 410,
+   "A99999999 (Aaaaaaaa)": 409,
+   "A99999999 (Aaaaa Aaaaa)": 236,
+   "A99999999 (Aaaaaaaaaaa)": 224,
+   "A99999999 (Aa Aaaaaaa Aaaaaaa)": 186,
+   "A99999999 (Aaaaa)": 158,
+   "A99999999 (Aaaaaa)": 141,
+   "A99999999 (Aaaa Aaaaaa)": 132,
+   "A99999999 (AA Aaaa)": 129,
+   "A99999999 (Aaaaa Aaaa)": 127
+  },
+  "dz11_shape": {
+   "A99999999 (AA99 - 99)": 435,
+   "A99999999 (Aaaaaaaaa - 99)": 350,
+   "A99999999 (Aaaaaaaaaa - 99)": 313,
+   "A99999999 (Aaaaaaa - 99)": 308,
+   "A99999999 (Aaaaaaaa - 99)": 304,
+   "A99999999 (Aaaaaaaaaaa - 99)": 199,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 148,
+   "A99999999 (Aaaaaa - 99)": 142,
+   "A99999999 (Aaaaaaaaaaaa - 99)": 118,
+   "A99999999 (Aaaaaaaaaa Aaaaa - 99)": 118,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 118,
+   "A99999999 (Aaaaaaaa Aaaa - 99)": 110
+  },
+  "pc_shape": {
+   "AA99 9AA": 4185,
+   "AA9 9AA": 3201,
+   "A99 9AA": 1529,
+   "A9 9AA": 140
+  },
+  "lodg_year": {
+   "2008": 9055
+  },
+  "created_year": {
+   "2008": 9055
+  },
+  "insp_shape": {
+   "9999-99-99": 9055
+  },
+  "rrn_empty": 375,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 9055,
+  "lodg_before_insp": 2,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 8680,
+   "<empty>": 375
+  },
+  "uprn_shape": {
+   "9999999999": 9055
+  },
+  "cur_eff_shape": {
+   "99": 8924,
+   "9": 131
+  },
+  "rating": {
+   "D": 3022,
+   "C": 2293,
+   "E": 2039,
+   "F": 971,
+   "B": 407,
+   "G": 323
+  },
+  "tenure": {
+   "owner-occupied": 5032,
+   "rented (private)": 2519,
+   "unknown": 1184,
+   "rented (social)": 320
+  },
+  "ptype": {
+   "Flat": 4181,
+   "House": 3583,
+   "Bungalow": 1027,
+   "Maisonette": 264
+  },
+  "txn": {
+   "marketed sale": 2994,
+   "rental": 2839,
+   "non marketed sale": 2038,
+   "none of the above": 1183,
+   "new dwelling": 1
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2009.csv": {
+  "file": "2009.csv",
+  "rows": 203831,
+  "widths": {
+   "107": 203831
+  },
+  "historic": {
+   "True": 159631,
+   "False": 44200
+  },
+  "toa": {
+   "SAP, existing dwelling": 203523,
+   "SAP, new dwelling": 308
+  },
+  "dz_shape": {
+   "A99999999 (Aaaaaaaa)": 10635,
+   "A99999999 (Aaaaaaaaa)": 10412,
+   "A99999999 (Aaaaaaa)": 9262,
+   "A99999999 (Aaaaaaaaaa)": 8909,
+   "A99999999 (Aaaaaaaaaaa)": 4754,
+   "A99999999 (Aaaaaa)": 4200,
+   "A99999999 (Aaaaa Aaaaa)": 3735,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 3511,
+   "A99999999 (Aaaaaaa Aaaaa)": 3222,
+   "A99999999 (Aaaaaa Aaaa)": 3037,
+   "A99999999 (Aaaaaaa Aaaa)": 2995,
+   "A99999999 (Aaaaaaaaa Aaaa)": 2971
+  },
+  "dz11_shape": {
+   "A99999999 (Aaaaaaaa - 99)": 9200,
+   "A99999999 (Aaaaaaaaa - 99)": 8783,
+   "A99999999 (AA99 - 99)": 7535,
+   "A99999999 (Aaaaaaaaaa - 99)": 7121,
+   "A99999999 (Aaaaaaa - 99)": 6062,
+   "A99999999 (Aaaaaaaaaaa - 99)": 4261,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 3918,
+   "A99999999 (Aaaaaa - 99)": 3912,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 3545,
+   "A99999999 (Aaaaaaaaa Aaaa - 99)": 3069,
+   "A99999999 (Aaaaaa Aaaa - 99)": 2694,
+   "A99999999 (Aaaaa Aaaa - 99)": 2691
+  },
+  "pc_shape": {
+   "AA99 9AA": 77526,
+   "AA9 9AA": 75172,
+   "A99 9AA": 46523,
+   "A9 9AA": 4600,
+   "<empty>": 10
+  },
+  "lodg_year": {
+   "2009": 203748,
+   "2008": 83
+  },
+  "created_year": {
+   "2009": 203831
+  },
+  "insp_shape": {
+   "9999-99-99": 203831
+  },
+  "rrn_empty": 7208,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 203831,
+  "lodg_before_insp": 92,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 196623,
+   "<empty>": 7208
+  },
+  "uprn_shape": {
+   "9999999999": 203831
+  },
+  "cur_eff_shape": {
+   "99": 201859,
+   "9": 1968,
+   "999": 4
+  },
+  "rating": {
+   "C": 64987,
+   "D": 64283,
+   "E": 36386,
+   "B": 17242,
+   "F": 15638,
+   "G": 5257,
+   "A": 33,
+   "": 5
+  },
+  "tenure": {
+   "owner-occupied": 94233,
+   "rented (private)": 60676,
+   "rented (social)": 45042,
+   "unknown": 3880
+  },
+  "ptype": {
+   "Flat": 112328,
+   "House": 67343,
+   "Bungalow": 17875,
+   "Maisonette": 6285
+  },
+  "txn": {
+   "rental": 105718,
+   "marketed sale": 79545,
+   "non marketed sale": 14688,
+   "none of the above": 3572,
+   "new dwelling": 308
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2010.csv": {
+  "file": "2010.csv",
+  "rows": 126784,
+  "widths": {
+   "107": 126784
+  },
+  "historic": {
+   "True": 94783,
+   "False": 32001
+  },
+  "toa": {
+   "SAP, existing dwelling": 126784
+  },
+  "dz_shape": {
+   "A99999999 (Aaaaaaaa)": 6720,
+   "A99999999 (Aaaaaaaaa)": 6011,
+   "A99999999 (Aaaaaaa)": 5868,
+   "A99999999 (Aaaaaaaaaa)": 5388,
+   "A99999999 (Aaaaaaaaaaa)": 3361,
+   "A99999999 (Aaaaaa)": 2814,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 2457,
+   "A99999999 (Aaaaaa Aaaa)": 2274,
+   "A99999999 (Aaaaaaa Aaaaa)": 2134,
+   "A99999999 (Aaaaa Aaaaa)": 2132,
+   "A99999999 (Aaaaaaaa Aaaa)": 1954,
+   "A99999999 (Aaaaaaaaa Aaaa)": 1934
+  },
+  "dz11_shape": {
+   "A99999999 (Aaaaaaaa - 99)": 5618,
+   "A99999999 (Aaaaaaaaa - 99)": 5167,
+   "A99999999 (AA99 - 99)": 4230,
+   "A99999999 (Aaaaaaaaaa - 99)": 4036,
+   "A99999999 (Aaaaaaa - 99)": 3873,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 2718,
+   "A99999999 (Aaaaaaaaaaa - 99)": 2712,
+   "A99999999 (Aaaaaa - 99)": 2572,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 2248,
+   "A99999999 (Aaaaaa Aaaa - 99)": 1990,
+   "A99999999 (Aaaaaaaaa Aaaa - 99)": 1975,
+   "A99999999 (Aaaaaaaa Aaaa - 99)": 1958
+  },
+  "pc_shape": {
+   "AA99 9AA": 51426,
+   "AA9 9AA": 45730,
+   "A99 9AA": 27634,
+   "A9 9AA": 1994
+  },
+  "lodg_year": {
+   "2010": 126542,
+   "2009": 242
+  },
+  "created_year": {
+   "2010": 126784
+  },
+  "insp_shape": {
+   "9999-99-99": 126784
+  },
+  "rrn_empty": 4724,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 271,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 122060,
+   "<empty>": 4724
+  },
+  "uprn_shape": {
+   "9999999999": 126784
+  },
+  "cur_eff_shape": {
+   "99": 125404,
+   "9": 1380
+  },
+  "rating": {
+   "D": 41346,
+   "C": 40865,
+   "E": 22932,
+   "F": 9615,
+   "B": 8588,
+   "G": 3436,
+   "A": 2
+  },
+  "tenure": {
+   "owner-occupied": 78635,
+   "rented (social)": 27591,
+   "rented (private)": 20161,
+   "unknown": 397
+  },
+  "ptype": {
+   "Flat": 63585,
+   "House": 46437,
+   "Bungalow": 12771,
+   "Maisonette": 3991
+  },
+  "txn": {
+   "marketed sale": 75307,
+   "rental": 47752,
+   "non marketed sale": 3328,
+   "none of the above": 397
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2011.csv": {
+  "file": "2011.csv",
+  "rows": 125877,
+  "widths": {
+   "107": 125877
+  },
+  "historic": {
+   "True": 92122,
+   "False": 33755
+  },
+  "toa": {
+   "SAP, existing dwelling": 125877
+  },
+  "dz_shape": {
+   "A99999999 (Aaaaaaaa)": 7031,
+   "A99999999 (Aaaaaaaaaa)": 7011,
+   "A99999999 (Aaaaaaaaa)": 6128,
+   "A99999999 (Aaaaaaa)": 5804,
+   "A99999999 (Aaaaaaaaaaa)": 2895,
+   "A99999999 (Aaaaaa Aaaa)": 2781,
+   "A99999999 (Aaaaaa)": 2650,
+   "A99999999 (Aaaaaaaa Aaaa)": 2488,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 2460,
+   "A99999999 (Aaaaa Aaaaa)": 1987,
+   "A99999999 (Aaaaaaaa aaa Aaaaaaaa)": 1969,
+   "A99999999 (Aaaaaaa Aaaaa)": 1864
+  },
+  "dz11_shape": {
+   "A99999999 (Aaaaaaaa - 99)": 6164,
+   "A99999999 (Aaaaaaaaaa - 99)": 5715,
+   "A99999999 (Aaaaaaaaa - 99)": 5572,
+   "A99999999 (Aaaaaaa - 99)": 4052,
+   "A99999999 (AA99 - 99)": 3839,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 2849,
+   "A99999999 (Aaaaaaaaaaa - 99)": 2529,
+   "A99999999 (Aaaaaa Aaaa - 99)": 2502,
+   "A99999999 (Aaaaaa - 99)": 2478,
+   "A99999999 (Aaaaaaaa Aaaa - 99)": 2381,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 1945,
+   "A99999999 (Aaaaaaaa aaa Aaaaaaaa - 99)": 1845
+  },
+  "pc_shape": {
+   "AA99 9AA": 47314,
+   "AA9 9AA": 44041,
+   "A99 9AA": 31650,
+   "A9 9AA": 2872
+  },
+  "lodg_year": {
+   "2011": 125781,
+   "2010": 69,
+   "2009": 27
+  },
+  "created_year": {
+   "2011": 125877
+  },
+  "insp_shape": {
+   "9999-99-99": 125877
+  },
+  "rrn_empty": 4637,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 69,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 121240,
+   "<empty>": 4637
+  },
+  "uprn_shape": {
+   "9999999999": 125877
+  },
+  "cur_eff_shape": {
+   "99": 125050,
+   "9": 824,
+   "999": 3
+  },
+  "rating": {
+   "D": 48238,
+   "C": 42530,
+   "E": 21051,
+   "F": 7110,
+   "B": 4798,
+   "G": 2142,
+   "A": 7,
+   "": 1
+  },
+  "tenure": {
+   "owner-occupied": 68544,
+   "rented (social)": 33491,
+   "rented (private)": 16881,
+   "unknown": 6961
+  },
+  "ptype": {
+   "Flat": 63737,
+   "House": 45362,
+   "Bungalow": 12965,
+   "Maisonette": 3813
+  },
+  "txn": {
+   "marketed sale": 66026,
+   "rental": 50372,
+   "none of the above": 6961,
+   "non marketed sale": 2518
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2012.csv": {
+  "file": "2012.csv",
+  "rows": 130932,
+  "widths": {
+   "107": 130932
+  },
+  "historic": {
+   "True": 89715,
+   "False": 41217
+  },
+  "toa": {
+   "SAP, existing dwelling": 104350,
+   "RdSAP, existing dwelling": 26582
+  },
+  "dz_shape": {
+   "A99999999 (Aaaaaaaa)": 8537,
+   "A99999999 (Aaaaaaaaaa)": 6062,
+   "A99999999 (Aaaaaaaaa)": 5500,
+   "A99999999 (Aaaaaaa)": 5466,
+   "A99999999 (Aaaaaaaaaaa)": 3303,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 3115,
+   "A99999999 (Aaaaaa)": 2679,
+   "A99999999 (Aaaaa Aaaaa)": 2251,
+   "A99999999 (Aaaaaaa Aaaaa)": 2173,
+   "A99999999 (Aaaaa)": 2058,
+   "A99999999 (Aaaaaaaa Aaaa)": 2005,
+   "A99999999 (Aaaaaaa Aaaa)": 1974
+  },
+  "dz11_shape": {
+   "A99999999 (Aaaaaaaa - 99)": 7256,
+   "A99999999 (Aaaaaaaaa - 99)": 4990,
+   "A99999999 (Aaaaaaaaaa - 99)": 4754,
+   "A99999999 (AA99 - 99)": 4172,
+   "A99999999 (Aaaaaaa - 99)": 3910,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 3333,
+   "A99999999 (Aaaaaaaaaaa - 99)": 2989,
+   "A99999999 (Aaaaaa - 99)": 2564,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 2151,
+   "A99999999 (Aaaaaaaa Aaaa - 99)": 1959,
+   "A99999999 (Aaaaaaaaa Aaaa - 99)": 1908,
+   "A99999999 (Aaaaaaaaaaaa - 99)": 1766
+  },
+  "pc_shape": {
+   "AA99 9AA": 58680,
+   "AA9 9AA": 46860,
+   "A99 9AA": 23739,
+   "A9 9AA": 1653
+  },
+  "lodg_year": {
+   "2012": 130924,
+   "2011": 4,
+   "2010": 4
+  },
+  "created_year": {
+   "2012": 130932
+  },
+  "insp_shape": {
+   "9999-99-99": 130932
+  },
+  "rrn_empty": 6207,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 67,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 124725,
+   "<empty>": 6207
+  },
+  "uprn_shape": {
+   "9999999999": 130932
+  },
+  "cur_eff_shape": {
+   "99": 130220,
+   "9": 698,
+   "999": 13,
+   "9999": 1
+  },
+  "rating": {
+   "D": 55267,
+   "C": 46459,
+   "E": 18593,
+   "F": 5785,
+   "B": 3033,
+   "G": 1742,
+   "A": 53
+  },
+  "tenure": {
+   "owner-occupied": 76431,
+   "rented (social)": 22685,
+   "rented (private)": 20762,
+   "unknown": 11054
+  },
+  "ptype": {
+   "Flat": 56078,
+   "House": 55035,
+   "Bungalow": 16694,
+   "Maisonette": 3125
+  },
+  "txn": {
+   "marketed sale": 71939,
+   "rental": 42943,
+   "none of the above": 11014,
+   "non marketed sale": 2797,
+   "FiT application": 1566,
+   "new dwelling": 583,
+   "assessment for green deal": 77,
+   "following green deal": 13
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2013.csv": {
+  "file": "2013.csv",
+  "rows": 244184,
+  "widths": {
+   "107": 244184
+  },
+  "historic": {
+   "True": 172480,
+   "False": 71704
+  },
+  "toa": {
+   "RdSAP, existing dwelling": 243272,
+   "SAP, new dwelling": 910,
+   "SAP, existing dwelling": 2
+  },
+  "dz_shape": {
+   "A99999999 (Aaaaaaaa)": 14843,
+   "A99999999 (Aaaaaaaaaa)": 12356,
+   "A99999999 (Aaaaaaaaa)": 11271,
+   "A99999999 (Aaaaaaa)": 10465,
+   "A99999999 (Aaaaaaaaaaa)": 5877,
+   "A99999999 (Aaaaaa)": 5401,
+   "A99999999 (Aaaaaaa Aaaaa)": 4988,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 4689,
+   "A99999999 (Aaaaaa Aaaa)": 4257,
+   "A99999999 (Aaaaaaa Aaaa)": 4241,
+   "A99999999 (Aaaaaaaaaa Aaaa)": 4160,
+   "A99999999 (Aaaaa Aaaaa)": 3691
+  },
+  "dz11_shape": {
+   "A99999999 (Aaaaaaaa - 99)": 12639,
+   "A99999999 (Aaaaaaaaaa - 99)": 9755,
+   "A99999999 (Aaaaaaaaa - 99)": 9725,
+   "A99999999 (AA99 - 99)": 7741,
+   "A99999999 (Aaaaaaa - 99)": 7241,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 5016,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 4954,
+   "A99999999 (Aaaaaa - 99)": 4808,
+   "A99999999 (Aaaaaaaaaaa - 99)": 4587,
+   "A99999999 (Aaaaaaaaaa Aaaa - 99)": 3956,
+   "A99999999 (Aaaaaaa Aaaa - 99)": 3775,
+   "A99999999 (Aaaaaa Aaaa - 99)": 3652
+  },
+  "pc_shape": {
+   "AA9 9AA": 92956,
+   "AA99 9AA": 88570,
+   "A99 9AA": 59482,
+   "A9 9AA": 3176
+  },
+  "lodg_year": {
+   "2013": 244164,
+   "2012": 20
+  },
+  "created_year": {
+   "2013": 244184
+  },
+  "insp_shape": {
+   "9999-99-99": 244184
+  },
+  "rrn_empty": 35554,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 176,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 208630,
+   "<empty>": 35554
+  },
+  "uprn_shape": {
+   "9999999999": 244184
+  },
+  "cur_eff_shape": {
+   "99": 242873,
+   "9": 1281,
+   "999": 30
+  },
+  "rating": {
+   "D": 107767,
+   "C": 77329,
+   "E": 38607,
+   "F": 11038,
+   "B": 5688,
+   "G": 3420,
+   "A": 335
+  },
+  "tenure": {
+   "owner-occupied": 156458,
+   "rented (social)": 51141,
+   "rented (private)": 34794,
+   "unknown": 1791
+  },
+  "ptype": {
+   "House": 110900,
+   "Flat": 99860,
+   "Bungalow": 26076,
+   "Maisonette": 7348
+  },
+  "txn": {
+   "marketed sale": 90153,
+   "rental": 60793,
+   "none of the above": 50728,
+   "assessment for green deal": 26006,
+   "FiT application": 6322,
+   "non marketed sale": 5687,
+   "new dwelling": 2277,
+   "following green deal": 2218
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2014.csv": {
+  "file": "2014.csv",
+  "rows": 353444,
+  "widths": {
+   "107": 353444
+  },
+  "historic": {
+   "True": 232205,
+   "False": 121239
+  },
+  "toa": {
+   "RdSAP, existing dwelling": 347784,
+   "SAP, new dwelling": 5555,
+   "SAP, existing dwelling": 105
+  },
+  "dz_shape": {
+   "A99999999 (Aaaaaaaa)": 19067,
+   "A99999999 (Aaaaaaaaaa)": 17006,
+   "A99999999 (Aaaaaaa)": 14358,
+   "A99999999 (Aaaaaaaaa)": 13904,
+   "A99999999 (Aaaaaaa Aaaaa)": 7690,
+   "A99999999 (Aaaaaa)": 7508,
+   "A99999999 (Aaaaaaaaaaa)": 7432,
+   "A99999999 (Aaaaaa Aaaa)": 6169,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 6130,
+   "A99999999 (Aaaaaaa Aaaa)": 5517,
+   "A99999999 (Aaaaa Aaaaa)": 4952,
+   "A99999999 (Aaaaaaaa Aaaa)": 4629
+  },
+  "dz11_shape": {
+   "A99999999 (AA99 - 99)": 19492,
+   "A99999999 (Aaaaaaaa - 99)": 15998,
+   "A99999999 (Aaaaaaaaaa - 99)": 13804,
+   "A99999999 (Aaaaaaaaa - 99)": 12848,
+   "A99999999 (Aaaaaaa - 99)": 9470,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 7364,
+   "A99999999 (Aaaaaa - 99)": 6853,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 6501,
+   "A99999999 (Aaaaaaaaaaa - 99)": 5541,
+   "A99999999 (Aaaaaa Aaaa - 99)": 4977,
+   "A99999999 (Aaaaaaa Aaaa - 99)": 4908,
+   "A99999999 (Aaaaaaaa Aaaa - 99)": 4748
+  },
+  "pc_shape": {
+   "AA99 9AA": 132665,
+   "AA9 9AA": 129312,
+   "A99 9AA": 86654,
+   "A9 9AA": 4813
+  },
+  "lodg_year": {
+   "2014": 353357,
+   "2013": 76,
+   "2015": 10,
+   "2017": 1
+  },
+  "created_year": {
+   "2014": 353444
+  },
+  "insp_shape": {
+   "9999-99-99": 353444
+  },
+  "rrn_empty": 93604,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 144,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 259840,
+   "<empty>": 93604
+  },
+  "uprn_shape": {
+   "9999999999": 353444
+  },
+  "cur_eff_shape": {
+   "99": 351502,
+   "9": 1895,
+   "999": 46,
+   "9999": 1
+  },
+  "rating": {
+   "D": 157098,
+   "C": 107164,
+   "E": 55064,
+   "F": 16371,
+   "B": 11971,
+   "G": 5193,
+   "A": 583
+  },
+  "tenure": {
+   "owner-occupied": 222837,
+   "rented (social)": 88301,
+   "rented (private)": 37973,
+   "unknown": 4333
+  },
+  "ptype": {
+   "House": 167056,
+   "Flat": 136839,
+   "Bungalow": 38472,
+   "Maisonette": 11076,
+   "Park home": 1
+  },
+  "txn": {
+   "none of the above": 119564,
+   "marketed sale": 97827,
+   "rental": 65433,
+   "assessment for green deal": 48320,
+   "non marketed sale": 8447,
+   "new dwelling": 6718,
+   "FiT application": 4631,
+   "following green deal": 1379,
+   "ECO assessment": 905,
+   "RHI application": 214,
+   "rental (private)": 5,
+   "rental (social)": 1
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2015.csv": {
+  "file": "2015.csv",
+  "rows": 284531,
+  "widths": {
+   "107": 284531
+  },
+  "historic": {
+   "True": 170381,
+   "False": 114150
+  },
+  "toa": {
+   "RdSAP, existing dwelling": 268693,
+   "SAP, new dwelling": 14800,
+   "SAP, existing dwelling": 1038
+  },
+  "dz_shape": {
+   "A99999999 (Aaaaaaaa)": 14954,
+   "A99999999 (Aaaaaaaaaa)": 12734,
+   "<empty>": 11926,
+   "A99999999 (Aaaaaaa)": 11487,
+   "A99999999 (Aaaaaaaaa)": 11304,
+   "A99999999 (Aaaaaaaaaaa)": 6871,
+   "A99999999 (Aaaaaa)": 6852,
+   "A99999999 (Aaaaaaa Aaaaa)": 6230,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 5692,
+   "A99999999 (Aaaaaa Aaaa)": 4095,
+   "A99999999 (Aaaaaaaa Aaaa)": 4086,
+   "A99999999 (Aaaaa Aaaaa)": 4085
+  },
+  "dz11_shape": {
+   "A99999999 (Aaaaaaaa - 99)": 13373,
+   "A99999999 (Aaaaaaaaaa - 99)": 9981,
+   "A99999999 (Aaaaaaaaa - 99)": 9523,
+   "A99999999 (AA99 - 99)": 9035,
+   "A99999999 (Aaaaaaa - 99)": 8420,
+   "A99999999 (Aaaaaa - 99)": 6614,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 6238,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 6046,
+   "A99999999 (Aaaaaaaaaaa - 99)": 5728,
+   "A99999999 (Aaaaaaaaaa Aaaaa - 99)": 3998,
+   "A99999999 (Aaaaaaaa Aaaa - 99)": 3816,
+   "A99999999 (Aaaaaaaaaaaa - 99)": 3662
+  },
+  "pc_shape": {
+   "AA99 9AA": 118233,
+   "AA9 9AA": 104091,
+   "A99 9AA": 58888,
+   "A9 9AA": 3319
+  },
+  "lodg_year": {
+   "2015": 284494,
+   "2014": 35,
+   "2012": 1,
+   "2011": 1
+  },
+  "created_year": {
+   "2015": 284531
+  },
+  "insp_shape": {
+   "9999-99-99": 284531
+  },
+  "rrn_empty": 52484,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 159,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 232047,
+   "<empty>": 52484
+  },
+  "uprn_shape": {
+   "9999999999": 284531
+  },
+  "cur_eff_shape": {
+   "99": 282231,
+   "9": 2197,
+   "999": 102,
+   "99999": 1
+  },
+  "rating": {
+   "D": 114132,
+   "C": 83475,
+   "E": 43914,
+   "B": 19353,
+   "F": 17018,
+   "G": 6087,
+   "A": 552
+  },
+  "tenure": {
+   "owner-occupied": 176943,
+   "rented (social)": 73935,
+   "rented (private)": 25529,
+   "unknown": 8124
+  },
+  "ptype": {
+   "House": 132461,
+   "Flat": 111351,
+   "Bungalow": 34289,
+   "Maisonette": 6343,
+   "Park home": 87
+  },
+  "txn": {
+   "marketed sale": 95466,
+   "none of the above": 55972,
+   "rental": 55475,
+   "ECO assessment": 28566,
+   "assessment for green deal": 17332,
+   "new dwelling": 14800,
+   "FiT application": 6682,
+   "non marketed sale": 5168,
+   "RHI application": 3363,
+   "following green deal": 1600,
+   "rental (social)": 66,
+   "rental (private)": 41
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2016.csv": {
+  "file": "2016.csv",
+  "rows": 251337,
+  "widths": {
+   "107": 251337
+  },
+  "historic": {
+   "True": 134740,
+   "False": 116597
+  },
+  "toa": {
+   "RdSAP, existing dwelling": 234355,
+   "SAP, new dwelling": 16970,
+   "SAP, existing dwelling": 12
+  },
+  "dz_shape": {
+   "A99999999 (Aaaaaaaa)": 14259,
+   "<empty>": 13357,
+   "A99999999 (Aaaaaaaaaa)": 10810,
+   "A99999999 (Aaaaaaa)": 10762,
+   "A99999999 (Aaaaaaaaa)": 9942,
+   "A99999999 (Aaaaaaaaaaa)": 5979,
+   "A99999999 (Aaaaaa)": 5880,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 5204,
+   "A99999999 (Aaaaaaa Aaaaa)": 4860,
+   "A99999999 (Aaaaa)": 3963,
+   "A99999999 (Aaaaa Aaaaa)": 3785,
+   "A99999999 (Aaaaaaaa Aaaa)": 3690
+  },
+  "dz11_shape": {
+   "A99999999 (Aaaaaaaa - 99)": 12912,
+   "A99999999 (Aaaaaaaaa - 99)": 9133,
+   "A99999999 (Aaaaaaaaaa - 99)": 8811,
+   "A99999999 (Aaaaaaa - 99)": 8186,
+   "A99999999 (AA99 - 99)": 7217,
+   "A99999999 (Aaaaaa - 99)": 6051,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 5987,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 4983,
+   "A99999999 (Aaaaaaaaaaa - 99)": 4813,
+   "A99999999 (Aaaaaaaa Aaaa - 99)": 3957,
+   "A99999999 (Aaaaaaaaaa Aaaaa - 99)": 3801,
+   "A99999999 (Aaaaaaaaa Aaaa - 99)": 3606
+  },
+  "pc_shape": {
+   "AA99 9AA": 104945,
+   "AA9 9AA": 93860,
+   "A99 9AA": 49858,
+   "A9 9AA": 2674
+  },
+  "lodg_year": {
+   "2016": 251319,
+   "2014": 13,
+   "2015": 3,
+   "2013": 1,
+   "2006": 1
+  },
+  "created_year": {
+   "2016": 251337
+  },
+  "insp_shape": {
+   "9999-99-99": 251337
+  },
+  "rrn_empty": 32729,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 164,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 218608,
+   "<empty>": 32729
+  },
+  "uprn_shape": {
+   "9999999999": 251337
+  },
+  "cur_eff_shape": {
+   "99": 249276,
+   "9": 2011,
+   "999": 50
+  },
+  "rating": {
+   "D": 88236,
+   "C": 82371,
+   "E": 38830,
+   "B": 20863,
+   "F": 15342,
+   "G": 5356,
+   "A": 339
+  },
+  "tenure": {
+   "owner-occupied": 153827,
+   "rented (social)": 66844,
+   "rented (private)": 21932,
+   "unknown": 8734
+  },
+  "ptype": {
+   "House": 110284,
+   "Flat": 98598,
+   "Bungalow": 37282,
+   "Maisonette": 5085,
+   "Park home": 88
+  },
+  "txn": {
+   "marketed sale": 93678,
+   "rental": 53875,
+   "none of the above": 37851,
+   "ECO assessment": 35912,
+   "new dwelling": 16970,
+   "non marketed sale": 5721,
+   "FiT application": 3250,
+   "assessment for green deal": 2932,
+   "RHI application": 1148
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2017.csv": {
+  "file": "2017.csv",
+  "rows": 226738,
+  "widths": {
+   "107": 226738
+  },
+  "historic": {
+   "False": 116441,
+   "True": 110297
+  },
+  "toa": {
+   "RdSAP, existing dwelling": 209128,
+   "SAP, new dwelling": 17600,
+   "SAP, existing dwelling": 10
+  },
+  "dz_shape": {
+   "<empty>": 14821,
+   "A99999999 (Aaaaaaaa)": 12088,
+   "A99999999 (Aaaaaaaaaa)": 10088,
+   "A99999999 (Aaaaaaa)": 9479,
+   "A99999999 (Aaaaaaaaa)": 9383,
+   "A99999999 (Aaaaaaaaaaa)": 4909,
+   "A99999999 (Aaaaaa)": 4883,
+   "A99999999 (Aaaaaaa Aaaaa)": 4246,
+   "A99999999 (Aaaaa Aaaaa)": 3897,
+   "A99999999 (Aaaaa)": 3847,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 3687,
+   "A99999999 (Aaaaaa Aaaa)": 3470
+  },
+  "dz11_shape": {
+   "A99999999 (Aaaaaaaa - 99)": 10963,
+   "A99999999 (Aaaaaaaaaa - 99)": 9000,
+   "A99999999 (Aaaaaaaaa - 99)": 8907,
+   "A99999999 (Aaaaaaa - 99)": 7713,
+   "A99999999 (AA99 - 99)": 6052,
+   "A99999999 (Aaaaaa - 99)": 4636,
+   "A99999999 (Aaaaaaaaaaa - 99)": 4330,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 4310,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 4205,
+   "A99999999 (Aaaaaaaaa Aaaa - 99)": 3447,
+   "A99999999 (Aaaaaaaa Aaaa - 99)": 3355,
+   "A99999999 (Aaaaa - 99)": 3259
+  },
+  "pc_shape": {
+   "AA99 9AA": 90833,
+   "AA9 9AA": 88077,
+   "A99 9AA": 45256,
+   "A9 9AA": 2572
+  },
+  "lodg_year": {
+   "2017": 226640,
+   "2016": 93,
+   "2015": 4,
+   "2014": 1
+  },
+  "created_year": {
+   "2017": 226738
+  },
+  "insp_shape": {
+   "9999-99-99": 226738
+  },
+  "rrn_empty": 21677,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 319,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 205061,
+   "<empty>": 21677
+  },
+  "uprn_shape": {
+   "9999999999": 226738
+  },
+  "cur_eff_shape": {
+   "99": 225567,
+   "9": 1133,
+   "999": 38
+  },
+  "rating": {
+   "C": 88752,
+   "D": 75582,
+   "E": 26364,
+   "B": 21245,
+   "F": 10935,
+   "G": 3490,
+   "A": 370
+  },
+  "tenure": {
+   "owner-occupied": 131096,
+   "rented (social)": 65985,
+   "rented (private)": 18752,
+   "unknown": 10905
+  },
+  "ptype": {
+   "House": 100057,
+   "Flat": 94705,
+   "Bungalow": 26611,
+   "Maisonette": 5219,
+   "Park home": 146
+  },
+  "txn": {
+   "marketed sale": 93815,
+   "rental": 50467,
+   "none of the above": 35424,
+   "ECO assessment": 23355,
+   "new dwelling": 17600,
+   "non marketed sale": 2588,
+   "assessment for green deal": 1615,
+   "FiT application": 1054,
+   "RHI application": 817,
+   "": 3
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2018.csv": {
+  "file": "2018.csv",
+  "rows": 223222,
+  "widths": {
+   "107": 223222
+  },
+  "historic": {
+   "False": 121921,
+   "True": 101301
+  },
+  "toa": {
+   "RdSAP, existing dwelling": 202479,
+   "SAP, new dwelling": 20741,
+   "SAP, existing dwelling": 2
+  },
+  "dz_shape": {
+   "<empty>": 18348,
+   "A99999999 (Aaaaaaaa)": 10743,
+   "A99999999 (Aaaaaaaaaa)": 10006,
+   "A99999999 (Aaaaaaaaa)": 9188,
+   "A99999999 (Aaaaaaa)": 8816,
+   "A99999999 (Aaaaaa)": 5240,
+   "A99999999 (Aaaaaaa Aaaaa)": 4893,
+   "A99999999 (Aaaaaaaaaaa)": 4877,
+   "A99999999 (Aaaaa Aaaaa)": 4096,
+   "A99999999 (Aaaaaaa Aaaa)": 3672,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 3587,
+   "A99999999 (Aaaaa)": 3315
+  },
+  "dz11_shape": {
+   "A99999999 (Aaaaaaaa - 99)": 10309,
+   "A99999999 (Aaaaaaaaa - 99)": 9124,
+   "A99999999 (Aaaaaaaaaa - 99)": 9123,
+   "A99999999 (AA99 - 99)": 7508,
+   "A99999999 (Aaaaaaa - 99)": 6720,
+   "A99999999 (Aaaaaa - 99)": 5218,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 4547,
+   "A99999999 (Aaaaaaaaaaa - 99)": 4283,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 4166,
+   "A99999999 (Aaaaaaaaa Aaaa - 99)": 3451,
+   "A99999999 (Aaaaaaa Aaaa - 99)": 3180,
+   "A99999999 (Aaaaa Aaaa - 99)": 3153
+  },
+  "pc_shape": {
+   "AA99 9AA": 89385,
+   "AA9 9AA": 86569,
+   "A99 9AA": 44616,
+   "A9 9AA": 2652
+  },
+  "lodg_year": {
+   "2018": 223202,
+   "2017": 19,
+   "2108": 1
+  },
+  "created_year": {
+   "2018": 223222
+  },
+  "insp_shape": {
+   "9999-99-99": 223222
+  },
+  "rrn_empty": 13876,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 244,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 209346,
+   "<empty>": 13876
+  },
+  "uprn_shape": {
+   "9999999999": 223222
+  },
+  "cur_eff_shape": {
+   "99": 222524,
+   "9": 645,
+   "999": 53
+  },
+  "rating": {
+   "C": 90770,
+   "D": 72574,
+   "B": 25452,
+   "E": 23253,
+   "F": 8391,
+   "G": 2195,
+   "A": 587
+  },
+  "tenure": {
+   "owner-occupied": 133145,
+   "rented (social)": 62907,
+   "rented (private)": 15528,
+   "unknown": 11642
+  },
+  "ptype": {
+   "House": 99756,
+   "Flat": 93026,
+   "Bungalow": 25445,
+   "Maisonette": 4883,
+   "Park home": 112
+  },
+  "txn": {
+   "marketed sale": 99613,
+   "rental": 44844,
+   "none of the above": 30707,
+   "ECO assessment": 22579,
+   "new dwelling": 20741,
+   "FiT application": 1922,
+   "non marketed sale": 1662,
+   "RHI application": 840,
+   "assessment for green deal": 258,
+   "": 56
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2019.csv": {
+  "file": "2019.csv",
+  "rows": 240409,
+  "widths": {
+   "107": 240409
+  },
+  "historic": {
+   "False": 144397,
+   "True": 96012
+  },
+  "toa": {
+   "RdSAP, existing dwelling": 215955,
+   "SAP, new dwelling": 24426,
+   "SAP, existing dwelling": 28
+  },
+  "dz_shape": {
+   "<empty>": 23595,
+   "A99999999 (Aaaaaaaa)": 10783,
+   "A99999999 (Aaaaaaaaaa)": 9374,
+   "A99999999 (Aaaaaaaaa)": 8830,
+   "A99999999 (Aaaaaaa)": 8785,
+   "A99999999 (Aaaaaaaaaaa)": 6232,
+   "A99999999 (Aaaaaa)": 4880,
+   "A99999999 (Aaaaaaa Aaaaa)": 4467,
+   "A99999999 (Aaaaa Aaaaa)": 4371,
+   "A99999999 (Aaaaaaaa Aaaa)": 4113,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 3879,
+   "A99999999 (Aaaaa)": 3745
+  },
+  "dz11_shape": {
+   "A99999999 (Aaaaaaaa - 99)": 10716,
+   "A99999999 (Aaaaaaaaa - 99)": 9767,
+   "A99999999 (AA99 - 99)": 8593,
+   "A99999999 (Aaaaaaaaaa - 99)": 8340,
+   "A99999999 (Aaaaaaa - 99)": 6721,
+   "A99999999 (Aaaaaa - 99)": 5711,
+   "A99999999 (Aaaaaaaaaaa - 99)": 5432,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 4955,
+   "A99999999 (Aaaaaaaaa Aaaa - 99)": 4597,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 4553,
+   "A99999999 (Aaaaa Aaaa - 99)": 4141,
+   "A99999999 (Aaaaaaaa Aaaa - 99)": 3495
+  },
+  "pc_shape": {
+   "AA99 9AA": 95397,
+   "AA9 9AA": 94305,
+   "A99 9AA": 47295,
+   "A9 9AA": 3412
+  },
+  "lodg_year": {
+   "2019": 240367,
+   "2018": 39,
+   "2017": 2,
+   "2015": 1
+  },
+  "created_year": {
+   "2019": 240409
+  },
+  "insp_shape": {
+   "9999-99-99": 240409
+  },
+  "rrn_empty": 13058,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 172,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 227351,
+   "<empty>": 13058
+  },
+  "uprn_shape": {
+   "9999999999": 240409
+  },
+  "cur_eff_shape": {
+   "99": 239746,
+   "9": 613,
+   "999": 50
+  },
+  "rating": {
+   "C": 98475,
+   "D": 73408,
+   "B": 31002,
+   "E": 25536,
+   "F": 8737,
+   "G": 2262,
+   "A": 989
+  },
+  "tenure": {
+   "owner-occupied": 133717,
+   "rented (social)": 65103,
+   "rented (private)": 25541,
+   "unknown": 16048
+  },
+  "ptype": {
+   "House": 104324,
+   "Flat": 102769,
+   "Bungalow": 28769,
+   "Maisonette": 4498,
+   "Park home": 49
+  },
+  "txn": {
+   "marketed sale": 98385,
+   "rental": 64445,
+   "none of the above": 26785,
+   "new dwelling": 24426,
+   "ECO assessment": 21024,
+   "non marketed sale": 1841,
+   "RHI application": 1656,
+   "FiT application": 1309,
+   "": 326,
+   "assessment for green deal": 187,
+   "not recorded": 25
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2020.csv": {
+  "file": "2020.csv",
+  "rows": 184580,
+  "widths": {
+   "107": 184580
+  },
+  "historic": {
+   "False": 116936,
+   "True": 67644
+  },
+  "toa": {
+   "RdSAP, existing dwelling": 168980,
+   "SAP, new dwelling": 15560,
+   "SAP, existing dwelling": 40
+  },
+  "dz_shape": {
+   "<empty>": 16951,
+   "A99999999 (Aaaaaaaa)": 8510,
+   "A99999999 (Aaaaaaaaaa)": 7582,
+   "A99999999 (Aaaaaaaaa)": 7516,
+   "A99999999 (Aaaaaaa)": 6998,
+   "A99999999 (Aaaaaaaaaaa)": 3982,
+   "A99999999 (Aaaaaa)": 3748,
+   "A99999999 (Aaaaaaa Aaaaa)": 3108,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 2971,
+   "A99999999 (Aaaaa Aaaaa)": 2927,
+   "A99999999 (Aaaaaaa Aaaa)": 2652,
+   "A99999999 (Aaaaaa Aaaa)": 2620
+  },
+  "dz11_shape": {
+   "A99999999 (Aaaaaaaa - 99)": 8370,
+   "A99999999 (AA99 - 99)": 6720,
+   "A99999999 (Aaaaaaaaa - 99)": 6477,
+   "A99999999 (Aaaaaaaaaa - 99)": 6293,
+   "A99999999 (Aaaaaaa - 99)": 4763,
+   "A99999999 (Aaaaaaaaaaa - 99)": 3916,
+   "A99999999 (Aaaaaa - 99)": 3830,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 3447,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 3306,
+   "A99999999 (Aaaaaaaaa Aaaa - 99)": 2702,
+   "A99999999 (Aaaaaaaaaa Aaaaa - 99)": 2669,
+   "A99999999 (Aaaaaa Aaaa - 99)": 2589
+  },
+  "pc_shape": {
+   "AA99 9AA": 76545,
+   "AA9 9AA": 66185,
+   "A99 9AA": 38999,
+   "A9 9AA": 2851
+  },
+  "lodg_year": {
+   "2020": 184563,
+   "2019": 14,
+   "2010": 2,
+   "2018": 1
+  },
+  "created_year": {
+   "2020": 184580
+  },
+  "insp_shape": {
+   "9999-99-99": 184580
+  },
+  "rrn_empty": 9099,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 121,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 175481,
+   "<empty>": 9099
+  },
+  "uprn_shape": {
+   "9999999999": 184580
+  },
+  "cur_eff_shape": {
+   "99": 184036,
+   "9": 478,
+   "999": 66
+  },
+  "rating": {
+   "C": 77094,
+   "D": 56697,
+   "B": 22416,
+   "E": 19863,
+   "F": 6103,
+   "G": 1527,
+   "A": 880
+  },
+  "tenure": {
+   "owner-occupied": 115658,
+   "rented (social)": 34825,
+   "rented (private)": 23949,
+   "unknown": 10148
+  },
+  "ptype": {
+   "House": 81305,
+   "Flat": 79444,
+   "Bungalow": 20509,
+   "Maisonette": 3236,
+   "Park home": 86
+  },
+  "txn": {
+   "marketed sale": 88828,
+   "rental": 40975,
+   "none of the above": 21777,
+   "new dwelling": 15560,
+   "ECO assessment": 14065,
+   "RHI application": 1449,
+   "non marketed sale": 1234,
+   "FiT application": 485,
+   "assessment for green deal": 180,
+   "": 27
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2021.csv": {
+  "file": "2021.csv",
+  "rows": 205602,
+  "widths": {
+   "107": 205602
+  },
+  "historic": {
+   "False": 141355,
+   "True": 64247
+  },
+  "toa": {
+   "RdSAP, existing dwelling": 181896,
+   "SAP, new dwelling": 23545,
+   "SAP, existing dwelling": 161
+  },
+  "dz_shape": {
+   "<empty>": 23832,
+   "A99999999 (Aaaaaaaa)": 9938,
+   "A99999999 (Aaaaaaaaa)": 8340,
+   "A99999999 (Aaaaaaaaaa)": 8196,
+   "A99999999 (Aaaaaaa)": 7688,
+   "A99999999 (Aaaaaa)": 4347,
+   "A99999999 (Aaaaaaaaaaa)": 4232,
+   "A99999999 (Aaaaaaa Aaaaa)": 3880,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 3120,
+   "A99999999 (Aaaaa Aaaaa)": 3111,
+   "A99999999 (Aaaaa)": 2740,
+   "A99999999 (Aaaaaaaa Aaaa)": 2705
+  },
+  "dz11_shape": {
+   "A99999999 (Aaaaaaaa - 99)": 9127,
+   "<empty>": 8049,
+   "A99999999 (Aaaaaaaaa - 99)": 7551,
+   "A99999999 (Aaaaaaaaaa - 99)": 6969,
+   "A99999999 (AA99 - 99)": 6815,
+   "A99999999 (Aaaaaaa - 99)": 6382,
+   "A99999999 (Aaaaaa - 99)": 4423,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 4106,
+   "A99999999 (Aaaaaaaaaaa - 99)": 3816,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 3808,
+   "A99999999 (Aaaaaaaa Aaaa - 99)": 3203,
+   "A99999999 (Aaaaaaaaa Aaaa - 99)": 2929
+  },
+  "pc_shape": {
+   "AA99 9AA": 83875,
+   "AA9 9AA": 75359,
+   "A99 9AA": 43139,
+   "A9 9AA": 3229
+  },
+  "lodg_year": {
+   "2021": 205583,
+   "2020": 18,
+   "2002": 1
+  },
+  "created_year": {
+   "2021": 205602
+  },
+  "insp_shape": {
+   "9999-99-99": 205602
+  },
+  "rrn_empty": 7546,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 36,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 198056,
+   "<empty>": 7546
+  },
+  "uprn_shape": {
+   "9999999999": 205602
+  },
+  "cur_eff_shape": {
+   "99": 204989,
+   "9": 480,
+   "999": 133
+  },
+  "rating": {
+   "C": 85336,
+   "D": 58474,
+   "B": 32179,
+   "E": 19782,
+   "F": 6317,
+   "A": 1815,
+   "G": 1699
+  },
+  "tenure": {
+   "owner-occupied": 133963,
+   "rented (social)": 34818,
+   "rented (private)": 20978,
+   "unknown": 15843
+  },
+  "ptype": {
+   "House": 91406,
+   "Flat": 86744,
+   "Bungalow": 23359,
+   "Maisonette": 3938,
+   "Park home": 155
+  },
+  "txn": {
+   "marketed sale": 99354,
+   "rental": 39068,
+   "none of the above": 25100,
+   "new dwelling": 23545,
+   "ECO assessment": 13766,
+   "RHI application": 2555,
+   "non marketed sale": 1626,
+   "FiT application": 281,
+   "assessment for green deal": 273,
+   "": 31,
+   "not recorded": 3
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2022.csv": {
+  "file": "2022.csv",
+  "rows": 217143,
+  "widths": {
+   "107": 217143
+  },
+  "historic": {
+   "False": 160354,
+   "True": 56789
+  },
+  "toa": {
+   "RdSAP, existing dwelling": 192783,
+   "SAP, new dwelling": 24165,
+   "SAP, existing dwelling": 195
+  },
+  "dz_shape": {
+   "<empty>": 25661,
+   "A99999999 (Aaaaaaaa)": 10812,
+   "A99999999 (Aaaaaaaaa)": 8686,
+   "A99999999 (Aaaaaaaaaa)": 8284,
+   "A99999999 (Aaaaaaa)": 7926,
+   "A99999999 (Aaaaaaaaaaa)": 4887,
+   "A99999999 (Aaaaaa)": 4397,
+   "A99999999 (Aaaaaaa Aaaaa)": 4385,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 3751,
+   "A99999999 (Aaaaa Aaaaa)": 3351,
+   "A99999999 (Aaaaa)": 3152,
+   "A99999999 (Aaaaaaaa Aaaa)": 2970
+  },
+  "dz11_shape": {
+   "<empty>": 15530,
+   "A99999999 (Aaaaaaaa - 99)": 9828,
+   "A99999999 (Aaaaaaaaa - 99)": 8111,
+   "A99999999 (Aaaaaaaaaa - 99)": 6788,
+   "A99999999 (Aaaaaaa - 99)": 6336,
+   "A99999999 (AA99 - 99)": 5396,
+   "A99999999 (Aaaaaa - 99)": 4415,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 4352,
+   "A99999999 (Aaaaaaaaaaa - 99)": 4307,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 4125,
+   "A99999999 (Aaaaaaaa Aaaa - 99)": 3224,
+   "A99999999 (Aaaaaaaaa Aaaa - 99)": 3078
+  },
+  "pc_shape": {
+   "AA99 9AA": 92091,
+   "AA9 9AA": 79210,
+   "A99 9AA": 42519,
+   "A9 9AA": 3323
+  },
+  "lodg_year": {
+   "2022": 217143
+  },
+  "created_year": {
+   "2022": 217143
+  },
+  "insp_shape": {
+   "9999-99-99": 217143
+  },
+  "rrn_empty": 7503,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 0,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 209640,
+   "<empty>": 7503
+  },
+  "uprn_shape": {
+   "9999999999": 217143
+  },
+  "cur_eff_shape": {
+   "99": 216367,
+   "9": 477,
+   "999": 299
+  },
+  "rating": {
+   "C": 93100,
+   "D": 58811,
+   "B": 35315,
+   "E": 18600,
+   "F": 6643,
+   "A": 2905,
+   "G": 1769
+  },
+  "tenure": {
+   "owner-occupied": 138184,
+   "rented (social)": 42498,
+   "rented (private)": 21566,
+   "unknown": 14895
+  },
+  "ptype": {
+   "House": 100966,
+   "Flat": 86098,
+   "Bungalow": 25718,
+   "Maisonette": 4243,
+   "Park home": 118
+  },
+  "txn": {
+   "marketed sale": 102116,
+   "rental": 44972,
+   "none of the above": 27809,
+   "new dwelling": 24165,
+   "ECO assessment": 13651,
+   "RHI application": 1944,
+   "non marketed sale": 1826,
+   "FiT application": 357,
+   "assessment for green deal": 200,
+   "": 80,
+   "not recorded": 23
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2023.csv": {
+  "file": "2023.csv",
+  "rows": 222206,
+  "widths": {
+   "107": 222206
+  },
+  "historic": {
+   "False": 173593,
+   "True": 48613
+  },
+  "toa": {
+   "RdSAP, existing dwelling": 200932,
+   "SAP, new dwelling": 20695,
+   "": 544,
+   "SAP, existing dwelling": 35
+  },
+  "dz_shape": {
+   "<empty>": 22805,
+   "A99999999 (Aaaaaaaa)": 10522,
+   "A99999999 (Aaaaaaaaaa)": 8844,
+   "A99999999 (Aaaaaaa)": 8558,
+   "A99999999 (Aaaaaaaaa)": 8502,
+   "A99999999 (Aaaaaaaaaaa)": 5312,
+   "A99999999 (Aaaaaa)": 4506,
+   "A99999999 (Aaaaaaa Aaaaa)": 4187,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 3369,
+   "A99999999 (Aaaaa Aaaaa)": 3349,
+   "A99999999 (Aaaaaaaa Aaaa)": 3143,
+   "A99999999 (Aaaaa)": 3013
+  },
+  "dz11_shape": {
+   "<empty>": 16698,
+   "A99999999 (Aaaaaaaa - 99)": 9396,
+   "A99999999 (Aaaaaaaaa - 99)": 7485,
+   "A99999999 (Aaaaaaaaaa - 99)": 7097,
+   "A99999999 (Aaaaaaa - 99)": 6471,
+   "A99999999 (AA99 - 99)": 5676,
+   "A99999999 (Aaaaaa - 99)": 4461,
+   "A99999999 (Aaaaaaaaaaa - 99)": 4410,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 3935,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 3747,
+   "A99999999 (Aaaaaaaa Aaaa - 99)": 3205,
+   "A99999999 (Aaaaaaaaa Aaaa - 99)": 2786
+  },
+  "pc_shape": {
+   "AA99 9AA": 92687,
+   "AA9 9AA": 81396,
+   "A99 9AA": 43938,
+   "A9 9AA": 4185
+  },
+  "lodg_year": {
+   "2023": 222206
+  },
+  "created_year": {
+   "2023": 222206
+  },
+  "insp_shape": {
+   "9999-99-99": 222206
+  },
+  "rrn_empty": 8083,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 0,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 214123,
+   "<empty>": 8083
+  },
+  "uprn_shape": {
+   "9999999999": 222206
+  },
+  "cur_eff_shape": {
+   "99": 220903,
+   "999": 748,
+   "9": 555
+  },
+  "rating": {
+   "C": 100838,
+   "D": 56751,
+   "B": 34890,
+   "E": 16850,
+   "F": 6709,
+   "A": 4294,
+   "G": 1873,
+   "": 1
+  },
+  "tenure": {
+   "owner-occupied": 139815,
+   "rented (social)": 45138,
+   "rented (private)": 24972,
+   "unknown": 12281
+  },
+  "ptype": {
+   "House": 100544,
+   "Flat": 90147,
+   "Bungalow": 26490,
+   "Maisonette": 4812,
+   "Park home": 213
+  },
+  "txn": {
+   "marketed sale": 98767,
+   "rental": 49502,
+   "none of the above": 38371,
+   "new dwelling": 21239,
+   "ECO assessment": 11279,
+   "non marketed sale": 1543,
+   "RHI application": 862,
+   "FiT application": 321,
+   "assessment for green deal": 250,
+   "": 71,
+   "not recorded": 1
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2024.csv": {
+  "file": "2024.csv",
+  "rows": 219190,
+  "widths": {
+   "107": 219190
+  },
+  "historic": {
+   "False": 179236,
+   "True": 39954
+  },
+  "toa": {
+   "RdSAP, existing dwelling": 200992,
+   "SAP, new dwelling": 16863,
+   "": 1335
+  },
+  "dz_shape": {
+   "<empty>": 21942,
+   "A99999999 (Aaaaaaaa)": 10638,
+   "A99999999 (Aaaaaaaaaa)": 9845,
+   "A99999999 (Aaaaaaaaa)": 8680,
+   "A99999999 (Aaaaaaa)": 7876,
+   "A99999999 (Aaaaaaaaaaa)": 4622,
+   "A99999999 (Aaaaaa)": 4237,
+   "A99999999 (Aaaaaaa Aaaaa)": 4086,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 3574,
+   "A99999999 (Aaaaaaa Aaaa)": 3296,
+   "A99999999 (Aaaaaa Aaaa)": 3189,
+   "A99999999 (Aaaaa Aaaaa)": 3146
+  },
+  "dz11_shape": {
+   "<empty>": 15486,
+   "A99999999 (Aaaaaaaa - 99)": 9370,
+   "A99999999 (Aaaaaaaaaa - 99)": 8175,
+   "A99999999 (Aaaaaaaaa - 99)": 7841,
+   "A99999999 (Aaaaaaa - 99)": 5814,
+   "A99999999 (AA99 - 99)": 5717,
+   "A99999999 (Aaaaaaaaaaa - 99)": 4274,
+   "A99999999 (Aaaaaa - 99)": 4059,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 4009,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 3961,
+   "A99999999 (Aaaaaaaaa Aaaa - 99)": 2905,
+   "A99999999 (Aaaaaa Aaaa - 99)": 2748
+  },
+  "pc_shape": {
+   "AA99 9AA": 88774,
+   "AA9 9AA": 83473,
+   "A99 9AA": 43617,
+   "A9 9AA": 3326
+  },
+  "lodg_year": {
+   "2024": 219190
+  },
+  "created_year": {
+   "2024": 219190
+  },
+  "insp_shape": {
+   "9999-99-99": 219190
+  },
+  "rrn_empty": 8859,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 0,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 210331,
+   "<empty>": 8859
+  },
+  "uprn_shape": {
+   "9999999999": 219190
+  },
+  "cur_eff_shape": {
+   "99": 217826,
+   "999": 766,
+   "9": 598
+  },
+  "rating": {
+   "C": 101651,
+   "D": 57424,
+   "B": 32257,
+   "E": 16096,
+   "F": 6025,
+   "A": 3986,
+   "G": 1751
+  },
+  "tenure": {
+   "owner-occupied": 145747,
+   "rented (social)": 42691,
+   "rented (private)": 19465,
+   "unknown": 11287
+  },
+  "ptype": {
+   "House": 102360,
+   "Flat": 88466,
+   "Bungalow": 24140,
+   "Maisonette": 4029,
+   "Park home": 195
+  },
+  "txn": {
+   "marketed sale": 106098,
+   "rental": 41539,
+   "none of the above": 38549,
+   "new dwelling": 18198,
+   "ECO assessment": 12658,
+   "non marketed sale": 1284,
+   "RHI application": 599,
+   "assessment for green deal": 186,
+   "FiT application": 57,
+   "": 22
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2025.csv": {
+  "file": "2025.csv",
+  "rows": 207994,
+  "widths": {
+   "107": 207994
+  },
+  "historic": {
+   "False": 184565,
+   "True": 23429
+  },
+  "toa": {
+   "RdSAP, existing dwelling": 190063,
+   "SAP, new dwelling": 14601,
+   "": 3309,
+   "SAP, existing dwelling": 21
+  },
+  "dz_shape": {
+   "<empty>": 22698,
+   "A99999999 (Aaaaaaaa)": 11245,
+   "A99999999 (Aaaaaaaaaa)": 8181,
+   "A99999999 (Aaaaaaaaa)": 7853,
+   "A99999999 (Aaaaaaa)": 7630,
+   "A99999999 (Aaaaaaaaaaa)": 4430,
+   "A99999999 (Aaaaaa)": 3990,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 3764,
+   "A99999999 (Aaaaaaa Aaaaa)": 3761,
+   "A99999999 (Aaaaa Aaaaa)": 3291,
+   "A99999999 (Aaaaa)": 3254,
+   "A99999999 (Aaaaaaa Aaaa)": 2854
+  },
+  "dz11_shape": {
+   "<empty>": 16010,
+   "A99999999 (Aaaaaaaa - 99)": 10352,
+   "A99999999 (Aaaaaaaaa - 99)": 7159,
+   "A99999999 (Aaaaaaaaaa - 99)": 6474,
+   "A99999999 (AA99 - 99)": 5900,
+   "A99999999 (Aaaaaaa - 99)": 5302,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 4253,
+   "A99999999 (Aaaaaa - 99)": 3903,
+   "A99999999 (Aaaaaaaaaaa - 99)": 3831,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 3623,
+   "A99999999 (Aaaaaaaaa Aaaa - 99)": 2702,
+   "A99999999 (Aaaaa - 99)": 2660
+  },
+  "pc_shape": {
+   "AA99 9AA": 86651,
+   "AA9 9AA": 79503,
+   "A99 9AA": 38751,
+   "A9 9AA": 3089
+  },
+  "lodg_year": {
+   "2025": 207994
+  },
+  "created_year": {
+   "2025": 207994
+  },
+  "insp_shape": {
+   "9999-99-99": 207994
+  },
+  "rrn_empty": 8420,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 0,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 199574,
+   "<empty>": 8420
+  },
+  "uprn_shape": {
+   "9999999999": 207994
+  },
+  "cur_eff_shape": {
+   "99": 207183,
+   "999": 450,
+   "9": 361
+  },
+  "rating": {
+   "C": 98286,
+   "D": 54286,
+   "B": 32315,
+   "E": 13293,
+   "F": 4878,
+   "A": 3686,
+   "G": 1250
+  },
+  "tenure": {
+   "owner-occupied": 136200,
+   "rented (social)": 42344,
+   "rented (private)": 17746,
+   "unknown": 11704
+  },
+  "ptype": {
+   "House": 96825,
+   "Flat": 84672,
+   "Bungalow": 22449,
+   "Maisonette": 3839,
+   "Park home": 209
+  },
+  "txn": {
+   "marketed sale": 108035,
+   "rental": 37577,
+   "none of the above": 31913,
+   "new dwelling": 17911,
+   "ECO assessment": 10216,
+   "non marketed sale": 1033,
+   "": 623,
+   "RHI application": 346,
+   "rental (private)": 251,
+   "assessment for green deal": 79,
+   "FiT application": 9,
+   "rental (social)": 1
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ },
+ "2026.csv": {
+  "file": "2026.csv",
+  "rows": 110010,
+  "widths": {
+   "107": 110010
+  },
+  "historic": {
+   "False": 103279,
+   "True": 6731
+  },
+  "toa": {
+   "RdSAP, existing dwelling": 101715,
+   "SAP, new dwelling": 5993,
+   "": 2302
+  },
+  "dz_shape": {
+   "<empty>": 11425,
+   "A99999999 (Aaaaaaaa)": 5706,
+   "A99999999 (Aaaaaaaaaa)": 4498,
+   "A99999999 (Aaaaaaaaa)": 4362,
+   "A99999999 (Aaaaaaa)": 4045,
+   "A99999999 (Aaaaaaa Aaaaa)": 2052,
+   "A99999999 (Aaaaaa)": 2038,
+   "A99999999 (Aaaaaaaaaaa)": 1987,
+   "A99999999 (Aaaaaaaaa Aaaaa)": 1903,
+   "A99999999 (Aaaaa)": 1806,
+   "A99999999 (Aaaaa Aaaaa)": 1531,
+   "A99999999 (Aaaaaaaa Aaaa)": 1491
+  },
+  "dz11_shape": {
+   "<empty>": 7763,
+   "A99999999 (Aaaaaaaa - 99)": 4908,
+   "A99999999 (Aaaaaaaaa - 99)": 4071,
+   "A99999999 (Aaaaaaaaaa - 99)": 3635,
+   "A99999999 (AA99 - 99)": 3059,
+   "A99999999 (Aaaaaaa - 99)": 2879,
+   "A99999999 (Aaaaaaaaa Aaaaa - 99)": 2228,
+   "A99999999 (Aaaaaaa Aaaaa - 99)": 2023,
+   "A99999999 (Aaaaaa - 99)": 2019,
+   "A99999999 (Aaaaaaaaaaa - 99)": 1791,
+   "A99999999 (Aaaaa - 99)": 1503,
+   "A99999999 (Aaaaaaaa Aaaa - 99)": 1433
+  },
+  "pc_shape": {
+   "AA99 9AA": 47012,
+   "AA9 9AA": 41288,
+   "A99 9AA": 20159,
+   "A9 9AA": 1551
+  },
+  "lodg_year": {
+   "2026": 110010
+  },
+  "created_year": {
+   "2026": 110010
+  },
+  "insp_shape": {
+   "9999-99-99": 110010
+  },
+  "rrn_empty": 4367,
+  "uprn_empty": 0,
+  "bad_decode": 0,
+  "rows_with_replacement_char": 0,
+  "tfa_out_of_range": 0,
+  "lodg_before_insp": 0,
+  "rrn_shape": {
+   "9999-9999-9999-9999-9999": 105643,
+   "<empty>": 4367
+  },
+  "uprn_shape": {
+   "9999999999": 110010
+  },
+  "cur_eff_shape": {
+   "99": 109708,
+   "999": 199,
+   "9": 103
+  },
+  "rating": {
+   "C": 53439,
+   "D": 29340,
+   "B": 16308,
+   "E": 6461,
+   "F": 2260,
+   "A": 1803,
+   "G": 399
+  },
+  "tenure": {
+   "owner-occupied": 72998,
+   "rented (social)": 22449,
+   "rented (private)": 8898,
+   "unknown": 5665
+  },
+  "ptype": {
+   "House": 52386,
+   "Flat": 43118,
+   "Bungalow": 12406,
+   "Maisonette": 1956,
+   "Park home": 144
+  },
+  "txn": {
+   "marketed sale": 57304,
+   "rental": 19913,
+   "none of the above": 19590,
+   "new dwelling": 8297,
+   "ECO assessment": 3166,
+   "": 978,
+   "non marketed sale": 507,
+   "RHI application": 202,
+   "assessment for green deal": 49,
+   "FiT application": 4
+  },
+  "rrn_dup_in_file": 0,
+  "header_sha": null,
+  "ncols": 107
+ }
+}

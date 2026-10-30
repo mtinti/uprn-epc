@@ -1,0 +1,26 @@
+# Pinned downloads: never committed. The SOURCES.md files that describe them are committed, and
+# the hashes are in epc_ingest/sources.yaml. The source archive is held off site in a restricted
+# Zenodo record (docs/EPC_Plan.md, section 2).
+data/*
+!data/sources/
+data/sources/*
+!data/sources/epc_2026Q2/
+!data/sources/datazones/
+data/sources/*/*
+!data/sources/*/SOURCES.md
+
+# Build output is not source code, and the built table is private (docs/EPC_Plan.md, section 5).
+# The manifest and the build report are the build's record and travel with the code; neither
+# holds an address.
+results/*
+!results/manifest.json
+!results/BUILD_REPORT.md
+
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+.DS_Store
+
+# Site-specific plumbing and filled-in scripts: never committed. Copy loader/ there to fill in.
+local/

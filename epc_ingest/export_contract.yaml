@@ -1,0 +1,36 @@
+# What leaves the build: the CSV rendering of the table. Version 1, 30 October 2026. The dialect
+# and the digest definition are postcode-simd's and datazone-ahah's, unchanged, so the same import
+# and check recipe applies. The three address lines stay out of the CSV (docs/EPC_Plan.md,
+# section 5); the Parquet keeps every column.
+version: 1
+
+dialect:
+  delimiter: ','
+  quoting: minimal
+  encoding: utf-8
+  line_ending: "\n"
+  compression: gzip         # written with mtime 0, so the same rows give the same bytes
+
+# How a value becomes text. decimal: fixed notation, always 4 fractional digits, so the CSV, the
+# digest and SQL Server's CONVERT(varchar, decimal(19,4)) agree to the byte. Integers: plain.
+# date: yyyy-mm-dd (SQL style 23). datetime: yyyy-mm-dd hh:mm:ss (style 120). bool: 0 or 1.
+# A published empty string and a NULL are both an empty cell in the CSV; the import script
+# restores the empty string on published columns and NULL on derived ones, from the schema.
+values:
+  decimal_places: 4
+  empty: ''
+
+tables:
+  epc_domestic:
+    file: epc_domestic.csv.gz
+    exclude: [ADDRESS1, ADDRESS2, ADDRESS3]
+
+digest:
+  version: 1
+  hash: sha256
+  null_marker: "\0"
+  separator: "\x1F"
+  reserved: ["\0", "\x1F"]
+  prefix_bytes: 8
+  signed: true
+  total: decimal_string

@@ -1,0 +1,114 @@
+# The 107 published columns of the extract, in file order: the machine name (header row 1),
+# the publisher's label (header row 2, which holds U+FFFD where the publisher's file had a
+# superscript 2 or a pound sign), and the longest value measured over all 3,787,069 rows of
+# release 2026Q2 (docs/columns_2026-10-29.json). python -m epc_ingest.columns turns this into
+# output_schema.yaml. Pinned 30 October 2026; a later release with a different header fails the build.
+version: 1
+columns:
+  - {name: 'HISTORIC', label: "Historical", max_len: 5}
+  - {name: 'BUILDING_REFERENCE_NUMBER', label: "Property_UPRN", max_len: 11}
+  - {name: 'OSG_REFERENCE_NUMBER', label: "OSG_UPRN", max_len: 12}
+  - {name: 'ADDRESS1', label: "ADDRESS1", max_len: 66}
+  - {name: 'ADDRESS2', label: "ADDRESS2", max_len: 51}
+  - {name: 'ADDRESS3', label: "POST_TOWN", max_len: 34}
+  - {name: 'POSTCODE', label: "Postcode", max_len: 8}
+  - {name: 'INSPECTION_DATE', label: "Date of Assessment", max_len: 10}
+  - {name: 'TYPE_OF_ASSESSMENT', label: "Type of Assessment", max_len: 24}
+  - {name: 'LODGEMENT_DATE', label: "Date of Certificate", max_len: 10}
+  - {name: 'ENERGY_CONSUMPTION_CURRENT', label: "Primary Energy Indicator (kWh/m�/year)", max_len: 12}
+  - {name: 'TOTAL_FLOOR_AREA', label: "Total floor area (m�)", max_len: 4}
+  - {name: '3_YR_ENERGY_COST_CURRENT', label: "Total current energy costs over 3 years (�)", max_len: 15}
+  - {name: '3_YR_ENERGY_SAVINGS_POTENTIAL', label: "Potential future savings over 3 years (�)", max_len: 15}
+  - {name: 'CURRENT_ENERGY_EFFICIENCY', label: "Current energy efficiency rating", max_len: 5}
+  - {name: 'CURRENT_ENERGY_RATING', label: "Current energy efficiency rating band", max_len: 1}
+  - {name: 'POTENTIAL_ENERGY_EFFICIENCY', label: "Potential Energy Efficiency Rating", max_len: 5}
+  - {name: 'POTENTIAL_ENERGY_RATING', label: "Potential energy efficiency rating band", max_len: 1}
+  - {name: 'ENVIRONMENT_IMPACT_CURRENT', label: "Current Environmental Impact Rating", max_len: 5}
+  - {name: 'CURRENT_ENVIRONMENTAL_RATING', label: "Current Environmental Impact Rating Band", max_len: 1}
+  - {name: 'ENVIRONMENT_IMPACT_POTENTIAL', label: "Potential Environmental Impact Rating", max_len: 5}
+  - {name: 'POTENTIAL_ENVIRONMENTAL_RATING', label: "Potential Environmental Impact Rating Band", max_len: 1}
+  - {name: 'CO2_EMISS_CURR_PER_FLOOR_AREA', label: "CO2 Emissions Current Per Floor Area (kg.CO2/m�/yr)", max_len: 11}
+  - {name: 'IMPROVEMENTS', label: "Improvements", max_len: 3330}
+  - {name: 'WALL_DESCRIPTION', label: "WALL_DESCRIPTION", max_len: 328}
+  - {name: 'WALL_ENERGY_EFF', label: "WALL_ENERGY_EFF", max_len: 70}
+  - {name: 'WALL_ENV_EFF', label: "WALL_ENV_EFF", max_len: 70}
+  - {name: 'ROOF_DESCRIPTION', label: "ROOF_DESCRIPTION", max_len: 250}
+  - {name: 'ROOF_ENERGY_EFF', label: "ROOF_ENERGY_EFF", max_len: 70}
+  - {name: 'ROOF_ENV_EFF', label: "ROOF_ENV_EFF", max_len: 70}
+  - {name: 'FLOOR_DESCRIPTION', label: "FLOOR_DESCRIPTION", max_len: 256}
+  - {name: 'FLOOR_ENERGY_EFF', label: "FLOOR_ENERGY_EFF", max_len: 34}
+  - {name: 'FLOOR_ENV_EFF', label: "FLOOR_ENV_EFF", max_len: 34}
+  - {name: 'WINDOWS_DESCRIPTION', label: "WINDOWS_DESCRIPTION", max_len: 44}
+  - {name: 'WINDOWS_ENERGY_EFF', label: "WINDOWS_ENERGY_EFF", max_len: 10}
+  - {name: 'WINDOWS_ENV_EFF', label: "WINDOWS_ENV_EFF", max_len: 10}
+  - {name: 'MAINHEAT_DESCRIPTION', label: "MAINHEAT_DESCRIPTION", max_len: 210}
+  - {name: 'MAINHEAT_ENERGY_EFF', label: "MAINHEAT_ENERGY_EFF", max_len: 46}
+  - {name: 'MAINHEAT_ENV_EFF', label: "MAINHEAT_ENV_EFF", max_len: 46}
+  - {name: 'MAINHEATCONT_DESCRIPTION', label: "MAINHEATCONT_DESCRIPTION", max_len: 216}
+  - {name: 'MAINHEATC_ENERGY_EFF', label: "MAINHEATC_ENERGY_EFF", max_len: 46}
+  - {name: 'MAINHEATC_ENV_EFF', label: "MAINHEATC_ENV_EFF", max_len: 46}
+  - {name: 'SECONDHEAT_DESCRIPTION', label: "SECONDHEAT_DESCRIPTION", max_len: 88}
+  - {name: 'SHEATING_ENERGY_EFF', label: "SHEATING_ENERGY_EFF", max_len: 10}
+  - {name: 'SHEATING_ENV_EFF', label: "SHEATING_ENV_EFF", max_len: 10}
+  - {name: 'HOTWATER_DESCRIPTION', label: "HOTWATER_DESCRIPTION", max_len: 182}
+  - {name: 'HOT_WATER_ENERGY_EFF', label: "HOT_WATER_ENERGY_EFF", max_len: 22}
+  - {name: 'HOT_WATER_ENV_EFF', label: "HOT_WATER_ENV_EFF", max_len: 22}
+  - {name: 'LIGHTING_DESCRIPTION', label: "LIGHTING_DESCRIPTION", max_len: 90}
+  - {name: 'LIGHTING_ENERGY_EFF', label: "LIGHTING_ENERGY_EFF", max_len: 22}
+  - {name: 'LIGHTING_ENV_EFF', label: "LIGHTING_ENV_EFF", max_len: 22}
+  - {name: 'AIR_TIGHTNESS_DESCRIPTION', label: "AIR_TIGHTNESS_DESCRIPTION", max_len: 51}
+  - {name: 'AIR_TIGHTNESS_ENERGY_EFF', label: "AIR_TIGHTNESS_ENERGY_EFF", max_len: 10}
+  - {name: 'AIR_TIGHTNESS_ENV_EFF', label: "AIR_TIGHTNESS_ENV_EFF", max_len: 10}
+  - {name: 'CO2_EMISSIONS_CURRENT', label: "Current Emissions (T.CO2/yr)", max_len: 10}
+  - {name: 'CO2_EMISSIONS_POTENTIAL', label: "Potential Reduction in Emissions (T.CO2/yr)", max_len: 10}
+  - {name: 'HEATING_COST_CURRENT', label: "Current heating costs over 3 years (�)", max_len: 15}
+  - {name: 'HEATING_COST_POTENTIAL', label: "Potential heating costs over 3 years (�)", max_len: 14}
+  - {name: 'HOT_WATER_COST_CURRENT', label: "Current hot water costs over 3 years (�)", max_len: 8}
+  - {name: 'HOT_WATER_COST_POTENTIAL', label: "Potential hot water costs over 3 years (�)", max_len: 8}
+  - {name: 'LIGHTING_COST_CURRENT', label: "Current lighting costs over 3 years (�)", max_len: 9}
+  - {name: 'LIGHTING_COST_POTENTIAL', label: "Potential lighting costs over 3 years (�)", max_len: 9}
+  - {name: 'ALTERNATIVE_IMPROVEMENTS', label: "Alternative Measures 2", max_len: 295}
+  - {name: 'LZC_ENERGY_SOURCES', label: "LZC Energy Source", max_len: 308}
+  - {name: 'SPACE_HEATING_DEMAND', label: "Space Heating", max_len: 10}
+  - {name: 'WATER_HEATING_DEMAND', label: "Water Heating", max_len: 8}
+  - {name: 'IMPACT_LOFT_INSULATION', label: "Impact Of Loft Insulation", max_len: 8}
+  - {name: 'IMPACT_CAVITY_WALL_INSULATION', label: "Impact Of Cavity Wall Insulation", max_len: 10}
+  - {name: 'IMPACT_SOLID_WALL_INSULATION', label: "Impact Of Solid Wall Insulation", max_len: 8}
+  - {name: 'ADDENDUM_TEXT', label: "Addendum Text", max_len: 0}
+  - {name: 'CONSTRUCTION_AGE_BAND', label: "Part 1 Construction Age Band", max_len: 12}
+  - {name: 'FLOOR_HEIGHT', label: "Part 1 Floor 0 Room Height", max_len: 10}
+  - {name: 'DATA_ZONE', label: "Data Zone", max_len: 64}
+  - {name: 'ENERGY_CONSUMPTION_POTENTIAL', label: "Energy Consumption Potential", max_len: 11}
+  - {name: 'EXTENSION_COUNT', label: "Extensions Count", max_len: 1}
+  - {name: 'FIXED_LIGHTING_OUTLETS_COUNT', label: "Fixed Lighting Outlets Count", max_len: 4}
+  - {name: 'LOW_ENERGY_FIXED_LIGHT_COUNT', label: "Low Energy Lighting Outlets Count", max_len: 4}
+  - {name: 'LOW_ENERGY_LIGHTING', label: "Low Energy Lighting %", max_len: 6}
+  - {name: 'FLOOR_LEVEL', label: "Flat Level", max_len: 12}
+  - {name: 'FLAT_TOP_STOREY', label: "Flat Location", max_len: 3}
+  - {name: 'GLAZED_AREA', label: "Glazed Area", max_len: 1}
+  - {name: 'NUMBER_HABITABLE_ROOMS', label: "Habitable Room Count", max_len: 2}
+  - {name: 'HEAT_LOSS_CORRIDOOR', label: "Heat Loss Corridor", max_len: 17}
+  - {name: 'NUMBER_HEATED_ROOMS', label: "Heated Room Count", max_len: 2}
+  - {name: 'LOCAL_AUTHORITY_LABEL', label: "Local Authority", max_len: 21}
+  - {name: 'MAINS_GAS_FLAG', label: "Main Gas", max_len: 1}
+  - {name: 'MAIN_HEATING_CATEGORY', label: "Main Heating 1 Category", max_len: 46}
+  - {name: 'MAIN_FUEL', label: "Main Heating 1 Fuel Type", max_len: 69}
+  - {name: 'MAIN_HEATING_CONTROLS', label: "Main Heating 1 Control", max_len: 4}
+  - {name: 'MECHANICAL_VENTILATION', label: "Mechanical Ventilation", max_len: 30}
+  - {name: 'ENERGY_TARIFF', label: "Meter Type", max_len: 16}
+  - {name: 'MULTI_GLAZE_PROPORTION', label: "Multiple Glazed Proportion", max_len: 3}
+  - {name: 'GLAZED_TYPE', label: "Multiple Glazing Type", max_len: 45}
+  - {name: 'NUMBER_OPEN_FIREPLACES', label: "Open Fireplaces Count", max_len: 3}
+  - {name: 'PHOTO_SUPPLY', label: "Photovoltaic Supply", max_len: 570}
+  - {name: 'SOLAR_WATER_HEATING_FLAG', label: "Solar Water Heating", max_len: 5}
+  - {name: 'TENURE', label: "Tenure", max_len: 16}
+  - {name: 'TRANSACTION_TYPE', label: "Transaction Type", max_len: 25}
+  - {name: 'UNHEATED_CORRIDOR_LENGTH', label: "Unheated Corridor Length", max_len: 9}
+  - {name: 'CONSTITUENCY', label: "Ward Code", max_len: 6}
+  - {name: 'CONSTITUENCY_LABEL', label: "Ward Name", max_len: 53}
+  - {name: 'WIND_TURBINE_COUNT', label: "Wind Turbines Count", max_len: 1}
+  - {name: 'BUILT_FORM', label: "Built Form", max_len: 20}
+  - {name: 'PROPERTY_TYPE', label: "Property Type", max_len: 10}
+  - {name: 'DATA_ZONE_2011', label: "Data Zone 2011", max_len: 75}
+  - {name: 'CREATED_AT', label: "Lodgement Date", max_len: 19}
+  - {name: 'REPORT_REFERENCE_NUMBER', label: "RRN", max_len: 24}
