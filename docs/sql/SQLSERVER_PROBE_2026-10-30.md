@@ -51,3 +51,17 @@ The digest over the whole table runs well inside a minute, so it does not need t
 The one query the third run did not reach as written, the empty-against-NULL count, had a
 T-SQL syntax error in the mismatch expression; it was corrected and that step and the join
 step were rerun against the loaded table.
+
+## Fourth run, after the implementation reviews
+
+Rerun from a fresh container with the queries revised for the implementation reviews
+(`cohort_row_id` per cohort row; NULL and repeated keys rejected). Every step passed in one run:
+
+| Step | Result |
+| --- | --- |
+| Import (UTF-16 copy, Linux) | 340 s |
+| `check_loaded_digest.sql`: structure, key, reserved characters, row count, digest | 25 s, all pass |
+| Rendering of 44 chosen cells | equal to the CSV text |
+| Empty against NULL counts | every count equals the manifest |
+| Join by UPRN, seven cohort rows | one row each, expected statuses |
+| Cohort key guards | a cohort with a NULL `cohort_row_id` and one with a repeated `cohort_row_id` each stopped the T-SQL with the guard's own message |
