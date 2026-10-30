@@ -1,5 +1,6 @@
 -- The fallback for a cohort row without a UPRN: every dwelling in the postcode, each with its
--- latest certificate lodged on or before the cohort date. A postcode has many dwellings, so
+-- certificate of the latest inspection on or before the cohort date (see join_by_uprn.sql for
+-- why the inspection date and not the lodgement date). A postcode has many dwellings, so
 -- this returns many rows per cohort row, and the project decides how to summarise them. What
 -- it gives is a property of the postcode's dwellings, not of the person's dwelling.
 --
@@ -11,13 +12,13 @@
 -- The dwelling is uprn_sepcr, the register's own number, present in every row and one to one
 -- with the Gazetteer UPRN where that exists, so a dwelling without a Gazetteer UPRN still
 -- counts once. The tie rule is the same as the UPRN route: two or more certificates of one
--- dwelling lodged on the latest eligible day give dwelling_status = 'ambiguous_as_of' and no
+-- dwelling inspected on the latest eligible day give dwelling_status = 'ambiguous_as_of' and no
 -- values for that dwelling.
 --
 -- Status per cohort row (repeated on each of its rows):
 --   no_postcode              the cohort postcode is empty
 --   postcode_not_in_epc      no certificate in the release has that pc_norm
---   no_certificate_by_date   dwellings exist, none has a certificate lodged on or before the date
+--   no_certificate_by_date   dwellings exist, none has a certificate inspected on or before the date
 --   matched                  one row per dwelling with an eligible certificate
 
 IF EXISTS (SELECT 1 FROM #cohort WHERE cohort_row_id IS NULL)
@@ -31,15 +32,15 @@ WITH cohort AS (
     FROM #cohort AS c
 ),
 eligible AS (
-    SELECT c.cohort_row_id, e.uprn_sepcr, e.epc_release, e.source_year, e.source_row, e.lodgement_date_parsed,
-           RANK() OVER (PARTITION BY c.cohort_row_id, e.uprn_sepcr ORDER BY e.lodgement_date_parsed DESC) AS rk
+    SELECT c.cohort_row_id, e.uprn_sepcr, e.epc_release, e.source_year, e.source_row, e.inspection_date_parsed,
+           RANK() OVER (PARTITION BY c.cohort_row_id, e.uprn_sepcr ORDER BY e.inspection_date_parsed DESC) AS rk
     FROM cohort AS c
     JOIN epc_domestic AS e
       ON e.pc_norm = c.pc_norm
-     AND e.lodgement_date_parsed <= c.cohort_date
+     AND e.inspection_date_parsed <= c.cohort_date
 ),
 per_dwelling AS (
-    SELECT cohort_row_id, uprn_sepcr, COUNT(*) AS n, MIN(lodgement_date_parsed) AS lodgement_date_parsed,
+    SELECT cohort_row_id, uprn_sepcr, COUNT(*) AS n, MIN(inspection_date_parsed) AS inspection_date_parsed,
            MIN(epc_release) AS epc_release, MIN(source_year) AS source_year, MIN(source_row) AS source_row
     FROM eligible
     WHERE rk = 1
@@ -55,8 +56,10 @@ SELECT c.cohort_row_id, c.pseudo_id, c.cohort_date,
             ELSE 'matched' END AS epc_status,
        d.uprn_sepcr AS dwelling,
        CASE WHEN d.n > 1 THEN 'ambiguous_as_of' WHEN d.n = 1 THEN 'matched' END AS dwelling_status,
-       e.uprn_osg, e.lodgement_date_parsed AS epc_lodgement_date,
-       DATEDIFF(day, e.lodgement_date_parsed, c.cohort_date) AS epc_age_days,
+       e.uprn_osg, e.inspection_date_parsed AS epc_inspection_date, e.lodgement_date_parsed AS epc_lodgement_date,
+       DATEDIFF(day, e.inspection_date_parsed, c.cohort_date) AS epc_age_days,
+       CASE WHEN e.lodgement_date_parsed < e.inspection_date_parsed THEN 1
+            WHEN e.inspection_date_parsed IS NOT NULL THEN 0 END AS epc_lodged_before_inspection,
        e.CURRENT_ENERGY_RATING, e.current_energy_efficiency_int, e.total_floor_area_int,
        e.PROPERTY_TYPE, e.BUILT_FORM, e.CONSTRUCTION_AGE_BAND, e.TENURE
 FROM cohort AS c

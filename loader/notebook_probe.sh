@@ -27,7 +27,16 @@ python3 loader/notebook_probe/build_fixture.py "$SCRATCH"
 mkdir -p "$SCRATCH/out"
 rm -f "$SCRATCH"/out/*.ipynb "$SCRATCH"/out/results.json
 echo "== notebook scenarios"
+# The container's status is kept: a pipe into grep would return grep's status and hide a failure.
+set +e
 docker run --rm --network $NET -e SA_PW="$PW" -e SERVER=$C \
   -v "$(cd "$(dirname "$0")/notebook_probe" && pwd)/harness.py:/work/harness.py:ro" \
   -v "$(cd "$SCRATCH/delivery" && pwd):/data/delivery:ro" -v "$(cd "$SCRATCH/out" && pwd):/out" \
-  $IMG python -u harness.py 2>&1 | grep -v "UserWarning\|warnings.warn"
+  $IMG python -u harness.py > "$SCRATCH/out/harness.log" 2>&1
+STATUS=$?
+set -e
+grep -v "UserWarning\|warnings.warn" "$SCRATCH/out/harness.log" || true
+[ "$STATUS" -eq 0 ] || { echo "notebook probe FAILED: the harness container exited with status $STATUS"; exit "$STATUS"; }
+python3 -c 'import json, sys; r = json.load(open(sys.argv[1])); bad = [x["test"] for x in r if not x["ok"]]
+assert len(r) == 11 and not bad, f"{len(r)} scenarios recorded, failed: {bad}"' "$SCRATCH/out/results.json"
+echo "notebook probe: every scenario as expected"

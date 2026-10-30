@@ -554,5 +554,5 @@ FROM staging_epc_domestic;
 DROP TABLE IF EXISTS staging_epc_domestic;
 
 -- The two join routes.
-CREATE INDEX IX_epc_domestic_uprn_osg ON epc_domestic ([uprn_osg], [lodgement_date_parsed]) INCLUDE ([historic_flag]);
-CREATE INDEX IX_epc_domestic_pc_norm ON epc_domestic ([pc_norm], [lodgement_date_parsed]) INCLUDE ([uprn_sepcr], [historic_flag]);
+CREATE INDEX IX_epc_domestic_uprn_osg ON epc_domestic ([uprn_osg], [inspection_date_parsed]) INCLUDE ([historic_flag]);
+CREATE INDEX IX_epc_domestic_pc_norm ON epc_domestic ([pc_norm], [inspection_date_parsed]) INCLUDE ([uprn_sepcr], [historic_flag]);

@@ -244,8 +244,8 @@ FROM staging_{name};
 DROP TABLE IF EXISTS staging_{name};
 
 -- The two join routes.
-CREATE INDEX IX_{name}_uprn_osg ON {name} ([uprn_osg], [lodgement_date_parsed]) INCLUDE ([historic_flag]);
-CREATE INDEX IX_{name}_pc_norm ON {name} ([pc_norm], [lodgement_date_parsed]) INCLUDE ([uprn_sepcr], [historic_flag]);
+CREATE INDEX IX_{name}_uprn_osg ON {name} ([uprn_osg], [inspection_date_parsed]) INCLUDE ([historic_flag]);
+CREATE INDEX IX_{name}_pc_norm ON {name} ([pc_norm], [inspection_date_parsed]) INCLUDE ([uprn_sepcr], [historic_flag]);
 """
 
 

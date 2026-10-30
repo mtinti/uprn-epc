@@ -94,13 +94,13 @@ def _step_6_queries():
 
 def _table(con, pairs):
     con.execute("CREATE TABLE epc_domestic (source_year SMALLINT, source_row INTEGER, uprn_osg BIGINT, pc_norm VARCHAR, "
-                "lodgement_date_parsed DATE, historic_flag BOOLEAN, CURRENT_ENERGY_RATING VARCHAR, current_energy_efficiency_int INTEGER, "
+                "inspection_date_parsed DATE, lodgement_date_parsed DATE, historic_flag BOOLEAN, CURRENT_ENERGY_RATING VARCHAR, current_energy_efficiency_int INTEGER, "
                 "total_floor_area_int INTEGER, PROPERTY_TYPE VARCHAR, BUILT_FORM VARCHAR, CONSTRUCTION_AGE_BAND VARCHAR)")
-    rows = [(2024, 1, 35000009, "FK101AA", "2024-01-05", False, "C", 70, 90, "House", "Detached", "1950-1964")]
+    rows = [(2024, 1, 35000009, "FK101AA", "2024-01-04", "2024-01-05", False, "C", 70, 90, "House", "Detached", "1950-1964")]
     for uprn, n in pairs:
         for i in range(n):
-            rows.append((2010 + i, 100 + len(rows), uprn, "FK101AA", f"{2010 + i}-06-01", i < n - 1, "D", 60, 80, "Flat", "Mid-terrace", "1900-1929"))
-    con.executemany("INSERT INTO epc_domestic VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", rows)
+            rows.append((2010 + i, 100 + len(rows), uprn, "FK101AA", f"{2010 + i}-05-30", f"{2010 + i}-06-01", i < n - 1, "D", 60, 80, "Flat", "Mid-terrace", "1900-1929"))
+    con.executemany("INSERT INTO epc_domestic VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", rows)
 
 
 @needs_build

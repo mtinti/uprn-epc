@@ -44,8 +44,8 @@ Four things to know before joining:
   reports such a pair as `ambiguous_as_of` only when it falls on the latest eligible day; the
   build report counts them and a project should expect that status, not treat it as rare.
 - **`HISTORIC = True` means superseded, not expired.** A certificate is valid for ten years.
-  The dated join returns the latest certificate lodged on or before the cohort date and its age
-  in days; the project decides about expiry.
+  The dated join returns the certificate with the latest inspection on or before the cohort date,
+  its inspection and lodgement dates and its age in days; the project decides about expiry.
 - **The address lines are not in the CSV or the SQL table.** `ADDRESS1` to `ADDRESS3` and
   `POSTCODE` carry a Royal Mail notice rather than the Open Government Licence. The three
   address lines stay in the Parquet only; the postcode and `pc_norm` go out because they are the
@@ -102,7 +102,8 @@ unique `cohort_row_id` beside the person identifier, because a person appears ma
 longitudinal cohort and each observation must get the certificate for its own date and address;
 the queries stop if the row identifier is NULL or repeats.
 
-- `join_by_uprn.sql`: the latest certificate lodged on or before the cohort date. Statuses
+- `join_by_uprn.sql`: the certificate with the latest inspection on or before the cohort date, because
+  the inspection is when the dwelling was seen and lodgement follows it by a median of one day. Statuses
   `matched`, `no_uprn`, `uprn_not_in_epc`, `no_certificate_by_date`, `ambiguous_as_of` (two or
   more lodged on the latest eligible day).
 - `join_latest_by_uprn.sql`: without a date, the `HISTORIC = False` certificate. Statuses

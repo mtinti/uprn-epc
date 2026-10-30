@@ -65,3 +65,11 @@ Rerun from a fresh container with the queries revised for the implementation rev
 | Empty against NULL counts | every count equals the manifest |
 | Join by UPRN, seven cohort rows | one row each, expected statuses |
 | Cohort key guards | a cohort with a NULL `cohort_row_id` and one with a repeated `cohort_row_id` each stopped the T-SQL with the guard's own message |
+
+## Fifth run, after the switch to the inspection date
+
+The dated joins choose the certificate by `inspection_date_parsed` rather than
+`lodgement_date_parsed` (decision `join-by-inspection-date`), and the two join indexes key on it.
+Rerun on the existing container with the regenerated import script: import completed (its time was not captured, the run kept only the tail of the output), digest
+26 s, every check passed, 44 cells rendered equal, every empty-against-NULL count equal to the
+manifest, the seven cohort rows with the expected statuses, both key guards stopped the query.
