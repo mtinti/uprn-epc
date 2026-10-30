@@ -103,6 +103,12 @@ class ParquetWriter:
         self._writer.write_table(to_arrow(table, self.schema, self.arrow))
         self.rows += len(table)
 
+    def abort(self) -> None:
+        """Close the writer and remove the part file after a failure."""
+        self._writer.close()
+        if self.part.exists():
+            self.part.unlink()
+
     def close(self) -> str:
         self._writer.close()
         os.replace(self.part, self.path)

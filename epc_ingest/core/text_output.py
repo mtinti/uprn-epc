@@ -182,6 +182,15 @@ class CsvWriter:
         self.uncompressed += len(body)
         self.rows += len(rendered)
 
+    def abort(self) -> None:
+        """Close the handles and remove the part file after a failure."""
+        try:
+            self._gz.close()
+        finally:
+            self._fh.close()
+            if self.path.exists():
+                self.path.unlink()
+
     def close(self) -> dict:
         self._gz.close()
         self._fh.close()

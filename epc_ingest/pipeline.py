@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+import os
+import shutil
 import sys
 from pathlib import Path
 
@@ -33,8 +35,31 @@ TABLE = col.TABLE
 WITHHELD_FROM_REPORT = ("ADDRESS1", "ADDRESS2", "ADDRESS3", "POSTCODE")
 
 
+OUTPUTS = ("{table}.parquet", "{csv}", "manifest.json", "BUILD_REPORT.md")
+
+
 def build(results: Path = RESULTS, registry_path: Path = REGISTRY, source_root: Path = SOURCE_ROOT,
           verify_archive: bool = False, log=print) -> dict:
+    """Build into a staging folder beside `results` and move the four outputs into place only
+    after every check has passed, so a failed rebuild leaves the last accepted build and its
+    manifest untouched and never leaves half-written files beside a manifest they do not match."""
+    results = Path(results)
+    results.mkdir(parents=True, exist_ok=True)
+    staging = results / f".staging_{dt.datetime.now(dt.timezone.utc).strftime('%Y%m%dT%H%M%S')}_{os.getpid()}"
+    staging.mkdir()
+    try:
+        manifest = _build(staging, registry_path, source_root, verify_archive, log)
+        for name in OUTPUTS:
+            name = name.format(table=TABLE, csv=manifest["csv"]["file"])
+            os.replace(staging / name, results / name)
+        staging.rmdir()
+        return manifest
+    except BaseException:
+        shutil.rmtree(staging, ignore_errors=True)
+        raise
+
+
+def _build(results: Path, registry_path: Path, source_root: Path, verify_archive: bool, log) -> dict:
     report = Report()
     registry = load_registry(registry_path, source_root)
     verify(registry, report, archive=verify_archive)
@@ -54,7 +79,6 @@ def build(results: Path = RESULTS, registry_path: Path = REGISTRY, source_root: 
         zones[vintage] = set(codes)
     report.require()
 
-    results.mkdir(parents=True, exist_ok=True)
     metadata = output.table_metadata(registry, schema, decisions_sha256)
     parquet = results / f"{TABLE}.parquet"
     csv_path = results / contract["tables"][TABLE]["file"]
@@ -65,27 +89,14 @@ def build(results: Path = RESULTS, registry_path: Path = REGISTRY, source_root: 
     pq_writer = output.ParquetWriter(schema, parquet, metadata)
     csv_writer = tx.CsvWriter(contract, csv_path)
     per_year, samples, total = {}, [], 0
-    for member in registry.members:
-        year = int(member["year"])
-        t0 = dt.datetime.now()
-        frame, picked = read_year(registry.root / member["file"], member, published, schema, zones, registry.epc_release, report)
-        samples += picked
-        pq_writer.write(frame)
-        rendered = tx.render(frame, schema, columns, contract)
-        csv_writer.write(rendered)
-        hashes = tx.row_hashes(rendered, contract)
-        year_total = sum(hashes)
-        total += year_total
-        bad = 0
-        for name in decimal_columns:
-            for v, text in zip(frame[name], rendered[name]):
-                if text != contract["digest"]["null_marker"] and tx.parse_decimal(text) != v:
-                    bad += 1
-        report.equal(f"{year}.decimal_round_trip", bad, 0, detail="every decimal cell: file text, Decimal, 4-place text, Decimal")
-        report.require()
-        per_year[str(year)] = {"rows": len(frame), "digest_total": str(year_total)}
-        log(f"  {year}: {len(frame):,} rows in {(dt.datetime.now() - t0).seconds}s")
-        del frame, rendered, hashes
+    try:
+        _read_all(registry, published, schema, zones, contract, columns, decimal_columns, pq_writer, csv_writer,
+                  per_year, samples, report, log)
+    except BaseException:
+        pq_writer.abort()
+        csv_writer.abort()
+        raise
+    total = sum(int(d["digest_total"]) for d in per_year.values())
     parquet_sha = pq_writer.close()
     csv_info = csv_writer.close()
     csv_info["digest"] = tx.digest_record(contract, csv_info["rows"], total)
@@ -142,6 +153,29 @@ def build(results: Path = RESULTS, registry_path: Path = REGISTRY, source_root: 
     (results / "manifest.json").write_text(json.dumps(manifest, indent=1, default=str))
     (results / "BUILD_REPORT.md").write_text(build_report(manifest, samples, schema))
     return manifest
+
+
+def _read_all(registry, published, schema, zones, contract, columns, decimal_columns, pq_writer, csv_writer,
+              per_year, samples, report, log) -> None:
+    for member in registry.members:
+        year = int(member["year"])
+        t0 = dt.datetime.now()
+        frame, picked = read_year(registry.root / member["file"], member, published, schema, zones, registry.epc_release, report)
+        samples += picked
+        pq_writer.write(frame)
+        rendered = tx.render(frame, schema, columns, contract)
+        csv_writer.write(rendered)
+        year_total = sum(tx.row_hashes(rendered, contract))
+        bad = 0
+        for name in decimal_columns:
+            for v, text in zip(frame[name], rendered[name]):
+                if text != contract["digest"]["null_marker"] and tx.parse_decimal(text) != v:
+                    bad += 1
+        report.equal(f"{year}.decimal_round_trip", bad, 0, detail="every decimal cell: file text, Decimal, 4-place text, Decimal")
+        report.require()
+        per_year[str(year)] = {"rows": len(frame), "digest_total": str(year_total)}
+        log(f"  {year}: {len(frame):,} rows in {(dt.datetime.now() - t0).seconds}s")
+        del frame, rendered
 
 
 def build_report(manifest: dict, samples: list, schema: dict) -> str:

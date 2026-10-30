@@ -14,12 +14,12 @@
 WITH matched AS (
     -- The result of join_by_uprn.sql, kept as a temporary table or a CTE: one row per cohort
     -- row with epc_status = 'matched' and the certificate's key.
-    SELECT m.pseudo_id, m.cohort_date, e.pc_norm, e.lodgement_date_parsed, e.datazone_2011, e.datazone_2011_status
+    SELECT m.cohort_row_id, m.pseudo_id, m.cohort_date, e.pc_norm, e.lodgement_date_parsed, e.datazone_2011, e.datazone_2011_status
     FROM #matched AS m
     JOIN epc_domestic AS e
       ON e.epc_release = m.epc_release AND e.source_year = m.source_year AND e.source_row = m.source_row
 )
-SELECT m.pseudo_id, m.cohort_date,
+SELECT m.cohort_row_id, m.pseudo_id, m.cohort_date,
        m.datazone_2011 AS epc_datazone_2011, m.datazone_2011_status,
        s.DataZone2011Code AS simd_datazone_2011, s.simd_release, s.simd_rank, s.simd_decile,
        CASE WHEN m.datazone_2011 IS NULL OR s.DataZone2011Code IS NULL THEN 'one_side_missing'
@@ -32,4 +32,4 @@ FROM matched AS m
 -- which takes (pc_norm, date) and returns the postcode row in force on that date.
 LEFT JOIN simd_link_as_of AS s ON s.pc_norm = m.pc_norm AND m.lodgement_date_parsed BETWEEN s.valid_from AND s.valid_to
 LEFT JOIN ahah_datazone AS a ON a.datazone_code = m.datazone_2011 AND a.ahah_version = N'4'
-ORDER BY m.pseudo_id;
+ORDER BY m.cohort_row_id;

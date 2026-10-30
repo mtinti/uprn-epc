@@ -282,7 +282,11 @@ fit their column but together exceed 8,000 characters, with a quote, a comma, a 
 ### 7. Example joins
 
 The main query joins by UPRN. Each query is a left join so no cohort row disappears, each row
-gets a status, and the choice of certificate is explicit in the query, never a default:
+gets a status, and the choice of certificate is explicit in the query, never a default. The
+cohort table has a unique `cohort_row_id` as well as the person identifier, and every
+partition, grouping and join is by that row: a person appears many times in a longitudinal
+cohort, and pooling a person's rows would hand a later certificate to an earlier observation
+(implementation review, 30 October 2026). The query stops if the row identifier repeats:
 
 1. **By UPRN, the latest certificate lodged on or before a date.** For a cohort row with a
    UPRN and a date, the certificate of that `uprn_osg` with the latest `lodgement_date_parsed`

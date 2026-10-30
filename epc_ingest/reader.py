@@ -174,7 +174,8 @@ def read_year(path: Path, member: dict, published: list, schema: dict, zones: di
     too_long = {}
     for f in schema["fields"]:
         if f["type"] == "string":
-            longest = int(frame[f["name"]].str.len().max()) if n else 0
+            longest = frame[f["name"]].str.len().max() if n else 0
+            longest = 0 if pd.isna(longest) else int(longest)   # a nullable column can be missing in every row
             if longest > f["width"]:
                 too_long[f["name"]] = longest
     report.equal(f"{label}.text_within_width", too_long, {}, detail="every text value fits its nvarchar width" if not too_long else "longest value per column over its width")

@@ -86,7 +86,10 @@ chosen cells, the empty-against-NULL counts and the join statuses.
 ## Join
 
 Three queries in `docs/sql/`, each a left join so no cohort row disappears, each returning one
-status per cohort row, each choosing the certificate explicitly:
+status per cohort row, each choosing the certificate explicitly. The cohort table carries a
+unique `cohort_row_id` beside the person identifier, because a person appears many times in a
+longitudinal cohort and each observation must get the certificate for its own date and address;
+the queries stop if the row identifier repeats.
 
 - `join_by_uprn.sql`: the latest certificate lodged on or before the cohort date. Statuses
   `matched`, `no_uprn`, `uprn_not_in_epc`, `no_certificate_by_date`, `ambiguous_as_of` (two or

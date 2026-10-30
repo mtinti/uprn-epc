@@ -1,7 +1,8 @@
 -- Join a cohort to its dwelling's current certificate by UPRN, without a date: the one
--- certificate with HISTORIC = False. A left join; one row per cohort row.
+-- certificate with HISTORIC = False. A left join; one output row per cohort row.
 --
--- Cohort: #cohort (pseudo_id int, uprn nvarchar(20)).
+-- Cohort: #cohort (cohort_row_id int, pseudo_id int, uprn nvarchar(20)). cohort_row_id
+-- identifies the cohort row and must be unique; a person (pseudo_id) can appear many times.
 --
 -- Status per cohort row:
 --   no_uprn                  the cohort UPRN is empty or not an integer
@@ -10,8 +11,11 @@
 --   ambiguous_latest         two or more HISTORIC = False certificates (22 UPRNs in 2026Q2)
 --   matched                  one current certificate; its columns are returned
 
+IF EXISTS (SELECT 1 FROM #cohort GROUP BY cohort_row_id HAVING COUNT(*) > 1)
+    THROW 51000, 'cohort_row_id must be unique: one row per cohort observation.', 1;
+
 WITH cohort AS (
-    SELECT c.pseudo_id, TRY_CONVERT(bigint, NULLIF(LTRIM(RTRIM(c.uprn)), N'')) AS uprn_int
+    SELECT c.cohort_row_id, c.pseudo_id, TRY_CONVERT(bigint, NULLIF(LTRIM(RTRIM(c.uprn)), N'')) AS uprn_int
     FROM #cohort AS c
 ),
 current_certs AS (
@@ -24,7 +28,7 @@ current_certs AS (
 known AS (
     SELECT DISTINCT uprn_osg FROM epc_domestic WHERE uprn_osg IS NOT NULL
 )
-SELECT c.pseudo_id,
+SELECT c.cohort_row_id, c.pseudo_id,
        CASE WHEN c.uprn_int IS NULL THEN 'no_uprn'
             WHEN k.uprn_osg IS NULL THEN 'uprn_not_in_epc'
             WHEN cc.uprn_osg IS NULL THEN 'no_current_certificate'
@@ -39,4 +43,4 @@ LEFT JOIN known AS k ON k.uprn_osg = c.uprn_int
 LEFT JOIN current_certs AS cc ON cc.uprn_osg = c.uprn_int
 LEFT JOIN epc_domestic AS e
        ON cc.n = 1 AND e.epc_release = cc.epc_release AND e.source_year = cc.source_year AND e.source_row = cc.source_row
-ORDER BY c.pseudo_id;
+ORDER BY c.cohort_row_id;

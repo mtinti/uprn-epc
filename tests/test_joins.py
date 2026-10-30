@@ -1,22 +1,25 @@
 """The example join queries, run against a small table in DuckDB with the cases the plan names.
 
-The queries are T-SQL for SQL Server. DuckDB runs them after four textual substitutions that
+The queries are T-SQL for SQL Server. DuckDB runs them after five textual substitutions that
 change spelling and nothing else: TRY_CONVERT(bigint, x) to TRY_CAST(x AS BIGINT), DATEDIFF(day,
-a, b) to datediff('day', a, b), N'...' to '...', and #cohort to cohort. The container probe
+a, b) to datediff('day', a, b), N'...' to '...', #cohort to cohort, and the IF EXISTS ... THROW
+guard removed (its presence is asserted separately). The container probe
 (loader/sqlserver_probe.sh) runs the T-SQL itself against SQL Server with the same cases."""
 
 import datetime as dt
 import re
-from decimal import Decimal
 from pathlib import Path
 
 import duckdb
 import pytest
 
 SQL = Path(__file__).resolve().parent.parent / "docs" / "sql"
+GUARD = re.compile(r"IF EXISTS \(SELECT 1 FROM #cohort GROUP BY cohort_row_id HAVING COUNT\(\*\) > 1\)\n\s*THROW 51000, '[^']*', 1;\n")
 
 
 def duck(sql: str) -> str:
+    assert GUARD.search(sql), "the query must stop on a repeated cohort_row_id"
+    sql = GUARD.sub("", sql)
     sql = re.sub(r"TRY_CONVERT\(bigint, (.*?)\) AS uprn_int", r"TRY_CAST(\1 AS BIGINT) AS uprn_int", sql)
     sql = sql.replace("DATEDIFF(day, ", "datediff('day', ")
     sql = re.sub(r"\bN'", "'", sql)
@@ -69,59 +72,84 @@ def run(con, name, cohort_ddl, cohort_rows):
     return con.execute(duck((SQL / name).read_text())).fetchall()
 
 
+DATED = "CREATE TABLE cohort (cohort_row_id INTEGER, pseudo_id INTEGER, uprn VARCHAR, cohort_date DATE)"
+
+
 def test_join_by_uprn_statuses_and_dates(con):
-    rows = run(con, "join_by_uprn.sql", "CREATE TABLE cohort (pseudo_id INTEGER, uprn VARCHAR, cohort_date DATE)", [
-        (1, "35000001", dt.date(2009, 1, 1)),       # before the first certificate
-        (2, "35000001", dt.date(2015, 6, 1)),       # on the day of the second
-        (3, "35000001", dt.date(2024, 1, 1)),       # after the third
-        (4, "000035000001", dt.date(2024, 1, 1)),   # padded: the same dwelling
-        (5, " 35000002 ", dt.date(2012, 6, 1)),     # two on the latest eligible day
-        (6, "35000002", dt.date(2019, 1, 1)),       # a later single certificate is eligible
-        (7, "99999999", dt.date(2024, 1, 1)),       # no certificate ever
-        (8, "", dt.date(2024, 1, 1)),
-        (9, None, dt.date(2024, 1, 1)),
-        (10, "ABC", dt.date(2024, 1, 1)),
-        (11, "35000003", dt.date(2024, 1, 1)),      # two current, different days: the later wins
+    rows = run(con, "join_by_uprn.sql", DATED, [
+        (1, 101, "35000001", dt.date(2009, 1, 1)),       # before the first certificate
+        (2, 102, "35000001", dt.date(2015, 6, 1)),       # on the day of the second
+        (3, 103, "35000001", dt.date(2024, 1, 1)),       # after the third
+        (4, 104, "000035000001", dt.date(2024, 1, 1)),   # padded: the same dwelling
+        (5, 105, " 35000002 ", dt.date(2012, 6, 1)),     # two on the latest eligible day
+        (6, 106, "35000002", dt.date(2019, 1, 1)),       # a later single certificate is eligible
+        (7, 107, "99999999", dt.date(2024, 1, 1)),       # no certificate ever
+        (8, 108, "", dt.date(2024, 1, 1)),
+        (9, 109, None, dt.date(2024, 1, 1)),
+        (10, 110, "ABC", dt.date(2024, 1, 1)),
+        (11, 111, "35000003", dt.date(2024, 1, 1)),      # two current, different days: the later wins
     ])
     assert len(rows) == 11
     by_id = {r[0]: r for r in rows}
-    status = {k: v[2] for k, v in by_id.items()}
+    status = {k: v[3] for k, v in by_id.items()}
     assert status == {1: "no_certificate_by_date", 2: "matched", 3: "matched", 4: "matched", 5: "ambiguous_as_of",
                       6: "matched", 7: "uprn_not_in_epc", 8: "no_uprn", 9: "no_uprn", 10: "no_uprn", 11: "matched"}
-    assert by_id[2][3] == dt.date(2015, 6, 1) and by_id[2][4] == 0 and by_id[2][5] == "D"
-    assert by_id[3][3] == dt.date(2020, 6, 1) and by_id[3][5] == "C" and by_id[4][5] == "C"
-    assert by_id[5][3] is None and by_id[5][5] is None
-    assert by_id[6][3] == dt.date(2018, 1, 1) and by_id[6][4] == 365
-    assert by_id[11][3] == dt.date(2019, 2, 1)
+    assert by_id[2][4] == dt.date(2015, 6, 1) and by_id[2][5] == 0 and by_id[2][6] == "D"
+    assert by_id[3][4] == dt.date(2020, 6, 1) and by_id[3][6] == "C" and by_id[4][6] == "C"
+    assert by_id[5][4] is None and by_id[5][6] is None
+    assert by_id[6][4] == dt.date(2018, 1, 1) and by_id[6][5] == 365
+    assert by_id[11][4] == dt.date(2019, 2, 1)
+    assert [r[1] for r in rows] == [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111]
+
+
+def test_one_person_many_rows_each_row_gets_its_own_certificate(con):
+    """A longitudinal cohort repeats a person at different dates and addresses. Each row must
+    keep its own eligible set: the 2015 observation must not receive the 2020 certificate, and
+    repeated rows must not read as ambiguity."""
+    rows = run(con, "join_by_uprn.sql", DATED, [
+        (1, 7, "35000001", dt.date(2015, 6, 1)),
+        (2, 7, "35000001", dt.date(2024, 1, 1)),
+        (3, 7, "35000001", dt.date(2024, 1, 1)),    # a duplicate observation
+        (4, 7, "35000004", dt.date(2024, 1, 1)),    # the same person at another address
+        (5, 7, "35000002", dt.date(2012, 6, 1)),    # a real same-day tie stays ambiguous
+    ])
+    by_id = {r[0]: r for r in rows}
+    assert len(rows) == 5 and all(r[1] == 7 for r in rows)
+    assert by_id[1][3] == "matched" and by_id[1][4] == dt.date(2015, 6, 1) and by_id[1][6] == "D"
+    assert by_id[2][3] == "matched" and by_id[2][4] == dt.date(2020, 6, 1)
+    assert by_id[3][3] == "matched" and by_id[3][4] == dt.date(2020, 6, 1)
+    assert by_id[4][3] == "matched" and by_id[4][4] == dt.date(2011, 1, 1) and by_id[4][6] == "G"
+    assert by_id[5][3] == "ambiguous_as_of"
 
 
 def test_join_latest_by_uprn_statuses(con):
-    rows = run(con, "join_latest_by_uprn.sql", "CREATE TABLE cohort (pseudo_id INTEGER, uprn VARCHAR)", [
-        (1, "35000001"), (2, "35000003"), (3, "35000004"), (4, "99999999"), (5, ""), (6, "000035000002"),
+    rows = run(con, "join_latest_by_uprn.sql", "CREATE TABLE cohort (cohort_row_id INTEGER, pseudo_id INTEGER, uprn VARCHAR)", [
+        (1, 7, "35000001"), (2, 7, "35000003"), (3, 8, "35000004"), (4, 8, "99999999"), (5, 9, ""), (6, 9, "000035000002"),
     ])
-    status = {r[0]: r[1] for r in rows}
+    status = {r[0]: r[2] for r in rows}
     assert status == {1: "matched", 2: "ambiguous_latest", 3: "no_current_certificate", 4: "uprn_not_in_epc", 5: "no_uprn", 6: "matched"}
-    assert {r[0]: r[3] for r in rows}[1] == "C" and {r[0]: r[3] for r in rows}[6] == "D"
-    assert len(rows) == 6
+    rating = {r[0]: r[4] for r in rows}
+    assert rating[1] == "C" and rating[6] == "D"
+    assert len(rows) == 6 and [r[1] for r in rows] == [7, 7, 8, 8, 9, 9]
 
 
 def test_join_by_postcode_one_row_per_dwelling(con):
-    rows = run(con, "join_by_postcode.sql", "CREATE TABLE cohort (pseudo_id INTEGER, postcode VARCHAR, cohort_date DATE)", [
-        (1, "fk10 1ab", dt.date(2024, 1, 1)),   # three dwellings: 35000003 (two current, later wins), 35000004 (historic only), no-UPRN dwelling
-        (2, "FK10 1AA", dt.date(2012, 3, 3)),   # 35000001 has 2010; 35000002 has the same-day pair
-        (3, "FK10 1AA", dt.date(2009, 1, 1)),   # dwellings exist, no certificate yet
-        (4, "ZZ1 1ZZ", dt.date(2024, 1, 1)),
-        (5, "", dt.date(2024, 1, 1)),
+    rows = run(con, "join_by_postcode.sql", "CREATE TABLE cohort (cohort_row_id INTEGER, pseudo_id INTEGER, postcode VARCHAR, cohort_date DATE)", [
+        (1, 7, "fk10 1ab", dt.date(2024, 1, 1)),   # three dwellings: 35000003 (two current, later wins), 35000004 (historic only), no-UPRN dwelling
+        (2, 7, "FK10 1AA", dt.date(2012, 3, 3)),   # the same person: 35000001 has 2010; 35000002 has the same-day pair
+        (3, 8, "FK10 1AA", dt.date(2009, 1, 1)),   # dwellings exist, no certificate yet
+        (4, 8, "ZZ1 1ZZ", dt.date(2024, 1, 1)),
+        (5, 9, "", dt.date(2024, 1, 1)),
     ])
     one = [r for r in rows if r[0] == 1]
-    assert [r[2] for r in one] == ["matched"] * 3
-    assert sorted(r[3] for r in one) == [1000000003, 1000000004, 1000000005]
-    dwelling = {r[3]: r for r in one}
-    assert dwelling[1000000003][4] == "matched" and dwelling[1000000003][6] == dt.date(2019, 2, 1)
-    assert dwelling[1000000004][8] == "G" and dwelling[1000000005][5] is None
-    two = {r[3]: r for r in rows if r[0] == 2}
-    assert two[1000000001][4] == "matched" and two[1000000001][6] == dt.date(2010, 6, 1)
-    assert two[1000000002][4] == "ambiguous_as_of" and two[1000000002][6] is None
-    assert [r[2] for r in rows if r[0] == 3] == ["no_certificate_by_date"]
-    assert [r[2] for r in rows if r[0] == 4] == ["postcode_not_in_epc"]
-    assert [r[2] for r in rows if r[0] == 5] == ["no_postcode"]
+    assert [r[3] for r in one] == ["matched"] * 3
+    assert sorted(r[4] for r in one) == [1000000003, 1000000004, 1000000005]
+    dwelling = {r[4]: r for r in one}
+    assert dwelling[1000000003][5] == "matched" and dwelling[1000000003][7] == dt.date(2019, 2, 1)
+    assert dwelling[1000000004][9] == "G" and dwelling[1000000005][6] is None
+    two = {r[4]: r for r in rows if r[0] == 2}
+    assert two[1000000001][5] == "matched" and two[1000000001][7] == dt.date(2010, 6, 1)
+    assert two[1000000002][5] == "ambiguous_as_of" and two[1000000002][7] is None
+    assert [r[3] for r in rows if r[0] == 3] == ["no_certificate_by_date"]
+    assert [r[3] for r in rows if r[0] == 4] == ["postcode_not_in_epc"]
+    assert [r[3] for r in rows if r[0] == 5] == ["no_postcode"]

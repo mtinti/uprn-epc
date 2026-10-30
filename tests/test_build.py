@@ -225,3 +225,46 @@ def test_rrn_repeated_across_files_fails_the_build(tmp_path):
     with pytest.raises(BuildStopped) as stop:
         _build(tmp_path, years={2008: a, 2026: b})
     assert "table.rrn_unique" in str(stop.value)
+
+
+def test_a_nullable_column_missing_in_every_row_builds(tmp_path):
+    rows = default_rows(2008)
+    for r in rows:
+        r["REPORT_REFERENCE_NUMBER"] = ""
+        r["POSTCODE"] = ""
+        r["DATA_ZONE_2011"] = ""
+    manifest = _build(tmp_path, years={2008: rows})
+    assert manifest["summary"]["blocking_failed"] == 0
+    saved = output.read_table(tmp_path / "results" / "epc_domestic.parquet")
+    assert saved["rrn"].isna().all() and saved["pc_norm"].isna().all() and saved["datazone_2011"].isna().all()
+    assert (saved["datazone_2011_status"] == "empty").all()
+
+
+def test_a_failed_rebuild_keeps_the_last_accepted_build(tmp_path):
+    results = tmp_path / "results"
+    first = tmp_path / "first"
+    first.mkdir()
+    registry = make_release(first)
+    manifest = pipeline.build(results=results, registry_path=registry, source_root=first / "sources", log=lambda *a: None)
+    before = {p.name: p.read_bytes() for p in results.iterdir()}
+    assert set(before) == {"epc_domestic.parquet", "epc_domestic.csv.gz", "manifest.json", "BUILD_REPORT.md"}
+    # A late failure: the whole-table check on an unknown data zone, after both files are written.
+    second = tmp_path / "second"
+    second.mkdir()
+    rows = default_rows(2008)
+    rows[0]["DATA_ZONE"] = "S01999999 (Nowhere)"
+    registry2 = make_release(second, years={2008: rows})
+    with pytest.raises(BuildStopped):
+        pipeline.build(results=results, registry_path=registry2, source_root=second / "sources", log=lambda *a: None)
+    after = {p.name: p.read_bytes() for p in results.iterdir()}
+    assert after == before
+    assert json.loads(after["manifest.json"])["parquet"]["sha256"] == manifest["parquet"]["sha256"]
+    # An early failure: the reader stops on the second file after the first part is written.
+    third = tmp_path / "third"
+    third.mkdir()
+    bad = default_rows(2026)
+    bad[0]["HISTORIC"] = "TRUE"
+    registry3 = make_release(third, years={2008: default_rows(2008), 2026: bad})
+    with pytest.raises(BuildStopped):
+        pipeline.build(results=results, registry_path=registry3, source_root=third / "sources", log=lambda *a: None)
+    assert {p.name: p.read_bytes() for p in results.iterdir()} == before
