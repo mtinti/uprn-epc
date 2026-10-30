@@ -82,9 +82,17 @@ Server for Linux, which rejects that option, convert the CSV to UTF-16 and impor
 `widechar`, as the probe does. When the server cannot read the client's files at all, which rules out
 `BULK INSERT`, use `loader/upload_epc.ipynb` instead: it sends the rows through pyodbc in chunks, keeping
 the empty-against-NULL rule of the import script, builds the two indexes, runs the same digest check and
-shows the table in use. Regenerate it after a rebuild with `python loader/make_notebook.py`. `loader/sqlserver_probe.sh` runs the same scripts against a throwaway SQL
-Server 2022 container, times the import and the digest, and asserts SQL Server's rendering of
-chosen cells, the empty-against-NULL counts and the join statuses.
+shows the table in use. Regenerate it after a rebuild with `python loader/make_notebook.py`.
+
+Two container probes exercise both routes against a throwaway SQL Server 2022.
+`loader/sqlserver_probe.sh` runs the import and check scripts on the full build, times them, and
+asserts SQL Server's rendering of chosen cells, the empty-against-NULL counts and the join
+statuses. `loader/notebook_probe.sh` runs the notebook's own cells in a Jupyter kernel from a
+second container that stands in for an analyst's machine, on a 15-row fixture carrying the
+awkward cells of the real extract, under eleven scenarios: the notebook as it is, a changed file,
+four kinds of tampering with the loaded table that the digest must catch, a batch the server
+rejects and a value the pre-send check rejects. Records: `docs/sql/SQLSERVER_PROBE_2026-10-30.md`
+and `docs/sql/NOTEBOOK_PROBE_2026-10-30.md`.
 
 ## Join
 
