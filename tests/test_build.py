@@ -301,17 +301,19 @@ def test_a_failed_promotion_rolls_back_to_the_accepted_build(tmp_path, monkeypat
     with pytest.raises(PermissionError):
         pipeline.build(results=results, registry_path=registry2, source_root=second / "sources", log=lambda *a: None)
     assert {p.name: p.read_bytes() for p in results.iterdir()} == before
-    # A lock that persists: the rollback cannot restore the CSV either, so the accepted build is
-    # kept whole in the previous folder and the error names it.
+    # A lock that persists: the rollback cannot restore the CSV either, so the accepted files
+    # are left across results and the previous folder, nothing deleted, and the error names both.
     failures.clear()
     monkeypatch.setattr(pipeline.os, "replace", locked_csv(10))
     with pytest.raises(RuntimeError) as stop:
         pipeline.build(results=results, registry_path=registry2, source_root=second / "sources", log=lambda *a: None)
     previous = [p for p in results.iterdir() if p.name.startswith(".previous_")]
-    assert len(previous) == 1 and str(previous[0]) in str(stop.value)
+    assert len(previous) == 1 and str(previous[0]) in str(stop.value) and str(results) in str(stop.value)
     kept = {p.name: p.read_bytes() for p in previous[0].iterdir()}
-    assert kept["epc_domestic.csv.gz"] == before["epc_domestic.csv.gz"] and kept["manifest.json"] == before["manifest.json"]
-    for name, data in kept.items():
+    restored = {p.name: p.read_bytes() for p in results.iterdir() if p.is_file()}
+    recoverable = dict(restored, **kept)
+    assert {k: recoverable[k] for k in before} == before, "every accepted file is in one of the two folders"
+    for name in kept:
         real_replace(previous[0] / name, results / name)
     previous[0].rmdir()
     # Without the fault the same build promotes, and the accepted generation changes as a whole.

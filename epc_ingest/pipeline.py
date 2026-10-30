@@ -63,9 +63,11 @@ def promote(staging: Path, results: Path, names: list, previous: Path) -> None:
     """Move the accepted outputs into place as one generation. The files of the last accepted
     build are first moved aside into `previous`, then the new files moved in; if any move
     fails, every move is undone so `results` holds the last accepted build again. Only if the
-    rollback itself fails is `previous` kept, and the error names it, so nothing accepted is
-    ever lost. Each step is a rename on one filesystem, so an interruption leaves at worst
-    `previous` beside a partial `results`, never a deleted file."""
+    rollback itself fails is `previous` kept, and the error names it: the accepted files are
+    then split between `results` (those restored before the rollback stopped) and `previous`
+    (the rest), so recovery must keep both folders. Nothing accepted is ever deleted. Each step
+    is a rename on one filesystem, so an interruption leaves at worst `previous` beside a
+    partial `results`. `results` is not readable by another process during promotion."""
     moved_aside, promoted = [], []
     try:
         previous.mkdir()
@@ -84,7 +86,7 @@ def promote(staging: Path, results: Path, names: list, previous: Path) -> None:
                 os.replace(previous / name, results / name)
             previous.rmdir()
         except BaseException as rollback_failure:
-            raise RuntimeError(f"promotion failed and could not be rolled back; the last accepted build is in {previous}") from rollback_failure
+            raise RuntimeError(f"promotion failed and could not be rolled back; the last accepted build is split between {results} and {previous}, keep both") from rollback_failure
         raise failure
     shutil.rmtree(previous)
 
