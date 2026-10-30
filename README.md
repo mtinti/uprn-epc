@@ -1,4 +1,4 @@
-# epc-scotland
+# uprn-epc
 
 Scottish domestic Energy Performance Certificates (EPCs) for SQL Server, one row per
 certificate, joinable to a cohort by UPRN and date. The recipe is public; the built table is
