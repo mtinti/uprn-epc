@@ -39,6 +39,10 @@ Four things to know before joining:
 - **Most dwellings have no certificate.** About 1.9 million UPRNs appear in the release against
   about 2.7 million dwellings in Scotland. A cohort row with no match is `uprn_not_in_epc`, not
   an error, and the README of any project using this must say what share matched.
+- **Same-day pairs are common.** 42,870 (UPRN, lodgement day) pairs carry two or more
+  certificates in this release, against 22 UPRNs with two current certificates. The dated join
+  reports such a pair as `ambiguous_as_of` only when it falls on the latest eligible day; the
+  build report counts them and a project should expect that status, not treat it as rare.
 - **`HISTORIC = True` means superseded, not expired.** A certificate is valid for ten years.
   The dated join returns the latest certificate lodged on or before the cohort date and its age
   in days; the project decides about expiry.
