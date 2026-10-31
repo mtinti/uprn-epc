@@ -108,3 +108,24 @@ had not yet been regenerated: the notebook's header check caught the stale table
 is what it is for. After `python -m epc_ingest.sql_check`, the eleven scenarios ran as expected.
 The read-back now includes the three address columns (the fixture's quoted `FLAT 1/2 "THE OLD
 MILL"` and accented post town among them): 420 cells of 28 columns equal to the CSV.
+
+## The mechanism, probed again (31 October 2026)
+
+A check of the datazone-ahah note argued that the hang cannot arise where every connection is a
+`with` block, because pyodbc commits on exit, so no transaction is left open for the pool to hand
+on. The EPC notebook that hung used `with` blocks too (step 1 was `with pyodbc.connect(CONN,
+timeout=10) as cn:`), so the point was probed with `loader/notebook_probe/pooling_diag.py` in the
+client container against the throwaway server:
+
+| | A: `with`, autocommit False, one SELECT, exit, closed | C: new connect, autocommit=True |
+| --- | --- | --- |
+| pooling on | spid 55, `@@TRANCOUNT` 1 after the SELECT | spid 55 again; `@@TRANCOUNT` 1 after a SELECT and after CREATE TABLE; `c.autocommit` reads True; another session sees one open transaction on spid 55 |
+| pooling off | spid 55, `@@TRANCOUNT` 1 | spid 55 (the number reused by the server); `@@TRANCOUNT` 0; no open transaction |
+
+So the description above, "a pooled connection comes back with that transaction still open", was
+not quite the mechanism. A's with-block did commit and A's close did roll back. What the pool
+hands on is the physical connection in manual-commit mode at the server: pyodbc's new handle
+records `autocommit=True` without the driver changing the session, so every statement on C opens
+a transaction that pyodbc, believing itself in autocommit, never commits. The fixes stand:
+pooling off is what makes C start clean; autocommit on the read-only connections and the lock
+timeouts are belt and braces.
