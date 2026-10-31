@@ -26,6 +26,8 @@ from .lineage import PACKAGE, effective_decisions, lineage, load_catalogue, load
 ROOT = PACKAGE.parent
 REPO = "https://github.com/mtinti/uprn-epc"
 GROUP_TITLE = {"key": "Key and provenance columns", "published": "Published columns, in published order", "derived": "Derived columns"}
+REPLACEMENT_NOTE = (" The label is as printed in the file's second header row, where the publisher's export already holds the "
+                    "replacement character U+FFFD (shown as \ufffd) in place of a lost ² or £; the publication note prints the intended character.")
 TYPE_WORDS = {"string": "text", "int16": "16-bit integer", "int32": "32-bit integer", "int64": "64-bit integer", "bool": "flag",
               "date": "date", "datetime": "timestamp", "decimal": "decimal(19,4)"}
 
@@ -123,7 +125,8 @@ def _write_pages(out: Path) -> dict:
         if r["group"] == "published":
             m = r["inputs"][0]
             lines += [f"Field {m['position']} of 107 in every annual file of release {registry.epc_release}, machine name `{m['field']}`, "
-                      f"publisher's label \"{m['label']}\". The row keeps its file position as `source_row`.", "",
+                      f"publisher's label \"{m['label']}\". The row keeps its file position as `source_row`."
+                      + (REPLACEMENT_NOTE if "\ufffd" in m["label"] else ""), "",
                       "| Pinned file | SHA256 | Rows |", "| --- | --- | --- |"]
             for i in r["inputs"]:
                 if i["field"] is None:
@@ -170,8 +173,9 @@ def _write_pages(out: Path) -> dict:
         ex = r["export"]
         lines += ["## In SQL Server", ""]
         bits = [f"Declared `{ex['sql_type']}`{' NOT NULL' if ex['not_null'] else ', NULL in its documented missing case'}."]
-        if ex["index"]:
-            bits.append(f"Carries the index `{ex['index']}` {ex['index_members']}.")
+        for ix in ex["indexes"]:
+            members = "(" + ", ".join(f"`{c}`" for c in ix["columns"]) + ")" + (" INCLUDE (" + ", ".join(f"`{c}`" for c in ix["include"]) + ")" if ix["include"] else "")
+            bits.append(f"In `{ix['index']}` as {ix['role']}: {members}." + (f" Serves {ix['serves']}." if ix.get("serves") else ""))
         if ex["joined_on"]:
             bits.append(f"Joins: {ex['joined_on']}.")
         bits.append("Covered by the row digest that the loaded table is checked against." if ex["in_digest"] else "Not in the CSV, so not in the row digest.")
