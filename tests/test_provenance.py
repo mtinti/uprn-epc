@@ -111,7 +111,7 @@ def test_every_input_reference_is_a_pinned_object_or_a_column(L):
 
 def test_decisions_parse_and_every_cited_decision_exists_with_a_status(L):
     decisions = lin.load_decisions()
-    assert len(decisions) == 12
+    assert len(decisions) == 13
     for d in decisions.values():
         assert d["status"] in ("in_force", "superseded") and d["date"] and d["decision"] and d["why"], d["id"]
         if d.get("amends"):
@@ -208,7 +208,7 @@ def test_the_four_zone_columns_name_their_list_and_membership_decides_the_status
 
 def test_the_site_has_a_page_per_column_and_every_link_resolves(site):
     out, counts = site
-    assert counts["columns"] == 130 and counts["decisions"] == 12
+    assert counts["columns"] == 130 and counts["decisions"] == 13
     assert {p.stem for p in (out / "columns").glob("*.md")} - {"index"} == set(NAMES)
     for page in out.rglob("*.md"):
         for target in re.findall(r"\]\(([^)]+\.md)(?:#[^)]*)?\)", page.read_text()):

@@ -29,13 +29,15 @@ def duck(sql: str) -> str:
 
 
 COLUMNS = ["epc_release", "source_year", "source_row", "uprn_sepcr", "uprn_osg", "pc_norm", "inspection_date_parsed", "lodgement_date_parsed",
-           "historic_flag", "rrn", "CURRENT_ENERGY_RATING", "current_energy_efficiency_int", "POTENTIAL_ENERGY_RATING",
+           "created_at_parsed", "historic_flag", "rrn", "CURRENT_ENERGY_RATING", "current_energy_efficiency_int", "POTENTIAL_ENERGY_RATING",
            "total_floor_area_int", "PROPERTY_TYPE", "BUILT_FORM", "CONSTRUCTION_AGE_BAND", "TENURE", "MAIN_FUEL"]
 
 
-def cert(row, year, uprn_sepcr, uprn_osg, pc, lodged, historic, rating="D", inspected=None):
-    """A certificate; the inspection is on the lodgement day unless `inspected` says otherwise."""
-    return ("2026Q2", year, row, uprn_sepcr, uprn_osg, pc, dt.date.fromisoformat(inspected or lodged), dt.date.fromisoformat(lodged), historic,
+def cert(row, year, uprn_sepcr, uprn_osg, pc, lodged, historic, rating="D", inspected=None, created=None):
+    """A certificate; the inspection is on the lodgement day unless `inspected` says otherwise, and
+    the register timestamp is 09:00 on the lodgement day unless `created` says otherwise."""
+    return ("2026Q2", year, row, uprn_sepcr, uprn_osg, pc, dt.date.fromisoformat(inspected or lodged), dt.date.fromisoformat(lodged),
+            dt.datetime.fromisoformat(created or (lodged + " 09:00:00")), historic,
             f"{year}-{row:04d}-0000-0000-0001",
             rating, 65, "C", 85, "House", "Detached", "1950-1964", "Owner-occupied", "mains gas")
 
@@ -44,7 +46,7 @@ def cert(row, year, uprn_sepcr, uprn_osg, pc, lodged, historic, rating="D", insp
 def con():
     c = duckdb.connect()
     c.execute("CREATE TABLE epc_domestic (epc_release VARCHAR, source_year SMALLINT, source_row INTEGER, uprn_sepcr BIGINT, uprn_osg BIGINT, "
-              "pc_norm VARCHAR, inspection_date_parsed DATE, lodgement_date_parsed DATE, historic_flag BOOLEAN, rrn VARCHAR, CURRENT_ENERGY_RATING VARCHAR, "
+              "pc_norm VARCHAR, inspection_date_parsed DATE, lodgement_date_parsed DATE, created_at_parsed TIMESTAMP, historic_flag BOOLEAN, rrn VARCHAR, CURRENT_ENERGY_RATING VARCHAR, "
               "current_energy_efficiency_int INTEGER, POTENTIAL_ENERGY_RATING VARCHAR, total_floor_area_int INTEGER, PROPERTY_TYPE VARCHAR, "
               "BUILT_FORM VARCHAR, CONSTRUCTION_AGE_BAND VARCHAR, TENURE VARCHAR, MAIN_FUEL VARCHAR)")
     rows = [
@@ -64,6 +66,13 @@ def con():
         cert(6, 2011, 1000000004, 35000004, "FK101AB", "2011-01-01", True, "G", inspected="2011-01-05"),
         # A dwelling with no Gazetteer UPRN, in FK10 1AB.
         cert(7, 2016, 1000000005, None, "FK101AB", "2016-05-05", False, "D"),
+        # UPRN 35000006: the common tie, one assessment lodged twice on the same day, one current.
+        cert(8, 2021, 1000000006, 35000006, "FK101AC", "2021-04-01", True, "E", created="2021-04-01 10:00:00"),
+        cert(9, 2021, 1000000006, 35000006, "FK101AC", "2021-04-01", False, "C", created="2021-04-01 09:00:00"),
+        # UPRN 35000007: a same-day pair, both superseded by a later certificate; the register timestamps differ.
+        cert(10, 2014, 1000000007, 35000007, "FK101AC", "2014-02-02", True, "F", created="2014-02-02 09:00:00"),
+        cert(11, 2014, 1000000007, 35000007, "FK101AC", "2014-02-02", True, "D", created="2014-02-02 16:30:00"),
+        cert(12, 2022, 1000000007, 35000007, "FK101AC", "2022-02-02", False, "B"),
     ]
     c.executemany("INSERT INTO epc_domestic VALUES (" + ",".join("?" * len(COLUMNS)) + ")", rows)
     return c
@@ -93,14 +102,25 @@ def test_join_by_uprn_statuses_and_dates(con):
         (10, 110, "ABC", dt.date(2024, 1, 1)),
         (11, 111, "35000003", dt.date(2024, 1, 1)),      # two current, different days: the later wins
         (12, 112, "35000001", dt.date(2020, 5, 25)),     # inspected before the date, lodged after it: the 2020 certificate
+        (13, 113, "35000006", dt.date(2024, 1, 1)),      # same-day pair, one current: the current one, rated C not E
+        (14, 114, "35000007", dt.date(2015, 1, 1)),      # same-day pair, both superseded: the later register timestamp, D not F
+        (15, 115, "35000007", dt.date(2024, 1, 1)),      # the later single certificate; no tie
     ])
-    assert len(rows) == 12
+    assert len(rows) == 15
     by_id = {r[0]: r for r in rows}
     # Columns: 0 cohort_row_id, 1 pseudo_id, 2 cohort_date, 3 status, 4 inspection date, 5 lodgement date,
     # 6 age in days from the inspection, 7 lodged-before-inspection flag, 8 rating.
     status = {k: v[3] for k, v in by_id.items()}
     assert status == {1: "no_certificate_by_date", 2: "matched", 3: "matched", 4: "matched", 5: "ambiguous_as_of",
-                      6: "matched", 7: "uprn_not_in_epc", 8: "no_uprn", 9: "no_uprn", 10: "no_uprn", 11: "matched", 12: "matched"}
+                      6: "matched", 7: "uprn_not_in_epc", 8: "no_uprn", 9: "no_uprn", 10: "no_uprn", 11: "matched", 12: "matched",
+                      13: "matched", 14: "matched", 15: "matched"}
+    # The last two columns: how many certificates shared the latest eligible day, and which rule chose.
+    tie = {k: (v[-2], v[-1]) for k, v in by_id.items()}
+    assert tie[5] == (2, "unresolved")            # both superseded, identical register timestamps
+    assert tie[13] == (2, "current") and by_id[13][8] == "C"
+    assert tie[14] == (2, "latest_lodged") and by_id[14][8] == "D"
+    assert tie[15] == (1, None) and by_id[15][8] == "B"
+    assert all(tie[k] == (1, None) for k in (2, 3, 4, 6, 11, 12)) and tie[1] == (None, None) and tie[7] == (None, None)
     assert by_id[2][4] == dt.date(2015, 6, 1) and by_id[2][6] == 0 and by_id[2][8] == "D"
     assert by_id[3][4] == dt.date(2020, 5, 20) and by_id[3][5] == dt.date(2020, 6, 1) and by_id[3][8] == "C" and by_id[4][8] == "C"
     assert by_id[5][4] is None and by_id[5][5] is None and by_id[5][7] is None and by_id[5][8] is None
@@ -108,7 +128,7 @@ def test_join_by_uprn_statuses_and_dates(con):
     assert by_id[11][4] == dt.date(2019, 2, 1)
     assert by_id[12][4] == dt.date(2020, 5, 20) and by_id[12][6] == 5 and by_id[12][8] == "C"    # by lodgement it would have been the 2015 D
     assert all(by_id[k][7] == 0 for k in (2, 3, 4, 6, 11, 12)) and by_id[1][7] is None
-    assert [r[1] for r in rows] == [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112]
+    assert [r[1] for r in rows] == [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115]
 
 
 def test_one_person_many_rows_each_row_gets_its_own_certificate(con):
@@ -120,7 +140,7 @@ def test_one_person_many_rows_each_row_gets_its_own_certificate(con):
         (2, 7, "35000001", dt.date(2024, 1, 1)),
         (3, 7, "35000001", dt.date(2024, 1, 1)),    # a duplicate observation
         (4, 7, "35000004", dt.date(2024, 1, 1)),    # the same person at another address
-        (5, 7, "35000002", dt.date(2012, 6, 1)),    # a real same-day tie stays ambiguous
+        (5, 7, "35000002", dt.date(2012, 6, 1)),    # a same-day tie the rule cannot break stays ambiguous
     ])
     by_id = {r[0]: r for r in rows}
     assert len(rows) == 5 and all(r[1] == 7 for r in rows)
@@ -162,6 +182,11 @@ def test_join_by_postcode_one_row_per_dwelling(con):
     two = {r[4]: r for r in rows if r[0] == 2}
     assert two[1000000001][5] == "matched" and two[1000000001][7] == dt.date(2010, 6, 1)
     assert two[1000000002][5] == "ambiguous_as_of" and two[1000000002][7] is None and two[1000000002][10] is None
+    assert two[1000000002][-2:] == (2, "unresolved") and two[1000000001][-2:] == (1, None)
+    three = {r[4]: r for r in run(con, "join_by_postcode.sql", "CREATE TABLE cohort (cohort_row_id INTEGER, pseudo_id INTEGER, postcode VARCHAR, cohort_date DATE)",
+                                  [(1, 1, "FK10 1AC", dt.date(2021, 12, 31))])}
+    assert three[1000000006][5] == "matched" and three[1000000006][11] == "C" and three[1000000006][-2:] == (2, "current")
+    assert three[1000000007][5] == "matched" and three[1000000007][11] == "D" and three[1000000007][-2:] == (2, "latest_lodged")
     assert [r[3] for r in rows if r[0] == 3] == ["no_certificate_by_date"]
     assert [r[3] for r in rows if r[0] == 4] == ["postcode_not_in_epc"]
     assert [r[3] for r in rows if r[0] == 5] == ["no_postcode"]

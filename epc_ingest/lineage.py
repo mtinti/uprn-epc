@@ -51,13 +51,14 @@ KEY_RULES = {
 }
 # Which decisions govern which columns, beyond the ones every column of a group shares.
 DECISIONS_BY_COLUMN = {
-    "source_year": ["file-year-is-created-at"], "created_at_parsed": ["file-year-is-created-at"],
-    "uprn_osg": ["uprn-as-integer", "join-latest-lodged-with-ties", "join-by-inspection-date"],
+    "source_year": ["file-year-is-created-at"],
+    "uprn_osg": ["uprn-as-integer", "join-latest-lodged-with-ties", "join-by-inspection-date", "tie-prefers-current-then-latest-lodged"],
     "uprn_sepcr": ["uprn-as-integer"],
     "pc_norm": ["join-by-inspection-date"],
-    "inspection_date_parsed": ["join-by-inspection-date"],
+    "inspection_date_parsed": ["join-by-inspection-date", "tie-prefers-current-then-latest-lodged"],
     "lodgement_date_parsed": ["join-latest-lodged-with-ties", "join-by-inspection-date"],
-    "historic_flag": ["join-latest-lodged-with-ties"],
+    "historic_flag": ["join-latest-lodged-with-ties", "tie-prefers-current-then-latest-lodged"],
+    "created_at_parsed": ["file-year-is-created-at", "tie-prefers-current-then-latest-lodged"],
     "ADDRESS1": ["recipe-public-data-private", "address-lines-loaded"],
     "ADDRESS2": ["recipe-public-data-private", "address-lines-loaded"],
     "ADDRESS3": ["recipe-public-data-private", "address-lines-loaded"],
@@ -89,7 +90,8 @@ JOINED_ON = {"uprn_osg": "join_by_uprn.sql and join_latest_by_uprn.sql compare i
              "pc_norm": "join_by_postcode.sql compares it to the cohort's normalised postcode",
              "inspection_date_parsed": "the dated joins rank certificates by it and keep those on or before the cohort date",
              "uprn_sepcr": "join_by_postcode.sql counts dwellings by it",
-             "historic_flag": "join_latest_by_uprn.sql chooses the HISTORIC = False certificate without a date"}
+             "historic_flag": "join_latest_by_uprn.sql chooses the HISTORIC = False certificate without a date; the dated joins prefer it when two certificates share the latest eligible inspection day",
+             "created_at_parsed": "the dated joins prefer the later register lodgement when a same-day pair has no single current certificate"}
 
 
 def load_catalogue(path: Path = CATALOGUE) -> list:
