@@ -18,10 +18,24 @@
 --   no_uprn                  the cohort UPRN is empty or not an integer
 --   uprn_not_in_epc          no certificate for that UPRN in the release (most dwellings)
 --   no_certificate_by_date   certificates exist, none inspected on or before the date
---   ambiguous_as_of          two or more certificates inspected on the latest eligible day
+--   ambiguous_as_of          two or more certificates inspected on the latest eligible day that
+--                            the tie rule below cannot separate
 --   matched                  one certificate; its columns and its age in days are returned
 -- The query does not decide whether the certificate has expired (ten years from lodgement);
 -- epc_age_days lets the project apply that rule or another.
+--
+-- Ties. Two or more certificates of one dwelling inspected on the latest eligible day are almost
+-- always one assessment lodged twice (49,705 UPRNs in 2026Q2 have such a pair on their latest
+-- inspection day; the two carry different ratings in 17,147 of them). The rule, decided
+-- 31 October 2026: prefer the certificate the register holds as current (HISTORIC = False);
+-- if that leaves two or more (both superseded, or both current), prefer the one lodged on the
+-- register last (created_at_parsed); if still tied, ambiguous_as_of and no values. In 2026Q2 the
+-- first step settles 49,426 of the 49,705, the second 257, and 22 stay ambiguous. Two columns say
+-- what happened: epc_tie_candidates (how many certificates shared the day; 1 means no tie) and
+-- epc_tie_rule (NULL for no tie, 'current', 'latest_lodged' or 'unresolved'), so a study can
+-- exclude tie-broken rows in a sensitivity analysis. HISTORIC describes the register at extract
+-- time, after the cohort date: for a same-day pair that is the same visit, so the as-of meaning
+-- of the result is unchanged.
 
 IF EXISTS (SELECT 1 FROM #cohort WHERE cohort_row_id IS NULL)
     THROW 51000, 'cohort_row_id must not be NULL: a NULL key cannot be joined back to its result.', 1;
@@ -34,20 +48,30 @@ WITH cohort AS (
     FROM #cohort AS c
 ),
 eligible AS (
-    SELECT c.cohort_row_id, e.epc_release, e.source_year, e.source_row, e.inspection_date_parsed,
-           RANK() OVER (PARTITION BY c.cohort_row_id ORDER BY e.inspection_date_parsed DESC) AS rk
+    -- Three rankings: by inspection day; then current first within the day; then the latest
+    -- register lodgement within that. A certificate at rank 1 of the last is the pick when alone.
+    SELECT c.cohort_row_id, e.epc_release, e.source_year, e.source_row,
+           RANK() OVER (PARTITION BY c.cohort_row_id ORDER BY e.inspection_date_parsed DESC) AS rk_day,
+           RANK() OVER (PARTITION BY c.cohort_row_id ORDER BY e.inspection_date_parsed DESC,
+                        CASE WHEN e.historic_flag = 0 THEN 0 ELSE 1 END) AS rk_current,
+           RANK() OVER (PARTITION BY c.cohort_row_id ORDER BY e.inspection_date_parsed DESC,
+                        CASE WHEN e.historic_flag = 0 THEN 0 ELSE 1 END, e.created_at_parsed DESC) AS rk_final
     FROM cohort AS c
     JOIN epc_domestic AS e
       ON e.uprn_osg = c.uprn_int
      AND e.inspection_date_parsed <= c.cohort_date
 ),
 latest AS (
-    -- One row per cohort row: how many certificates share the latest eligible day, and the
-    -- key of the one certificate when there is exactly one.
-    SELECT cohort_row_id, COUNT(*) AS n, MIN(inspection_date_parsed) AS inspection_date_parsed,
-           MIN(epc_release) AS epc_release, MIN(source_year) AS source_year, MIN(source_row) AS source_row
+    -- One row per cohort row: how many certificates shared the latest eligible day, how many
+    -- survived each step of the tie rule, and the key of the one certificate when one is left.
+    SELECT cohort_row_id,
+           SUM(CASE WHEN rk_day = 1 THEN 1 ELSE 0 END) AS n_day,
+           SUM(CASE WHEN rk_current = 1 THEN 1 ELSE 0 END) AS n_current,
+           SUM(CASE WHEN rk_final = 1 THEN 1 ELSE 0 END) AS n,
+           MIN(CASE WHEN rk_final = 1 THEN epc_release END) AS epc_release,
+           MIN(CASE WHEN rk_final = 1 THEN source_year END) AS source_year,
+           MIN(CASE WHEN rk_final = 1 THEN source_row END) AS source_row
     FROM eligible
-    WHERE rk = 1
     GROUP BY cohort_row_id
 ),
 known AS (
@@ -65,7 +89,12 @@ SELECT c.cohort_row_id, c.pseudo_id, c.cohort_date,
             WHEN e.inspection_date_parsed IS NOT NULL THEN 0 END AS epc_lodged_before_inspection,
        e.CURRENT_ENERGY_RATING, e.current_energy_efficiency_int, e.POTENTIAL_ENERGY_RATING,
        e.total_floor_area_int, e.PROPERTY_TYPE, e.BUILT_FORM, e.CONSTRUCTION_AGE_BAND, e.TENURE,
-       e.MAIN_FUEL, e.historic_flag, e.rrn
+       e.MAIN_FUEL, e.historic_flag, e.rrn,
+       l.n_day AS epc_tie_candidates,
+       CASE WHEN l.n_day IS NULL OR l.n_day = 1 THEN NULL
+            WHEN l.n > 1 THEN 'unresolved'
+            WHEN l.n_current = 1 THEN 'current'
+            ELSE 'latest_lodged' END AS epc_tie_rule
 FROM cohort AS c
 LEFT JOIN known AS k ON k.uprn_osg = c.uprn_int
 LEFT JOIN latest AS l ON l.cohort_row_id = c.cohort_row_id

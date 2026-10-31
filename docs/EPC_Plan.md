@@ -305,8 +305,11 @@ cohort, and pooling a person's rows would hand a later certificate to an earlier
    whether the certificate has expired; a certificate is valid for ten years from lodgement, and
    the project applies that rule or another. A tie is two or more certificates of one UPRN
    inspected on the latest eligible day; older same-day pairs do not count once a later
-   certificate is eligible. The query does not break a tie by `created_at_parsed` or any other column, and
-   the row gets `ambiguous_as_of` and no values. Without a date, the `HISTORIC = False`
+   certificate is eligible. Revised 31 October 2026 (decision `tie-prefers-current-then-latest-lodged`):
+   the query breaks a tie by preferring the `HISTORIC = False` certificate, then the latest
+   `created_at_parsed`, and reports `epc_tie_candidates` and `epc_tie_rule`; only a pair neither
+   separates gets `ambiguous_as_of` and no values (22 UPRNs of the 49,705 whose latest inspection
+   day is a tie). Before that revision no tie was broken. Without a date, the `HISTORIC = False`
    certificate. The 22 dwellings with two of those get `ambiguous_latest` and no values; the
    2,826 UPRNs whose certificates are all `HISTORIC = True` get `no_current_certificate`.
    Statuses: `matched`, `no_uprn` (the cohort UPRN is empty or not an integer),

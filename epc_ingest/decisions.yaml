@@ -69,3 +69,10 @@ decisions:
     status: in_force
     amends: join-latest-lodged-with-ties
     keeps: The tie rule (two or more certificates on the latest eligible day are ambiguous_as_of), the undated latest-certificate rule and its statuses, and that the query never decides expiry; only the date the dated joins rank by is changed, from lodgement to inspection.
+  - date: 2026-10-31
+    id: tie-prefers-current-then-latest-lodged
+    decision: "In the dated joins, two or more certificates of one dwelling inspected on the latest eligible day are separated by preferring the one the register holds as current (HISTORIC = False), then the one with the latest CREATED_AT; only a pair still tied is ambiguous_as_of. The output carries epc_tie_candidates and epc_tie_rule (current, latest_lodged, unresolved) so tie-broken rows can be excluded in a sensitivity analysis."
+    why: "Same-day pairs are one assessment lodged twice, not two visits: 49,705 UPRNs in 2026Q2 have such a pair on their latest inspection day and 17,147 of those pairs differ in rating, so leaving them all ambiguous would drop a large share of matched dwellings. Preferring the current certificate settles 49,426, the register timestamp 257, and 22 stay ambiguous. HISTORIC is the register's state at extract time, after the cohort date, but for the same visit the as-of meaning is unchanged; the flag column keeps the choice visible."
+    status: in_force
+    amends: join-latest-lodged-with-ties
+    keeps: The undated latest-certificate rule and its statuses, the ambiguous_as_of status for a tie the rule cannot break, and that the query never decides expiry.

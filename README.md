@@ -48,10 +48,13 @@ Four things to know before joining:
   because the dated join sees only certificates inspected on or before it. A cohort row with no
   match is `uprn_not_in_epc`, not an error, and the README of any project using this must say
   what share matched.
-- **Same-day pairs are common.** 42,870 (UPRN, lodgement day) pairs carry two or more
-  certificates in this release, against 22 UPRNs with two current certificates. The dated join
-  reports such a pair as `ambiguous_as_of` only when it falls on the latest eligible day; the
-  build report counts them and a project should expect that status, not treat it as rare.
+- **Same-day pairs are common, and the join breaks the tie.** 103,862 (UPRN, inspection day)
+  pairs carry two or more certificates in this release, and 49,705 UPRNs have such a pair on
+  their latest inspection day, against 22 UPRNs with two current certificates. The pair is one
+  assessment lodged twice. The dated joins prefer the certificate the register holds as current,
+  then the one lodged last, and report `ambiguous_as_of` only for the 22 that neither separates;
+  `epc_tie_candidates` and `epc_tie_rule` say when a tie was broken and how, so a study can
+  exclude those rows in a sensitivity analysis.
 - **`HISTORIC = True` means superseded, not expired.** A certificate is valid for ten years.
   The dated join returns the certificate with the latest inspection on or before the cohort date,
   its inspection and lodgement dates and its age in days; the project decides about expiry.
@@ -115,7 +118,8 @@ the queries stop if the row identifier is NULL or repeats.
 - `join_by_uprn.sql`: the certificate with the latest inspection on or before the cohort date, because
   the inspection is when the dwelling was seen and lodgement follows it by a median of one day. Statuses
   `matched`, `no_uprn`, `uprn_not_in_epc`, `no_certificate_by_date`, `ambiguous_as_of` (two or
-  more lodged on the latest eligible day).
+  more inspected on the latest eligible day that the tie rule, current first, then latest
+  lodged, cannot separate).
 - `join_latest_by_uprn.sql`: without a date, the `HISTORIC = False` certificate. Statuses
   `matched`, `no_uprn`, `uprn_not_in_epc`, `no_current_certificate`, `ambiguous_latest`.
 - `join_by_postcode.sql`: the fallback for a cohort row without a UPRN, one row per dwelling in

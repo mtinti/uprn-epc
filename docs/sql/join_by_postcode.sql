@@ -11,9 +11,10 @@
 --
 -- The dwelling is uprn_sepcr, the register's own number, present in every row and one to one
 -- with the Gazetteer UPRN where that exists, so a dwelling without a Gazetteer UPRN still
--- counts once. The tie rule is the same as the UPRN route: two or more certificates of one
--- dwelling inspected on the latest eligible day give dwelling_status = 'ambiguous_as_of' and no
--- values for that dwelling.
+-- counts once. The tie rule is the same as the UPRN route: among two or more certificates of
+-- one dwelling inspected on the latest eligible day, the current one (HISTORIC = False), then
+-- the one lodged on the register last; if still tied, dwelling_status = 'ambiguous_as_of' and no
+-- values for that dwelling. epc_tie_candidates and epc_tie_rule say what happened.
 --
 -- Status per cohort row (repeated on each of its rows):
 --   no_postcode              the cohort postcode is empty
@@ -32,18 +33,26 @@ WITH cohort AS (
     FROM #cohort AS c
 ),
 eligible AS (
-    SELECT c.cohort_row_id, e.uprn_sepcr, e.epc_release, e.source_year, e.source_row, e.inspection_date_parsed,
-           RANK() OVER (PARTITION BY c.cohort_row_id, e.uprn_sepcr ORDER BY e.inspection_date_parsed DESC) AS rk
+    SELECT c.cohort_row_id, e.uprn_sepcr, e.epc_release, e.source_year, e.source_row,
+           RANK() OVER (PARTITION BY c.cohort_row_id, e.uprn_sepcr ORDER BY e.inspection_date_parsed DESC) AS rk_day,
+           RANK() OVER (PARTITION BY c.cohort_row_id, e.uprn_sepcr ORDER BY e.inspection_date_parsed DESC,
+                        CASE WHEN e.historic_flag = 0 THEN 0 ELSE 1 END) AS rk_current,
+           RANK() OVER (PARTITION BY c.cohort_row_id, e.uprn_sepcr ORDER BY e.inspection_date_parsed DESC,
+                        CASE WHEN e.historic_flag = 0 THEN 0 ELSE 1 END, e.created_at_parsed DESC) AS rk_final
     FROM cohort AS c
     JOIN epc_domestic AS e
       ON e.pc_norm = c.pc_norm
      AND e.inspection_date_parsed <= c.cohort_date
 ),
 per_dwelling AS (
-    SELECT cohort_row_id, uprn_sepcr, COUNT(*) AS n, MIN(inspection_date_parsed) AS inspection_date_parsed,
-           MIN(epc_release) AS epc_release, MIN(source_year) AS source_year, MIN(source_row) AS source_row
+    SELECT cohort_row_id, uprn_sepcr,
+           SUM(CASE WHEN rk_day = 1 THEN 1 ELSE 0 END) AS n_day,
+           SUM(CASE WHEN rk_current = 1 THEN 1 ELSE 0 END) AS n_current,
+           SUM(CASE WHEN rk_final = 1 THEN 1 ELSE 0 END) AS n,
+           MIN(CASE WHEN rk_final = 1 THEN epc_release END) AS epc_release,
+           MIN(CASE WHEN rk_final = 1 THEN source_year END) AS source_year,
+           MIN(CASE WHEN rk_final = 1 THEN source_row END) AS source_row
     FROM eligible
-    WHERE rk = 1
     GROUP BY cohort_row_id, uprn_sepcr
 ),
 known AS (
@@ -61,7 +70,12 @@ SELECT c.cohort_row_id, c.pseudo_id, c.cohort_date,
        CASE WHEN e.lodgement_date_parsed < e.inspection_date_parsed THEN 1
             WHEN e.inspection_date_parsed IS NOT NULL THEN 0 END AS epc_lodged_before_inspection,
        e.CURRENT_ENERGY_RATING, e.current_energy_efficiency_int, e.total_floor_area_int,
-       e.PROPERTY_TYPE, e.BUILT_FORM, e.CONSTRUCTION_AGE_BAND, e.TENURE
+       e.PROPERTY_TYPE, e.BUILT_FORM, e.CONSTRUCTION_AGE_BAND, e.TENURE,
+       d.n_day AS epc_tie_candidates,
+       CASE WHEN d.n_day IS NULL OR d.n_day = 1 THEN NULL
+            WHEN d.n > 1 THEN 'unresolved'
+            WHEN d.n_current = 1 THEN 'current'
+            ELSE 'latest_lodged' END AS epc_tie_rule
 FROM cohort AS c
 LEFT JOIN known AS k ON k.pc_norm = c.pc_norm
 LEFT JOIN per_dwelling AS d ON d.cohort_row_id = c.cohort_row_id
