@@ -235,6 +235,20 @@ def test_the_address_page_shows_the_policy_in_force_before_its_history(site):
     assert "| yes |" in text          # in the CSV
 
 
+def test_the_dated_join_pages_state_one_tie_policy(site):
+    """Two in-force decisions amend the same earlier one; the page must not present the earlier
+    tie rule as standing beside the decision that revised it (review of 31 October 2026)."""
+    out, _ = site
+    for name in ("uprn_osg", "lodgement_date_parsed", "inspection_date_parsed", "historic_flag"):
+        why = (out / "columns" / f"{name}.md").read_text().split("## Why")[1].split("## In SQL Server")[0]
+        assert "tie-prefers-current-then-latest-lodged" in why.split("History")[0], name
+        for sentence in why.split("\n"):
+            if "What still stands" in sentence:            # the latest amendment of its target: its text is the policy
+                assert sentence.startswith("`tie-prefers-current-then-latest-lodged`"), (name, sentence)
+            if "What still stood then" in sentence:        # an earlier amendment: must point at the later one
+                assert "Revised again by" in sentence and "tie-prefers-current-then-latest-lodged" in sentence, (name, sentence)
+
+
 def test_no_page_holds_a_postcode_shape_or_an_address_value(site):
     out, _ = site
     for page in out.rglob("*.md"):

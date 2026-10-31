@@ -68,7 +68,7 @@ decisions:
     why: The inspection is when the assessor saw the dwelling; lodgement is the administrative date that follows it (same day in 1,622,516 certificates, 1 to 7 days in 1,513,733, 8 to 30 in 378,567, 31 to 365 in 244,711, over a year in 25,506, before the inspection in 2,036). For an exposure as of a date the inspection is the right anchor; validity still runs from lodgement.
     status: in_force
     amends: join-latest-lodged-with-ties
-    keeps: The tie rule (two or more certificates on the latest eligible day are ambiguous_as_of), the undated latest-certificate rule and its statuses, and that the query never decides expiry; only the date the dated joins rank by is changed, from lodgement to inspection.
+    keeps: The undated latest-certificate rule and its statuses, and that the query never decides expiry; only the date the dated joins rank by is changed, from lodgement to inspection. The tie rule stood unchanged at this date (two or more certificates on the latest eligible day were ambiguous_as_of) and was revised on 31 October 2026 by tie-prefers-current-then-latest-lodged.
   - date: 2026-10-31
     id: tie-prefers-current-then-latest-lodged
     decision: "In the dated joins, two or more certificates of one dwelling inspected on the latest eligible day are separated by preferring the one the register holds as current (HISTORIC = False), then the one with the latest CREATED_AT; only a pair still tied is ambiguous_as_of. The output carries epc_tie_candidates and epc_tie_rule (current, latest_lodged, unresolved) so tie-broken rows can be excluded in a sensitivity analysis."
