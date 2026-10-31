@@ -27,6 +27,7 @@ OBSERVED_CODES = [
     "`TOTAL_FLOOR_AREA` is 0 in every 2008 and 2009 row.",
     "`DATA_ZONE` holds `00Q` and `00R` in a few hundred 2026 rows and is empty in 4 to 12 percent of rows from 2015; `DATA_ZONE_2011` holds `NA` in some rows and is empty in 4 to 8 percent from 2021.",
     "`ADDENDUM_TEXT` is empty in every row. `TYPE_OF_ASSESSMENT` is empty in 7,490 rows from 2023.",
+    "Five publisher's labels carry the replacement character U+FFFD (\ufffd) where the publisher's export lost a `²` or a `£`; the labels are kept as the file prints them, and the publication note gives the intended character.",
     "Twenty-eight columns hold `|`-separated lists (`IMPROVEMENTS`, `ALTERNATIVE_IMPROVEMENTS`, `LZC_ENERGY_SOURCES`, `PHOTO_SUPPLY`, and the element description and rating columns).",
     "Seven cells carry a trailing newline inside the quotes (six in `BUILDING_REFERENCE_NUMBER`, one in `ADDRESS1`); six `ADDRESS1` cells contain a double quote. They are kept as published; the derived `uprn_sepcr` is trimmed.",
 ]

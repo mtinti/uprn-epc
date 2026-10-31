@@ -189,6 +189,22 @@ END
 """
 
 
+# The join indexes, one definition for the import script, the notebook (which copies the lines
+# from the script) and the provenance site. Key columns in order, then the included columns.
+JOIN_INDEXES = [
+    {"suffix": "uprn_osg", "key": ["uprn_osg", "inspection_date_parsed"], "include": ["historic_flag"],
+     "serves": "join_by_uprn.sql and join_latest_by_uprn.sql: the dwelling's certificates in inspection order"},
+    {"suffix": "pc_norm", "key": ["pc_norm", "inspection_date_parsed"], "include": ["uprn_sepcr", "historic_flag"],
+     "serves": "join_by_postcode.sql: the postcode's certificates in inspection order, with the dwelling"},
+]
+
+
+def index_sql(name: str, ix: dict) -> str:
+    cols = ", ".join(f"[{c}]" for c in ix["key"])
+    inc = ", ".join(f"[{c}]" for c in ix["include"])
+    return f"CREATE INDEX IX_{name}_{ix['suffix']} ON {name} ({cols}) INCLUDE ({inc});"
+
+
 def _import_sql(table: str, name: str, schema: dict, contract: dict) -> str:
     columns = exported_columns(schema, contract, table)
     fields = {f["name"]: f for f in schema["fields"]}
@@ -203,6 +219,7 @@ def _import_sql(table: str, name: str, schema: dict, contract: dict) -> str:
     key = ", ".join(f"[{k}]" for k in schema["key"])
     select = ",\n    ".join(_restore(fields[c]) for c in columns)
     names = ",\n    ".join(f"[{c}]" for c in columns)
+    indexes = "\n".join(index_sql(name, ix) for ix in JOIN_INDEXES)
     return f"""
 -- --------------------------------------------------------------------------------------------
 -- {name}: stage as text, then restore the declared types. BULK INSERT reads an empty cell as
@@ -244,8 +261,7 @@ FROM staging_{name};
 DROP TABLE IF EXISTS staging_{name};
 
 -- The two join routes.
-CREATE INDEX IX_{name}_uprn_osg ON {name} ([uprn_osg], [inspection_date_parsed]) INCLUDE ([historic_flag]);
-CREATE INDEX IX_{name}_pc_norm ON {name} ([pc_norm], [inspection_date_parsed]) INCLUDE ([uprn_sepcr], [historic_flag]);
+{indexes}
 """
 
 

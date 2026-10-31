@@ -132,8 +132,29 @@ def test_the_effective_policy_for_the_address_columns_and_the_dated_joins(L):
     for name in ("inspection_date_parsed", "lodgement_date_parsed", "uprn_osg"):
         current, history = lin.effective_decisions(L[name]["decisions"], decisions)
         assert "join-by-inspection-date" in current and "join-latest-lodged-with-ties" not in current, name
-    assert L["inspection_date_parsed"]["export"]["joined_on"] and L["uprn_osg"]["export"]["index"] == "IX_epc_domestic_uprn_osg"
-    assert "inspection_date_parsed" in L["uprn_osg"]["export"]["index_members"]
+    assert L["inspection_date_parsed"]["export"]["joined_on"]
+    assert [ix["index"] for ix in L["uprn_osg"]["export"]["indexes"]] == ["IX_epc_domestic_uprn_osg"]
+
+
+def test_every_index_membership_is_recorded_against_the_import_script(L):
+    """The inspection date is the second key of both join indexes, the flag is included in both,
+    the SEPCR number in the postcode index, and the three key columns form the primary key: each
+    as the import script the loader runs declares it."""
+    from epc_ingest import sql_check
+    sql = sql_check.render_import()
+    for ix in sql_check.JOIN_INDEXES:
+        assert sql_check.index_sql("epc_domestic", ix) in sql
+    roles = {n: {(m["index"], m["role"]) for m in L[n]["export"]["indexes"]} for n in L}
+    assert roles["inspection_date_parsed"] == {("IX_epc_domestic_uprn_osg", "key column 2 of 2"), ("IX_epc_domestic_pc_norm", "key column 2 of 2")}
+    assert roles["historic_flag"] == {("IX_epc_domestic_uprn_osg", "included column"), ("IX_epc_domestic_pc_norm", "included column")}
+    assert roles["uprn_sepcr"] == {("IX_epc_domestic_pc_norm", "included column")}
+    assert roles["pc_norm"] == {("IX_epc_domestic_pc_norm", "key column 1 of 2")}
+    for i, k in enumerate(col.KEY, 1):
+        assert roles[k] == {("PK_epc_domestic", f"primary key, column {i} of 3")}
+    assert roles["CURRENT_ENERGY_RATING"] == set()
+    # Every column an index names has the membership, and no other column has one.
+    named = set(col.KEY) | {c for ix in sql_check.JOIN_INDEXES for c in ix["key"] + ix["include"]}
+    assert {n for n in L if roles[n]} == named
 
 
 # --- the check catalogue ---------------------------------------------------------------------------
@@ -232,6 +253,15 @@ def test_note_text_is_labelled_as_the_notes_wherever_it_appears(site):
         else:
             assert "**Project description**" in text and "**Publication note**" not in text, name
     assert "`POST_TOWN`" in (out / "columns" / "ADDRESS3.md").read_text()
+
+
+def test_the_inspection_date_page_names_both_indexes_and_a_mangled_label_is_explained(site):
+    out, _ = site
+    text = (out / "columns" / "inspection_date_parsed.md").read_text().split("## In SQL Server")[1]
+    assert "IX_epc_domestic_uprn_osg" in text and "IX_epc_domestic_pc_norm" in text and "key column 2 of 2" in text
+    label = (out / "columns" / "TOTAL_FLOOR_AREA.md").read_text()
+    assert "\ufffd" in label and "U+FFFD" in label and "publication note prints the intended character" in label
+    assert "U+FFFD" not in (out / "columns" / "TENURE.md").read_text()
 
 
 def test_regeneration_removes_pages_no_longer_written(tmp_path):

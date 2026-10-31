@@ -18,7 +18,7 @@ import yaml
 from . import columns as col
 from .core import text_output
 from .core.sources import load_registry
-from .sql_check import declared_type
+from .sql_check import JOIN_INDEXES, declared_type
 
 PACKAGE = Path(__file__).resolve().parent
 CATALOGUE = PACKAGE / "check_catalogue.yaml"
@@ -69,9 +69,22 @@ for _code, _status, _ in col.DATAZONE_COLUMNS.values():
 GROUP_DECISIONS = {"key": ["one-table-per-certificate"],
                    "published": ["values-as-published", "derived-names-and-nullability", "bounded-widths-max-in-digest", "bulk-insert-codepage-utf8"],
                    "derived": ["derived-names-and-nullability"]}
-INDEXES = {"uprn_osg": "IX_epc_domestic_uprn_osg", "pc_norm": "IX_epc_domestic_pc_norm"}
-INDEX_MEMBERS = {"IX_epc_domestic_uprn_osg": "([uprn_osg], [inspection_date_parsed]) INCLUDE ([historic_flag])",
-                 "IX_epc_domestic_pc_norm": "([pc_norm], [inspection_date_parsed]) INCLUDE ([uprn_sepcr], [historic_flag])"}
+
+
+def index_memberships(name: str) -> list:
+    """Every index of the table the column takes part in, with its role: the primary key and
+    the join indexes of sql_check.JOIN_INDEXES, the one definition the import script renders."""
+    out = []
+    if name in col.KEY:
+        out.append({"index": f"PK_{col.TABLE}", "role": f"primary key, column {col.KEY.index(name) + 1} of {len(col.KEY)}",
+                    "columns": list(col.KEY), "include": []})
+    for ix in JOIN_INDEXES:
+        full = f"IX_{col.TABLE}_{ix['suffix']}"
+        if name in ix["key"]:
+            out.append({"index": full, "role": f"key column {ix['key'].index(name) + 1} of {len(ix['key'])}", "columns": ix["key"], "include": ix["include"], "serves": ix["serves"]})
+        elif name in ix["include"]:
+            out.append({"index": full, "role": "included column", "columns": ix["key"], "include": ix["include"], "serves": ix["serves"]})
+    return out
 JOINED_ON = {"uprn_osg": "join_by_uprn.sql and join_latest_by_uprn.sql compare it to the cohort's UPRN",
              "pc_norm": "join_by_postcode.sql compares it to the cohort's normalised postcode",
              "inspection_date_parsed": "the dated joins rank certificates by it and keep those on or before the cohort date",
@@ -157,7 +170,7 @@ def lineage(schema_path: Path = col.SCHEMA, registry_path=None, catalogue_path: 
                      "description": f["description"], "inputs": inputs, "transformation": transformation,
                      "checks": checks, "decisions": decisions,
                      "export": {"csv": name in exported, "sql_type": declared_type(f), "not_null": not f["nullable"],
-                                "index": INDEXES.get(name), "index_members": INDEX_MEMBERS.get(INDEXES.get(name)),
+                                "indexes": index_memberships(name),
                                 "joined_on": JOINED_ON.get(name), "in_digest": name in exported}}
     return out
 
