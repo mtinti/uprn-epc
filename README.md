@@ -2,6 +2,11 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23817747.svg)](https://doi.org/10.5281/zenodo.23817747)
 
+**Column provenance site:** https://mtinti.github.io/uprn-epc/ , one page per column: what it is (the
+publisher's own definition where the note gives one), the pinned file it comes from, what was done
+to it, which checks guard it and the decisions behind it. Generated from the repository's metadata on
+every push; it holds no data value.
+
 Scottish domestic Energy Performance Certificates (EPCs) for SQL Server, one row per
 certificate, joinable to a cohort by UPRN and date. The recipe is public; the built table is
 not.

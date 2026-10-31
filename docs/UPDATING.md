@@ -22,7 +22,13 @@ new build with a new `epc_release`, never an update of the old table.
    correct, and either is a decision to record in `epc_ingest/decisions.yaml`.
 6. `python -m epc_ingest.sql_check`, `python -m epc_ingest.dictionary` and
    `python loader/make_notebook.py` (the notebook carries the build's hash and digest);
-   `python -m pytest`. With docker: `sh loader/sqlserver_probe.sh` for the import scripts on the
+   `python -m pytest`. If the publication note changed, draft the column descriptions again
+   with `python3 -P tools/extract_note_dictionary.py <note.pdf> <out.yaml>` from another
+   directory, retype the note's group labels in the script if they moved, review the draft
+   against the PDF, and record the review in `docs/reviews/`; `tests/test_provenance.py` holds
+   the descriptions, the check catalogue and the lineage to the schema and the decision log.
+   The provenance site (`python -m epc_ingest.provenance_site && mkdocs build`) is published
+   by `.github/workflows/pages.yml` on every push; nothing to do by hand. With docker: `sh loader/sqlserver_probe.sh` for the import scripts on the
    full build and `sh loader/notebook_probe.sh` for the notebook's cells on a fixture.
 7. Copy the archive to `onedrive:EPC/` and, if the restricted Zenodo record is in use, add
    the new archive as a new version of it.

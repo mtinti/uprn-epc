@@ -24,3 +24,6 @@ __pycache__/
 
 # Site-specific plumbing and filled-in scripts: never committed. Copy loader/ there to fill in.
 local/
+
+# The provenance site is generated (python -m epc_ingest.provenance_site; mkdocs build).
+build/
