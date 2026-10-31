@@ -56,7 +56,7 @@ DECISIONS_BY_COLUMN = {
     "uprn_sepcr": ["uprn-as-integer"],
     "pc_norm": ["join-by-inspection-date"],
     "inspection_date_parsed": ["join-by-inspection-date", "tie-prefers-current-then-latest-lodged"],
-    "lodgement_date_parsed": ["join-latest-lodged-with-ties", "join-by-inspection-date"],
+    "lodgement_date_parsed": ["join-latest-lodged-with-ties", "join-by-inspection-date", "tie-prefers-current-then-latest-lodged"],
     "historic_flag": ["join-latest-lodged-with-ties", "tie-prefers-current-then-latest-lodged"],
     "created_at_parsed": ["file-year-is-created-at", "tie-prefers-current-then-latest-lodged"],
     "ADDRESS1": ["recipe-public-data-private", "address-lines-loaded"],

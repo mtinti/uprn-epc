@@ -167,7 +167,10 @@ def _write_pages(out: Path) -> dict:
         for d in current:
             dec = decisions[d]
             if dec.get("amends") and dec["amends"] in r["decisions"]:
-                lines += [f"`{d}` amends [`{dec['amends']}`](../decisions/{dec['amends']}.md). What still stands: {dec['keeps']}", ""]
+                later = [x for x in current if x != d and decisions[x].get("amends") == dec["amends"] and decisions[x]["date"] > dec["date"]]
+                revised = (" Revised again by " + ", ".join(f"[`{x}`](../decisions/{x}.md)" for x in later) + ", which governs where the two differ.") if later else ""
+                stands = "What still stood then" if later else "What still stands"
+                lines += [f"`{d}` amends [`{dec['amends']}`](../decisions/{dec['amends']}.md). {stands}: {dec['keeps']}{revised}", ""]
         if history:
             lines += ["History: " + ", ".join(f"[`{d}`](../decisions/{d}.md)" for d in history) + ".", ""]
         ex = r["export"]
