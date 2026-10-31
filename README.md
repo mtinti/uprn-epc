@@ -43,9 +43,11 @@ Four things to know before joining:
   because each council has its own number range; the short ones are real
   (`docs/uprn_check_2026-10-30.md`). A cohort UPRN padded with zeros matches once both sides
   are bigint.
-- **Most dwellings have no certificate.** About 1.9 million UPRNs appear in the release against
-  about 2.7 million dwellings in Scotland. A cohort row with no match is `uprn_not_in_epc`, not
-  an error, and the README of any project using this must say what share matched.
+- **About three dwellings in ten have no certificate.** About 1.9 million UPRNs appear in the
+  release against about 2.7 million dwellings in Scotland, and fewer have one by a given date,
+  because the dated join sees only certificates inspected on or before it. A cohort row with no
+  match is `uprn_not_in_epc`, not an error, and the README of any project using this must say
+  what share matched.
 - **Same-day pairs are common.** 42,870 (UPRN, lodgement day) pairs carry two or more
   certificates in this release, against 22 UPRNs with two current certificates. The dated join
   reports such a pair as `ambiguous_as_of` only when it falls on the latest eligible day; the
