@@ -542,9 +542,9 @@
 <li><a href="../../checks/#readbackcsv"><code>readback.csv</code></a>: the written CSV read back has the exported header, the row count and the digest total the build recorded. Coverage: every cell of every row.</li>
 </ul>
 <h2 id="why">Why<a class="headerlink" href="#why" title="Permanent link">&para;</a></h2>
-<p>In force: <a href="../../decisions/derived-names-and-nullability/"><code>derived-names-and-nullability</code></a>, <a href="../../decisions/file-year-is-created-at/"><code>file-year-is-created-at</code></a>.</p>
+<p>In force: <a href="../../decisions/derived-names-and-nullability/"><code>derived-names-and-nullability</code></a>, <a href="../../decisions/file-year-is-created-at/"><code>file-year-is-created-at</code></a>, <a href="../../decisions/tie-prefers-current-then-latest-lodged/"><code>tie-prefers-current-then-latest-lodged</code></a>.</p>
 <h2 id="in-sql-server">In SQL Server<a class="headerlink" href="#in-sql-server" title="Permanent link">&para;</a></h2>
-<p>Declared <code>datetime2(0)</code> NOT NULL. Covered by the row digest that the loaded table is checked against.</p>
+<p>Declared <code>datetime2(0)</code> NOT NULL. Joins: the dated joins prefer the later register lodgement when a same-day pair has no single current certificate. Covered by the row digest that the loaded table is checked against.</p>
 
 
 

@@ -443,7 +443,7 @@
 <p>Decided 2026-10-30. Status: in_force.</p>
 <p><strong>Decision.</strong> The example join returns the latest certificate lodged on or before the cohort date, with its age in days, and does not decide expiry. Two or more certificates of one UPRN lodged on the latest eligible day are ambiguous_as_of with no values. Without a date, the HISTORIC = False certificate; two of them are ambiguous_latest; none is no_current_certificate.</p>
 <p><strong>Why.</strong> The choice of certificate must be explicit in the query, never a default or an arbitrary TOP (1).</p>
-<p><strong>Amended by</strong> <a href="../join-by-inspection-date/"><code>join-by-inspection-date</code></a>.</p>
+<p><strong>Amended by</strong> <a href="../join-by-inspection-date/"><code>join-by-inspection-date</code></a>, <a href="../tie-prefers-current-then-latest-lodged/"><code>tie-prefers-current-then-latest-lodged</code></a>.</p>
 <h2 id="columns-governed-3">Columns governed (3)<a class="headerlink" href="#columns-governed-3" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../columns/uprn_osg/"><code>uprn_osg</code></a></li>
