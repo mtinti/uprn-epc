@@ -409,10 +409,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#columns-governed-4" class="md-nav__link">
+  <a href="#columns-governed-5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Columns governed (4)
+        Columns governed (5)
       
     </span>
   </a>
@@ -444,10 +444,11 @@
 <p><strong>Decision.</strong> In the dated joins, two or more certificates of one dwelling inspected on the latest eligible day are separated by preferring the one the register holds as current (HISTORIC = False), then the one with the latest CREATED_AT; only a pair still tied is ambiguous_as_of. The output carries epc_tie_candidates and epc_tie_rule (current, latest_lodged, unresolved) so tie-broken rows can be excluded in a sensitivity analysis.</p>
 <p><strong>Why.</strong> Same-day pairs are one assessment lodged twice, not two visits: 49,705 UPRNs in 2026Q2 have such a pair on their latest inspection day and 17,147 of those pairs differ in rating, so leaving them all ambiguous would drop a large share of matched dwellings. Preferring the current certificate settles 49,426, the register timestamp 257, and 22 stay ambiguous. HISTORIC is the register's state at extract time, after the cohort date, but for the same visit the as-of meaning is unchanged; the flag column keeps the choice visible.</p>
 <p><strong>Amends</strong> <a href="../join-latest-lodged-with-ties/"><code>join-latest-lodged-with-ties</code></a>. <strong>Still stands:</strong> The undated latest-certificate rule and its statuses, the ambiguous_as_of status for a tie the rule cannot break, and that the query never decides expiry.</p>
-<h2 id="columns-governed-4">Columns governed (4)<a class="headerlink" href="#columns-governed-4" title="Permanent link">&para;</a></h2>
+<h2 id="columns-governed-5">Columns governed (5)<a class="headerlink" href="#columns-governed-5" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../columns/uprn_osg/"><code>uprn_osg</code></a></li>
 <li><a href="../../columns/inspection_date_parsed/"><code>inspection_date_parsed</code></a></li>
+<li><a href="../../columns/lodgement_date_parsed/"><code>lodgement_date_parsed</code></a></li>
 <li><a href="../../columns/created_at_parsed/"><code>created_at_parsed</code></a></li>
 <li><a href="../../columns/historic_flag/"><code>historic_flag</code></a></li>
 </ul>
