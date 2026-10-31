@@ -543,7 +543,7 @@
 <h2 id="why">Why<a class="headerlink" href="#why" title="Permanent link">&para;</a></h2>
 <p>In force: <a href="../../decisions/derived-names-and-nullability/"><code>derived-names-and-nullability</code></a>, <a href="../../decisions/join-by-inspection-date/"><code>join-by-inspection-date</code></a>.</p>
 <h2 id="in-sql-server">In SQL Server<a class="headerlink" href="#in-sql-server" title="Permanent link">&para;</a></h2>
-<p>Declared <code>date</code> NOT NULL. Joins: the dated joins rank certificates by it and keep those on or before the cohort date. Covered by the row digest that the loaded table is checked against.</p>
+<p>Declared <code>date</code> NOT NULL. In <code>IX_epc_domestic_uprn_osg</code> as key column 2 of 2: (<code>uprn_osg</code>, <code>inspection_date_parsed</code>) INCLUDE (<code>historic_flag</code>). Serves join_by_uprn.sql and join_latest_by_uprn.sql: the dwelling's certificates in inspection order. In <code>IX_epc_domestic_pc_norm</code> as key column 2 of 2: (<code>pc_norm</code>, <code>inspection_date_parsed</code>) INCLUDE (<code>uprn_sepcr</code>, <code>historic_flag</code>). Serves join_by_postcode.sql: the postcode's certificates in inspection order, with the dwelling. Joins: the dated joins rank certificates by it and keep those on or before the cohort date. Covered by the row digest that the loaded table is checked against.</p>
 
 
 

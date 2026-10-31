@@ -545,7 +545,7 @@
 <p><code>join-by-inspection-date</code> amends <a href="../../decisions/join-latest-lodged-with-ties/"><code>join-latest-lodged-with-ties</code></a>. What still stands: The tie rule (two or more certificates on the latest eligible day are ambiguous_as_of), the undated latest-certificate rule and its statuses, and that the query never decides expiry; only the date the dated joins rank by is changed, from lodgement to inspection.</p>
 <p>History: <a href="../../decisions/join-latest-lodged-with-ties/"><code>join-latest-lodged-with-ties</code></a>.</p>
 <h2 id="in-sql-server">In SQL Server<a class="headerlink" href="#in-sql-server" title="Permanent link">&para;</a></h2>
-<p>Declared <code>bigint</code>, NULL in its documented missing case. Carries the index <code>IX_epc_domestic_uprn_osg</code> ([uprn_osg], [inspection_date_parsed]) INCLUDE ([historic_flag]). Joins: join_by_uprn.sql and join_latest_by_uprn.sql compare it to the cohort's UPRN. Covered by the row digest that the loaded table is checked against.</p>
+<p>Declared <code>bigint</code>, NULL in its documented missing case. In <code>IX_epc_domestic_uprn_osg</code> as key column 1 of 2: (<code>uprn_osg</code>, <code>inspection_date_parsed</code>) INCLUDE (<code>historic_flag</code>). Serves join_by_uprn.sql and join_latest_by_uprn.sql: the dwelling's certificates in inspection order. Joins: join_by_uprn.sql and join_latest_by_uprn.sql compare it to the cohort's UPRN. Covered by the row digest that the loaded table is checked against.</p>
 
 
 

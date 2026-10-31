@@ -544,7 +544,7 @@
 <h2 id="why">Why<a class="headerlink" href="#why" title="Permanent link">&para;</a></h2>
 <p>In force: <a href="../../decisions/derived-names-and-nullability/"><code>derived-names-and-nullability</code></a>, <a href="../../decisions/uprn-as-integer/"><code>uprn-as-integer</code></a>.</p>
 <h2 id="in-sql-server">In SQL Server<a class="headerlink" href="#in-sql-server" title="Permanent link">&para;</a></h2>
-<p>Declared <code>bigint</code> NOT NULL. Joins: join_by_postcode.sql counts dwellings by it. Covered by the row digest that the loaded table is checked against.</p>
+<p>Declared <code>bigint</code> NOT NULL. In <code>IX_epc_domestic_pc_norm</code> as included column: (<code>pc_norm</code>, <code>inspection_date_parsed</code>) INCLUDE (<code>uprn_sepcr</code>, <code>historic_flag</code>). Serves join_by_postcode.sql: the postcode's certificates in inspection order, with the dwelling. Joins: join_by_postcode.sql counts dwellings by it. Covered by the row digest that the loaded table is checked against.</p>
 
 
 
