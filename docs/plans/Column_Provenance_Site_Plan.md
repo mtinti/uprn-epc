@@ -1,7 +1,10 @@
 # Plan: a column provenance site on GitHub Pages
 
 Drafted 31 October 2026, after postcode-simd's site (`docs/plans/Column_Provenance_Site_Plan.md`
-there, live at https://mtinti.github.io/postcode-simd/). Status: proposed.
+there, live at https://mtinti.github.io/postcode-simd/). Revised the same day after review
+(`docs/reviews/2026-10-31-column-provenance-site-plan-review.md`): descriptions for fields the
+note does not define, current against superseded decisions, a check catalogue in place of the
+manifest's names, the zone lists as inputs of the status columns. Status: proposed.
 
 ## Aim
 
@@ -28,9 +31,12 @@ nothing that is not already in it.
 Missing:
 
 - **Descriptions.** 107 of the 130 fields say only "As published. Publisher's label: X". The
-  pinned publication note (`publication_note.pdf`, SHA256 `c2f33696…`, 17 pages) defines every
-  published field in its data dictionary, for example `INSPECTION_DATE`: "Date on which
-  assessment of the energy performance of the building was undertaken". That text is the source.
+  pinned publication note (`publication_note.pdf`, SHA256 `c2f33696…`, 17 pages) defines 106 of
+  them in its data dictionary, for example `INSPECTION_DATE`: "Date on which assessment of the
+  energy performance of the building was undertaken". It has no entry for `DATA_ZONE_2011`, calls
+  `ADDRESS3` `POST_TOWN`, and spells `3_YR_ENERGY_SAVING_POTENTIAL` without the S
+  (`docs/EPC_Plan.md`, section 1). The note is the source where it has an entry; the one field
+  it omits gets our own description, said to be ours.
 - **A tested lineage.** The facts above are not joined per column anywhere.
 - **`decisions.yaml` does not parse as YAML.** Line 17 (`why:` of `file-year-is-created-at`)
   holds an unquoted `: `. The build only hashes the file, so nothing has read it until now. The
@@ -64,18 +70,39 @@ Missing:
 
 - **inputs**: for a published column, the field of the same publisher label in each of the 19
   annual files (condition: the file's year), reaching the row by file position; for a derived
-  column, the published column it reads (`source` in the schema) and, for the two data zone
-  columns, the pinned zone list it is checked against; for the key columns, the registry's
-  release and the file name and row position;
+  column, the published column it reads (`source` in the schema); for the four data zone
+  columns, enumerated from `columns.DATAZONE_COLUMNS` (`datazone_2001`, `datazone_2001_status`,
+  `datazone_2011`, `datazone_2011_status`), also the vintage's pinned zone list, because
+  `reader.derive_datazone` decides `code` against `unknown_code` by membership in it, so the
+  list is an input of each status column and the validation of each code column. A test changes
+  the list with the source text held constant and asserts the status changes, and that each
+  status page links the right list; for the key columns, the registry's release and the file
+  name and row position;
 - **transformation**: `copied` for published text; for derived columns the rule in words and
   the function (`trimmed and cast to bigint`, `upper-cased, spaces removed, NULL when empty`,
   `S01 plus six digits, otherwise NULL, status says why`, `parsed yyyy-mm-dd`, `parsed
   dd/mm/yyyy hh:mm:ss`, `True/False to 1/0`, `integer or decimal(19,4) from the text`);
-- **checks**: the definitions that guard it, by family: `source.*` (the pinned hash),
-  `<year>.header_names` and `header_labels`, `row_width`, `utf8`, `text_within_width`,
-  `rrn_shape`, `rrn_unique_in_file`, `created_at_year`, `derived_values_parse`,
-  `decimal_round_trip`, `table.*`, `datazones_*`, `readback.*`, `schema.matches_generator`;
-- **decisions**: ids from `decisions.yaml`;
+- **checks**: from a **check catalogue**, `epc_ingest/check_catalogue.yaml`, one entry per
+  family: the name pattern, what it tests, the columns it applies to (`rrn_unique_in_file` guards
+  `rrn` alone; `header_names` guards every published column), its coverage (the read-back of
+  source cells compares three rows per file, `SAMPLE_ROWS`, not every cell; the digest covers
+  every cell of every row) and its enabling condition (the archive and note hashes run only
+  under `--verify-archive`). A column's page cites the entries that apply to it and states the
+  coverage and the condition in words. The committed manifest is an execution record of one
+  build, not the catalogue: the tests run the synthetic build twice, with and without
+  `--verify-archive`, and require every emitted name to match a catalogue entry and every
+  unconditional entry to be emitted; the checked-in manifest is a further example. A test fails
+  when a real check is attached to a column it does not apply to;
+- **decisions**: ids from `decisions.yaml`, split into the decisions **in force** for the column
+  and its **history**. The log holds revisions: `address-lines-loaded` revises one point of
+  `recipe-public-data-private` and leaves its privacy policy standing; `join-by-inspection-date`
+  changes the date the dated joins rank by and leaves `join-latest-lodged-with-ties`' tie rule
+  standing. So each entry gains `status` (`in_force` or `superseded`) and, where it changes an
+  earlier one, `amends: <id>` with `keeps:` naming what still stands. The page renders the
+  policy in force first, the history under it. Tests assert the effective policy for the address
+  columns (exported) and for the two parsed dates (the dated joins rank by inspection), not just
+  that the ids exist. These fields are added to `decisions.yaml` in the same edit as the quoting
+  fix, with the next rebuild;
 - **export**: in the CSV (every column since `address-lines-loaded`), the SQL type, the index
   it carries, whether the digest covers it (every column does).
 
@@ -86,12 +113,20 @@ columns. The site's value is the per-field definitions beside the checks and the
 
 `epc_ingest/column_descriptions.yaml`, one entry per column, each with text and source:
 
-- **Published fields**: extracted once from the pinned note by a script (`tools/extract_note_dictionary.py`, pypdf,
-  run with the script directory off the path since the PDF is a download), then reviewed
-  against the PDF by eye, with the note's own label (for example "Date of Assessment") kept
-  beside the machine name. Each entry records the note's hash and the page.
-- **Key and derived columns**: written by us, marked as ours, with the decision behind them.
-- A column without a description fails a test, so the gap is closed before the site publishes.
+- **Published fields the note defines** (106): extracted once from the pinned note by a script
+  (`tools/extract_note_dictionary.py`, pypdf, run with the script directory off the path since
+  the PDF is a download) through an explicit map from machine name to note entry that records
+  the known aliases (`ADDRESS3` to `POST_TOWN`, `3_YR_ENERGY_SAVINGS_POTENTIAL` to the note's
+  singular), then reviewed against the PDF by eye, with the note's own label (for example "Date
+  of Assessment") kept beside the machine name. The machine name stays the identity in the map
+  and the URLs. Each entry records `attribution: note`, the note's hash and the page.
+- **`DATA_ZONE_2011`**, which the note omits: `attribution: project`, with the text "not defined
+  in the publication note; description from the published header and the pinned 2011 lookup".
+  Never the 2001 entry's text under the 2011 name.
+- **Key and derived columns**: `attribution: project`, with the decision behind them.
+- Attribution kind is a field apart from the text. A page reference is required where the kind
+  is `note`, forbidden where it is `project`. Tests cover `DATA_ZONE_2011` and both aliases by
+  name, as well as requiring a non-empty description for every column.
 
 The schema's short descriptions stay as they are for the data dictionary.
 
@@ -109,13 +144,18 @@ The schema's short descriptions stay as they are for the data dictionary.
 
 ### 5. Tests, `tests/test_provenance.py`
 
-Mirroring postcode-simd's: every column has a lineage record and a description; every input
-reference names a pinned object that exists in the registry; every decision id exists; every
-cited check has a definition and is one the build emits (checked against the manifest's names);
-the site has a page per column and every internal link resolves; a page never claims a check
-passed; regeneration removes pages no longer written; no page contains a postcode-shaped string
-or any of the fixture's address text; the note text is labelled as the note's wherever it
-appears; `decisions.yaml` parses.
+Mirroring postcode-simd's: every column has a lineage record and a description with an
+attribution kind; `DATA_ZONE_2011` is project-attributed and the two aliases resolve; every input
+reference names a pinned object that exists in the registry; every decision id exists, every
+`amends` points at an existing entry, and the effective policy for the address columns and the
+dated joins is the one in force; every cited check is a catalogue entry that applies to the
+column, every emitted name of the synthetic build, with and without `--verify-archive`, matches
+the catalogue, and every unconditional entry is emitted; the four data zone columns name their
+list and a membership change flips the status; the site has a page per column and every
+internal link resolves; a page never claims a check passed and states sampled coverage where
+the catalogue says so; regeneration removes pages no longer written; no page contains a
+postcode-shaped string or any of the fixture's address text; the note text is labelled as the
+note's wherever it appears; `decisions.yaml` parses.
 
 ## What the site must never show
 
@@ -127,10 +167,12 @@ imports.
 
 ## Phases
 
-1. Fix `decisions.yaml` quoting with the next rebuild; add the parse test. (With the rebuild.)
-2. Extract and review the note's dictionary into `column_descriptions.yaml`. (Half a day; the
-   review by eye is the long part, 107 entries.)
-3. `lineage.py` and its tests. (Half a day.)
+1. Fix `decisions.yaml` quoting and add `status`, `amends` and `keeps`, with the next rebuild;
+   add the parse and supersession tests. (With the rebuild.)
+2. Extract and review the note's dictionary into `column_descriptions.yaml` through the alias
+   map; write the project descriptions. (Half a day; the review by eye is the long part.)
+3. `check_catalogue.yaml`, `lineage.py` and their tests, including the two synthetic builds.
+   (One day.)
 4. `provenance_site.py`, `mkdocs.yml`, the site tests, a local build. (One day.)
 5. Workflow, script, Pages switched on, first publish, link from the README. (Two hours.)
 
