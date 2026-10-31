@@ -129,3 +129,9 @@ records `autocommit=True` without the driver changing the session, so every stat
 a transaction that pyodbc, believing itself in autocommit, never commits. The fixes stand:
 pooling off is what makes C start clean; autocommit on the read-only connections and the lock
 timeouts are belt and braces.
+
+## Rerun with the tie rule (31 October 2026)
+
+Step 7 of the notebook follows `join_by_uprn.sql` and now ranks a same-day pair by the current
+flag and then `created_at_parsed`, returning `epc_tie_candidates`. The eleven scenarios were
+rerun with the regenerated notebook: every one as expected, 420 cells read back equal.

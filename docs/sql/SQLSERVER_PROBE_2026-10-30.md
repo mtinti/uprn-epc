@@ -83,3 +83,14 @@ manifest's, the check in 26 s; 44 chosen cells rendered equal to the CSV text; e
 NULL count equal to the manifest (`uprn_osg` NULL 178,537, `rrn` NULL 340,010, six
 `BUILDING_REFERENCE_NUMBER` cells with a newline); the seven join statuses and both key guards
 as expected.
+
+## Seventh run: the tie rule in `join_by_uprn.sql`
+
+After decision `tie-prefers-current-then-latest-lodged` (31 October 2026) the dated joins rank a
+same-day pair by the current flag and then the register timestamp, with three window functions.
+The full table was loaded and checked again (digest equal, 26 s; 44 cells rendered equal; every
+empty and NULL count equal to the manifest) and the join step ran the revised T-SQL from
+`docs/sql/join_by_uprn.sql` against it: seven cohort rows returned once each with the expected
+status, both key guards stopped the query. The probe's cohort has no tie, so the rule's choices
+are shown by the DuckDB tests in `tests/test_joins.py` (one current of two; both superseded with
+different timestamps; identical timestamps left ambiguous) and the T-SQL by this run.
