@@ -1,0 +1,193 @@
+# The build's checks, as a catalogue: what each family tests, which columns it guards, how far it
+# reaches and when it runs. The manifest of one build records which of these were emitted and
+# whether they passed; this file says what they mean. The tests hold the two together: every
+# name a build emits matches one pattern here, and every unconditional family is emitted.
+#
+# applies_to: all | published | derived | key | string | nonnull | exported | a list of columns
+# condition: null (always) or the flag that enables the family
+# coverage: how much of the data the check sees
+version: 1
+checks:
+  - id: source.member
+    pattern: '^source\.[^/]+/extracted/\d{4}\.csv$'
+    tests: the annual file's SHA256 equals the pin in sources.yaml, so the bytes read are the bytes reviewed
+    applies_to: all
+    coverage: every byte of the file
+    condition: null
+  - id: source.datazone_list
+    pattern: '^source\.datazones/'
+    tests: the data zone reference list's SHA256 equals the pin, the same hash the sibling project pins
+    applies_to: [datazone_2001, datazone_2001_status, datazone_2011, datazone_2011_status]
+    coverage: every byte of the list
+    condition: null
+  - id: source.archive
+    pattern: '^source\.[^/]+/[^/]+\.7z$'
+    tests: the downloaded archive's SHA256 equals the pin; the build never reads the archive, only the extracted members
+    applies_to: all
+    coverage: every byte of the archive
+    condition: --verify-archive
+  - id: source.note
+    pattern: '^source\.[^/]+/publication_note\.pdf$'
+    tests: the publication note's SHA256 equals the pin; the note is documentation, the source of the column descriptions
+    applies_to: []
+    coverage: every byte of the note
+    condition: --verify-archive
+  - id: schema.matches_generator
+    pattern: '^schema\.matches_generator$'
+    tests: output_schema.yaml is exactly what python -m epc_ingest.columns writes from published_columns.yaml and the derived list
+    applies_to: all
+    coverage: every field of the schema
+    condition: null
+  - id: datazones.count
+    pattern: '^datazones_\d{4}\.count$'
+    tests: the reference list holds the pinned number of zones
+    applies_to: [datazone_2001, datazone_2001_status, datazone_2011, datazone_2011_status]
+    coverage: the whole list
+    condition: null
+  - id: datazones.distinct
+    pattern: '^datazones_\d{4}\.distinct$'
+    tests: no zone code repeats in the reference list
+    applies_to: [datazone_2001, datazone_2001_status, datazone_2011, datazone_2011_status]
+    coverage: the whole list
+    condition: null
+  - id: year.utf8
+    pattern: '^\d{4}\.utf8$'
+    tests: the annual file decodes as UTF-8 with no error
+    applies_to: published
+    coverage: every byte of the file
+    condition: null
+  - id: year.header_names
+    pattern: '^\d{4}\.header_names$'
+    tests: the first header row equals the 107 pinned machine names, in order
+    applies_to: published
+    coverage: the header row
+    condition: null
+  - id: year.header_labels
+    pattern: '^\d{4}\.header_labels$'
+    tests: the second header row equals the 107 pinned labels, in order
+    applies_to: published
+    coverage: the header row
+    condition: null
+  - id: year.row_width
+    pattern: '^\d{4}\.row_width$'
+    tests: every data row has 107 fields
+    applies_to: published
+    coverage: every row of the file
+    condition: null
+  - id: year.rows
+    pattern: '^\d{4}\.rows$'
+    tests: the number of data rows equals the pin for the member, so source_row runs 1 to that number
+    applies_to: [source_year, source_row]
+    coverage: every row of the file
+    condition: null
+  - id: year.rrn_shape
+    pattern: '^\d{4}\.rrn_shape$'
+    tests: every non-empty REPORT_REFERENCE_NUMBER has the shape 9999-9999-9999-9999-9999
+    applies_to: [rrn]
+    coverage: every row of the file
+    condition: null
+  - id: year.rrn_unique_in_file
+    pattern: '^\d{4}\.rrn_unique_in_file$'
+    tests: no non-empty REPORT_REFERENCE_NUMBER repeats within the file
+    applies_to: [rrn]
+    coverage: every row of the file
+    condition: null
+  - id: year.created_at_year
+    pattern: '^\d{4}\.created_at_year$'
+    tests: every CREATED_AT falls in the file's year, the rule that places a row in its annual file
+    applies_to: [source_year, created_at_parsed]
+    coverage: every row of the file
+    condition: null
+  - id: year.derived_values_parse
+    pattern: '^\d{4}\.derived_values_parse$'
+    tests: every date, timestamp, flag, integer and decimal a derived column needs parses by its rule; one failure stops the build
+    applies_to: [uprn_sepcr, uprn_osg, inspection_date_parsed, lodgement_date_parsed, created_at_parsed, historic_flag,
+                 current_energy_efficiency_int, potential_energy_efficiency_int, environment_impact_current_int,
+                 environment_impact_potential_int, total_floor_area_int, energy_consumption_current_num,
+                 co2_emissions_current_num, co2_emiss_curr_per_floor_area_num]
+    coverage: every row of the file
+    condition: null
+  - id: year.text_within_width
+    pattern: '^\d{4}\.text_within_width$'
+    tests: no text value is longer than its column's declared nvarchar width
+    applies_to: string
+    coverage: every row of the file
+    condition: null
+  - id: year.decimal_round_trip
+    pattern: '^\d{4}\.decimal_round_trip$'
+    tests: every decimal cell survives file text to Decimal to 4-place text to Decimal unchanged, so the CSV, the digest and SQL Server agree to the byte
+    applies_to: [energy_consumption_current_num, co2_emissions_current_num, co2_emiss_curr_per_floor_area_num]
+    coverage: every row of the file
+    condition: null
+  - id: table.rows
+    pattern: '^table\.rows$'
+    tests: the key (epc_release, source_year, source_row) is unique over the whole table
+    applies_to: key
+    coverage: every row of the table
+    condition: null
+  - id: table.rrn_unique
+    pattern: '^table\.rrn_unique$'
+    tests: no rrn repeats across the whole table
+    applies_to: [rrn]
+    coverage: every row of the table
+    condition: null
+  - id: table.uprn_one_to_one
+    pattern: '^table\.uprn_one_to_one$'
+    tests: each uprn_osg maps to one uprn_sepcr and each uprn_sepcr to one uprn_osg, where both exist
+    applies_to: [uprn_osg, uprn_sepcr]
+    coverage: every row of the table
+    condition: null
+  - id: table.no_unknown_code
+    pattern: '^table\.datazone_\d{4}_status\.no_unknown_code$'
+    tests: no well-formed data zone code is absent from the vintage's reference list
+    applies_to: [datazone_2001, datazone_2001_status, datazone_2011, datazone_2011_status]
+    coverage: every row of the table
+    condition: null
+  - id: table.required_nonnull
+    pattern: '^table\.required_nonnull$'
+    tests: every column the schema declares NOT NULL has no NULL
+    applies_to: nonnull
+    coverage: every row of the table
+    condition: null
+  - id: readback.parquet.rows
+    pattern: '^readback\.parquet\.(rows|row_groups)$'
+    tests: the saved Parquet has the rows the CSV has and one row group per annual file
+    applies_to: all
+    coverage: the whole file
+    condition: null
+  - id: readback.parquet.digest
+    pattern: '^readback\.parquet\.\d{4}\.digest$'
+    tests: the row digest recomputed from the saved Parquet, rendered as the CSV renders it, equals the digest computed while writing the CSV, year by year
+    applies_to: exported
+    coverage: every cell of every row
+    condition: null
+  - id: readback.parquet.one_year_per_row_group
+    pattern: '^readback\.parquet\.\d{4}\.one_year_per_row_group$'
+    tests: each row group holds one source_year
+    applies_to: [source_year]
+    coverage: every row of the table
+    condition: null
+  - id: readback.parquet.structure
+    pattern: '^readback\.parquet\.(column_names|column_types|nullability)$'
+    tests: the saved Parquet's columns, Arrow types and nullability are the schema's
+    applies_to: all
+    coverage: the schema of the file
+    condition: null
+  - id: readback.parquet.metadata
+    pattern: '^readback\.parquet\.metadata\.'
+    tests: the saved Parquet carries the build's grain, key, schema version, release, source pins and the hashes of the registry and the decision log
+    applies_to: []
+    coverage: the file's metadata
+    condition: null
+  - id: readback.parquet.sampled_rows_equal_source
+    pattern: '^readback\.parquet\.sampled_rows_equal_source$'
+    tests: for the first, middle and last row of every annual file, every published cell read back from the Parquet equals the raw text of the source file
+    applies_to: published
+    coverage: three rows per annual file (SAMPLE_ROWS), not every row; every row is covered by the digest
+    condition: null
+  - id: readback.csv
+    pattern: '^readback\.csv\.(header|rows|digest_total)$'
+    tests: the written CSV read back has the exported header, the row count and the digest total the build recorded
+    applies_to: exported
+    coverage: every cell of every row
+    condition: null

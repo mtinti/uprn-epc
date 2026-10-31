@@ -1,0 +1,36 @@
+# The column provenance site (docs/plans/Column_Provenance_Site_Plan.md). The pages are generated:
+#   python -m epc_ingest.provenance_site && mkdocs build
+site_name: uprn-epc column provenance
+site_url: !ENV [SITE_URL, 'https://mtinti.github.io/uprn-epc/']
+repo_url: https://github.com/mtinti/uprn-epc
+docs_dir: build/provenance_docs
+site_dir: build/provenance_site
+strict: true
+validation:
+  anchors: warn
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - search.highlight
+  palette:
+    - scheme: default
+      toggle: {icon: material/brightness-7, name: Dark mode}
+    - scheme: slate
+      toggle: {icon: material/brightness-4, name: Light mode}
+plugins:
+  - search
+nav:
+  - Home: index.md
+  - Columns: columns/index.md
+  - Pinned sources: sources/index.md
+  - Decisions: decisions/index.md
+  - Checks: checks.md
+not_in_nav: |
+  /columns/*.md
+  /sources/*.md
+  /decisions/*.md
+markdown_extensions:
+  - tables
+  - toc:
+      permalink: true

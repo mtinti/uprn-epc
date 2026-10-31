@@ -9,6 +9,7 @@ authors = [{name = "Michele Tinti"}]
 
 [project.optional-dependencies]
 dev = ["pytest>=9"]
+docs = ["mkdocs==1.6.1", "mkdocs-material==9.7.7", "pypdf==6.14.2"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

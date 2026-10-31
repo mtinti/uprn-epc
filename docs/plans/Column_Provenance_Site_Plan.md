@@ -161,9 +161,11 @@ note's wherever it appears; `decisions.yaml` parses.
 
 No row value, address, postcode, UPRN or RRN; no count from the manifest's observations that
 could describe one dwelling. Counts the data dictionary already publishes (rows per year, empty
-UPRNs) are fine. The generator reads the schema, registry, decisions, contract and descriptions
-only; it never opens the Parquet, the CSV or a source file. A test asserts the generator's
-imports.
+UPRNs) are fine. The generator reads committed metadata only: the schema, the published-column
+list, the registry, the decisions, the export contract, the check catalogue and the descriptions,
+directly or through the lineage module; it never opens the Parquet, the CSV, the manifest or a
+source file. A test asserts the generator's and the lineage module's imports and the files they
+open.
 
 ## Phases
 
