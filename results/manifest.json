@@ -1,5 +1,5 @@
 {
- "built_at": "2026-10-30T20:19:09.972136+00:00",
+ "built_at": "2026-10-31T07:29:12.300345+00:00",
  "table": "epc_domestic",
  "epc_release": "2026Q2",
  "schema_version": "epc_domestic_v1",
@@ -7,7 +7,7 @@
  "registry_sha256": "bbce1df297307bc118b1d623bf0aada579d8070482f38f307d5f2cf0c69c3cdf",
  "published_columns_sha256": "bd43019cb68cd5f5745473757390efe33cb589de68bd2859c821371f5b0ec8f9",
  "contract_sha256": "ace83f8f4b2e8acdee9a486d6a48fad8020cb5181f877d54d8c0d0237b215e4a",
- "decisions_sha256": "baa3eb4481887e3111a2f105370fe6e3ebea9c2a667feededac5049d7a36dbbd",
+ "decisions_sha256": "e7f39c7b6c3505b573dbaa892a70d2e6752778b2e3899c8c378a343048d85121",
  "parquet": {
   "table": "epc_domestic",
   "schema_version": "epc_domestic_v1",
@@ -20,7 +20,7 @@
   "rows": 3787069,
   "row_groups": 19,
   "columns": 130,
-  "sha256": "cfcde4bb3440d86497c3dd6650ab7ceb66c45a2b39e3fb1c874caa9446230091"
+  "sha256": "e7d9a96d983f3dbab49a3d005fdc840edc6fcce21ff577f9764c47a9a438782b"
  },
  "csv": {
   "file": "epc_domestic.csv.gz",
@@ -13632,9 +13632,9 @@
   {
    "name": "readback.parquet.metadata.decisions_sha256",
    "passed": true,
-   "detail": "baa3eb4481887e3111a2f105370fe6e3ebea9c2a667feededac5049d7a36dbbd",
-   "expected": "baa3eb4481887e3111a2f105370fe6e3ebea9c2a667feededac5049d7a36dbbd",
-   "actual": "baa3eb4481887e3111a2f105370fe6e3ebea9c2a667feededac5049d7a36dbbd"
+   "detail": "e7f39c7b6c3505b573dbaa892a70d2e6752778b2e3899c8c378a343048d85121",
+   "expected": "e7f39c7b6c3505b573dbaa892a70d2e6752778b2e3899c8c378a343048d85121",
+   "actual": "e7f39c7b6c3505b573dbaa892a70d2e6752778b2e3899c8c378a343048d85121"
   },
   {
    "name": "readback.parquet.metadata.registry_sha256",
