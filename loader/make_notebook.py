@@ -87,8 +87,10 @@ from pathlib import Path
 import pandas as pd
 import pyodbc
 
-# No connection pooling: a pooled connection comes back with whatever transaction its last user
-# left open, and with the SQL Server ODBC driver every statement under autocommit=False opens one.
+# No connection pooling: a pooled physical connection comes back in the commit mode its last user
+# left it in, whatever autocommit the new handle declares, so a connection that believes it is in
+# autocommit runs every statement inside a transaction it never commits (probed 31 October 2026,
+# loader/notebook_probe/pooling_diag.py).
 # Must be set before the first connection of the kernel.
 pyodbc.pooling = False
 
