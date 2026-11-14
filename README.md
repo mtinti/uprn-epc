@@ -160,6 +160,7 @@ always resolves to the latest version. Versions, newest first:
 - `docs/ADDRESS_MATCHING_review.md`: how a cohort gets its UPRNs, which is outside this build.
 - `docs/uprn_check_2026-10-30.md`: the check of the short UPRNs against OS Open UPRN.
 - `docs/UPDATING.md`: taking a new quarterly release.
+- `docs/HISTORY_REWRITE_2026-11-14.md`: why commit hashes cited before 14 November 2026 differ, and the new hash of each.
 - `docs/reviews/`: the plan reviews and the responses.
 
 Code: MIT (`LICENSE`). Michele Tinti, Health Informatics Centre, University of Dundee.
