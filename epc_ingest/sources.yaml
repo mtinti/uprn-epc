@@ -82,3 +82,4 @@ datazone_lists:
     pinned_in: datazone-ahah ahah_ingest/sources.yaml, datazone_lists
     url: https://data.gov.scot/dataset/2011_data_zone_lookup/resource/20ad5f65-c5c2-407e-8355-7c25bf579e87/download
     page: https://data.gov.scot/dataset/2011_data_zone_lookup
+    mirror: https://zenodo.org/records/23783247/files/datazones__DataZone2011_lookup.csv?download=1

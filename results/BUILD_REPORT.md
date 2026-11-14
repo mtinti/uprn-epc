@@ -1,8 +1,8 @@
-# Build report: epc_domestic, release 2026Q2, 2026-10-31T09:47:16Z
+# Build report: epc_domestic, release 2026Q2, 2026-11-14T19:02:59Z
 
 Schema `epc_domestic_v1`. 3,787,069 rows by 130 columns in the Parquet, 130 in the CSV.
 CSV `epc_domestic.csv.gz` SHA256 `b8910ee905a4c96874988a1cf4a39e3f2c3a109e4049bae904842cba6c54d84f`, digest total `-17782796129345549661789`.
-Parquet SHA256 `39eb12c02a7e7e5d6f1727e859cc489ec50ad5159e96bb13178669b342e7abe8`.
+Parquet SHA256 `165d32f1c7417a55964056997efc344634f125f6dda0ef2a15a3e7bbe454c28e`.
 
 ## Rows per year
 
@@ -176,7 +176,7 @@ Parquet SHA256 `39eb12c02a7e7e5d6f1727e859cc489ec50ad5159e96bb13178669b342e7abe8
 
 ## Checks
 
-295 passed, 0 failed.
+297 passed, 0 failed.
 
 | Check | Result | Detail |
 | --- | --- | --- |
@@ -201,6 +201,8 @@ Parquet SHA256 `39eb12c02a7e7e5d6f1727e859cc489ec50ad5159e96bb13178669b342e7abe8
 | `source.epc_2026Q2/extracted/2026.csv` | pass | sha256 matches |
 | `source.datazones/SG_SIMD_2012.dbf` | pass | sha256 matches |
 | `source.datazones/DataZone2011_lookup.csv` | pass | sha256 matches |
+| `source.epc_2026Q2/domestic_epc_extended_historic_Q2_2026.7z` | pass | sha256 matches |
+| `source.epc_2026Q2/publication_note.pdf` | pass | sha256 matches |
 | `schema.matches_generator` | pass | output_schema.yaml is what python -m epc_ingest.columns writes |
 | `datazones_2001.count` | pass | 6505 |
 | `datazones_2001.distinct` | pass | 6505 |
@@ -423,7 +425,7 @@ Parquet SHA256 `39eb12c02a7e7e5d6f1727e859cc489ec50ad5159e96bb13178669b342e7abe8
 | `readback.parquet.metadata.key` | pass | ["epc_release", "source_year", "source_row"] |
 | `readback.parquet.metadata.epc_release` | pass | 2026Q2 |
 | `readback.parquet.metadata.decisions_sha256` | pass | 6d7ef073681906ca4bf396b874d861bdf2f6dd58f87fef528888bbc077ea35c9 |
-| `readback.parquet.metadata.registry_sha256` | pass | bbce1df297307bc118b1d623bf0aada579d8070482f38f307d5f2cf0c69c3cdf |
+| `readback.parquet.metadata.registry_sha256` | pass | bfceb1a8e3624a4f01002bc4a5ad2b7392d4c4d2de717ad5ba6561ced2323b30 |
 | `readback.parquet.metadata.sources` | pass | [{"year": 2008, "file": "epc_2026Q2/extracted/2008.csv", "sha256": "ce393d3ab26847d9a642d8e7491203db88e526ea473bb74daeead19ca4865c2c"}, {"year": 2009, "file": " |
 | `readback.parquet.rows` | pass | 3787069 |
 | `readback.parquet.row_groups` | pass | 19 |

@@ -1,6 +1,6 @@
 # uprn-epc
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23817747.svg)](https://doi.org/10.5281/zenodo.23817747)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24226617.svg)](https://doi.org/10.5281/zenodo.24226617)
 
 **Column provenance site:** https://mtinti.github.io/uprn-epc/ , one page per column: what it is (the
 publisher's own definition where the note gives one), the pinned file it comes from, what was done
@@ -147,11 +147,24 @@ Government Licence, the archive is held as an unpublished restricted Zenodo draf
 an open record (deposition 23784712, reserved DOI 10.5281/zenodo.23784712, which resolves only
 once the record is published), and a copy sits on the HIC OneDrive. The built table is private.
 
-The code is archived on Zenodo at each GitHub release. The concept DOI 10.5281/zenodo.23817747
+The code is archived on Zenodo at each release. The concept DOI 10.5281/zenodo.24226617
 always resolves to the latest version. Versions, newest first:
 
-- 0.2.0: 10.5281/zenodo.23820541, the address lines are loaded (130 columns).
-- 0.1.0: 10.5281/zenodo.23817748, the first release (127 columns, address lines withheld).
+- 0.2.1: 10.5281/zenodo.24226618, no site's connection details in the notebook, sources restorable from
+  Zenodo with one command. The table is unchanged.
+- 0.2.0: the address lines are loaded (130 columns). Tag `v0.2.0`.
+- 0.1.0: the first release (127 columns, address lines withheld). Tag `v0.1.0`.
+
+The Zenodo archives of 0.1.0 and 0.2.0 were withdrawn on 14 November 2026
+(`docs/HISTORY_REWRITE_2026-11-14.md`). Their code is under the two tags.
+
+If a source is no longer at its publisher's address, `python tools/restore_sources.py --token-file <file>`
+restores every pinned file from Zenodo: the archive from the restricted draft, the note and the
+19 annual files from the archive, and the two data zone lists from the public records of
+postcode-simd and datazone-ahah. Each file is checked against its pinned SHA256, a file already
+in place is never overwritten, and `--check` shows what would be restored and writes nothing
+there. While the record is an unpublished draft only its owner's token can read it. A build from
+the restored files gave the CSV hash the manifest records (run of 14 November 2026).
 
 ## Documents
 
