@@ -76,9 +76,9 @@ def step_index(nb, step):
 def point_at(nb, path):
     cell = nb.cells[step_index(nb, 1)]
     src = cell.source
-    for old, new in [('FOLDER   = Path(r"")', f'FOLDER   = Path(r"{path}")'), ('SERVER   = "<SERVER>"', f'SERVER   = "{SERVER}"'),
-                     ('DATABASE = "<DATABASE>"', f'DATABASE = "{DB}"'),
-                     ('"<CONNECTION OPTIONS>")', f'"UID={USER};PWD={USER_PW};Encrypt=yes;TrustServerCertificate=yes;")')]:
+    # The notebook ships with an empty CONN. The probe fills it with the test login of the throwaway server.
+    connection = f"DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={SERVER};DATABASE={DB};UID={USER};PWD={USER_PW};Encrypt=yes;TrustServerCertificate=yes;"
+    for old, new in [('FOLDER   = Path(r"")', f'FOLDER   = Path(r"{path}")'), ('CONN     = ""', f'CONN     = "{connection}"')]:
         assert src.count(old) == 1, old
         src = src.replace(old, new)
     cell.source = src

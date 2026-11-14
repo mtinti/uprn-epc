@@ -96,6 +96,7 @@ Server for Linux, which rejects that option, convert the CSV to UTF-16 and impor
 `BULK INSERT`, use `loader/upload_epc.ipynb` instead: it sends the rows through pyodbc in chunks, keeping
 the empty-against-NULL rule of the import script, builds the two indexes, runs the same digest check and
 shows the table in use. Regenerate it after a rebuild with `python loader/make_notebook.py`.
+The notebook is committed with an empty connection string, `CONN`, which the analyst fills in at step 1. A copy for one site is written with `python loader/make_notebook.py results local/upload_epc_site.ipynb --site local/site_connection.txt`, where the file holds that site's ODBC connection string on one line. `local/` is ignored by git, and the generator refuses to write such a copy anywhere else inside the repository.
 
 Two container probes exercise both routes against a throwaway SQL Server 2022.
 `loader/sqlserver_probe.sh` runs the import and check scripts on the full build, times them, and

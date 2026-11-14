@@ -13,6 +13,7 @@
 name: pages
 on:
   push:
+    branches: ['**']      # branches only: a tag has no preview to publish and none to remove
   pull_request:
   workflow_dispatch:
   delete:

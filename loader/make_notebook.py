@@ -2,10 +2,14 @@
 client machine through pyodbc, as the postcode-simd and datazone-ahah upload notebooks do. It
 carries this build's hash, row count and digest from results/manifest.json.
 
-    python loader/make_notebook.py [results_dir [output.ipynb]]
+    python loader/make_notebook.py [results_dir [output.ipynb]] [--site FILE]
 
 Without arguments it reads results/manifest.json and writes loader/upload_epc.ipynb. The two
 arguments let a test build a notebook for a fixture release and run it against SQL Server.
+
+The notebook is written with an empty connection string. --site FILE writes a copy for one site,
+with the connection string that FILE holds on one line, to a path outside the repository or under
+local/.
 """
 
 import json
@@ -15,8 +19,20 @@ from pathlib import Path
 import nbformat as nbf
 
 ROOT = Path(__file__).resolve().parent.parent
-RESULTS = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "results"
-OUT = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "loader" / "upload_epc.ipynb"
+# A site's own connection string never goes into the committed notebook. Without --site the
+# notebook is written with an empty CONN for the analyst to fill in. With --site FILE, where FILE
+# holds the ODBC connection string on one line, the notebook is written with it, and only to a
+# path outside the repository or under local/, which git ignores.
+ARGS = sys.argv[1:]
+SITE = None
+if "--site" in ARGS:
+    _i = ARGS.index("--site")
+    if _i + 1 >= len(ARGS):
+        sys.exit("stopped: --site needs the path of a file holding the connection string")
+    SITE = Path(ARGS[_i + 1])
+    del ARGS[_i:_i + 2]
+RESULTS = Path(ARGS[0]) if len(ARGS) > 0 else ROOT / "results"
+OUT = Path(ARGS[1]) if len(ARGS) > 1 else ROOT / "loader" / "upload_epc.ipynb"
 m = json.loads((RESULTS / "manifest.json").read_text())
 c = m["csv"]
 o = m["observations"]["table"]
@@ -40,7 +56,7 @@ few certificates, and the left join by UPRN with its statuses.
 
 1. Put in one folder: `epc_domestic.csv.gz` (or the unpacked `epc_domestic.csv`, {c['uncompressed_bytes'] / 1e9:.1f} GB),
    `import_csv.sql` and `check_loaded_digest.sql` from `docs/sql/`. Unpacking needs {c['uncompressed_bytes'] / 1e9:.0f} GB free.
-2. Set `FOLDER`, `SERVER`, `DATABASE` and `TABLE` in step 1.
+2. Set `FOLDER`, `CONN` and `TABLE` in step 1.
 3. You need `CREATE TABLE` rights in the database. Step 1 tells you whether you have them.
 
 **Time.** Step 4 sends {c['rows']:,} rows of {c['columns']} columns through pyodbc. Against a SQL Server
@@ -66,7 +82,7 @@ md("""
 
 ### Step 1. Settings, connection and files
 
-**What it does.** Sets the folder, server, database and table; unpacks the CSV if only the archive is present;
+**What it does.** Sets the folder, the connection string and the table; unpacks the CSV if only the archive is present;
 lists the files it needs; connects and shows who you are connected as.
 
 **What to expect.** Three lines starting `found`, then one row: server, database, your login,
@@ -97,13 +113,15 @@ pyodbc.pooling = False
 # EDIT: the folder holding the three files
 FOLDER   = Path(r"")
 
-SERVER   = "<SERVER>"
-DATABASE = "<DATABASE>"
+# EDIT: the ODBC connection string of your site, on one line. It names the driver, the server,
+# the database and how you sign in. Its shape, with your own values in place of the two in <>:
+#   DRIVER={ODBC Driver 18 for SQL Server};SERVER=<server>;DATABASE=<database>;Trusted_Connection=yes;
+# A copy of this notebook prepared for your site may arrive with the line already filled in.
+CONN     = ""
 TABLE    = "dbo.epc_domestic"      # one row per published certificate
 
-DRIVER = "ODBC Driver 18 for SQL Server"
-CONN = (f"DRIVER={{{DRIVER}}};SERVER={SERVER};DATABASE={DATABASE};"
-        "<CONNECTION OPTIONS>")
+if not CONN.strip():
+    raise ValueError("CONN is empty. Put your site's ODBC connection string in step 1, then run the cell again.")
 
 # The CSV may arrive compressed: unpack it once, beside the archive.
 packed = FOLDER / "epc_domestic.csv.gz"
@@ -132,7 +150,7 @@ with pyodbc.connect(CONN, timeout=10, autocommit=True) as cn:
 if missing:
     raise FileNotFoundError(f"missing from {FOLDER}: {', '.join(missing)}")
 if int(who.can_create_table[0]) != 1:
-    raise PermissionError(f"{who.login[0]} cannot CREATE TABLE in {DATABASE}; ask for the right before running step 3")
+    raise PermissionError(f"{who.login[0]} cannot CREATE TABLE in {who.db[0]}; ask for the right before running step 3")
 print("ready")
 """)
 
@@ -509,6 +527,18 @@ assert out.epc_status.tolist() == ["matched", "matched", "no_certificate_by_date
 print("seven rows in, seven out, every status as expected")
 """)
 
+EMPTY_CONN = 'CONN     = ""'
+if SITE is not None:
+    connection = SITE.read_text(encoding="utf-8").strip()
+    if not connection or "\n" in connection:
+        sys.exit(f"stopped: {SITE} must hold one line, the ODBC connection string")
+    target = OUT.resolve()
+    if target.is_relative_to(ROOT.resolve()) and not target.is_relative_to((ROOT / "local").resolve()):
+        sys.exit(f"stopped: a notebook with a site's connection string is not written inside the repository, where it could be committed. "
+                 f"Give a path under {ROOT / 'local'} or outside {ROOT}.")
+    step1 = next(c for c in cells if c.cell_type == "code" and c.source.startswith("# Step 1 "))
+    assert step1.source.count(EMPTY_CONN) == 1
+    step1.source = step1.source.replace(EMPTY_CONN, "CONN     = " + json.dumps(connection))
 nb = nbf.v4.new_notebook(cells=cells, metadata={"kernelspec": {"name": "python3", "display_name": "Python 3", "language": "python"},
                                                 "language_info": {"name": "python"}})
 nbf.write(nb, OUT)

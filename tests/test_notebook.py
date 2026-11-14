@@ -5,6 +5,8 @@ import ast
 import gzip
 import json
 import re
+import subprocess
+import sys
 from pathlib import Path
 
 import duckdb
@@ -132,3 +134,53 @@ def test_the_old_grouped_min_selector_fails_with_two_qualifying_dwellings():
     with pytest.raises(duckdb.Error, match="More than one row"):
         con.execute("SELECT * FROM epc_domestic WHERE uprn_osg = (SELECT MIN(uprn_osg) FROM epc_domestic "
                     "WHERE uprn_osg IS NOT NULL GROUP BY uprn_osg HAVING COUNT(*) = 2)").fetchall()
+
+
+# --- the connection string of a site never enters the committed notebook ----------------------
+
+def _step_1() -> str:
+    nb = json.loads(NOTEBOOK.read_text())
+    return next("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code" and "".join(c["source"]).startswith("# Step 1 "))
+
+
+def test_the_committed_notebook_has_an_empty_connection_string_and_stops_on_it():
+    step1 = _step_1()
+    assert re.search(r'^CONN     = ""$', step1, re.M), "the committed notebook must carry an empty CONN"
+    assert not re.search(r'^(SERVER|DATABASE)\s*=', step1, re.M)
+    # The only place a server is named is the comment that shows the shape, with placeholders.
+    assert re.findall(r"SERVER=([^;\"]*)", step1) == ["<server>"] and re.findall(r"DATABASE=([^;\"]*)", step1) == ["<database>"]
+    assert "TrustServerCertificate" not in step1
+    # An empty CONN stops the cell before anything is unpacked or connected to.
+    stop = step1.index("if not CONN.strip():")
+    assert stop < step1.index("packed = FOLDER") and stop < step1.index("pyodbc.connect(")
+    env = {}
+    with pytest.raises(ValueError, match="CONN is empty"):
+        exec("CONN = '  '\n" + step1[stop:step1.index("\n\n", stop)], env)
+
+
+def _make_notebook(*args):
+    return subprocess.run([sys.executable, str(ROOT / "loader" / "make_notebook.py"), *map(str, args)], capture_output=True, text=True, cwd=ROOT)
+
+
+@needs_build
+def test_a_site_copy_carries_the_connection_string_and_cannot_be_written_into_the_repository(tmp_path):
+    site = tmp_path / "site_connection.txt"
+    site.write_text("DRIVER={ODBC Driver 18 for SQL Server};SERVER=a-test-server;DATABASE=a_test_db;Trusted_Connection=yes;\n")
+    out = tmp_path / "site_copy.ipynb"
+    done = _make_notebook(ROOT / "results", out, "--site", site)
+    assert done.returncode == 0, done.stderr
+    text = out.read_text()
+    assert "SERVER=a-test-server;DATABASE=a_test_db" in text and 'CONN     = \\"\\"' not in text
+    before = NOTEBOOK.read_bytes()
+    # The committed path, and any other path inside the repository outside local/, is refused.
+    for target in (NOTEBOOK, ROOT / "docs" / "site_copy.ipynb"):
+        done = _make_notebook(ROOT / "results", target, "--site", site)
+        assert done.returncode != 0 and "not written inside the repository" in done.stderr, target
+        assert not (ROOT / "docs" / "site_copy.ipynb").exists()
+    assert NOTEBOOK.read_bytes() == before
+    # A site file that is empty, or holds more than one line, is refused.
+    for bad in ("", "DRIVER=x;\nSERVER=y;\n"):
+        site.write_text(bad)
+        done = _make_notebook(ROOT / "results", tmp_path / "bad.ipynb", "--site", site)
+        assert done.returncode != 0 and "must hold one line" in done.stderr
+    assert not (tmp_path / "bad.ipynb").exists()
